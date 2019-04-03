@@ -93,10 +93,11 @@ export default class Signup extends React.Component {
 									/>
 									<Form.Input
 										fluid
-										icon = "user"
+										icon = "lock"
 										iconPosition = "left"
-										type = "text"
-										placeholder = "username"
+										type = "password"
+										name = "password"
+										placeholder = "password"
 										size = "huge"
 									/>
 									<Button fluid size = "huge" id = "accountButton">
