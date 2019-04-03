@@ -1,0 +1,13 @@
+#accountButton,
+#loginButton{
+    background: #587798;
+    color: white;
+}
+
+#signupHeader{
+    color: cornflowerblue;
+}
+#loginHeader{
+    color: cornflowerblue;
+}
+
