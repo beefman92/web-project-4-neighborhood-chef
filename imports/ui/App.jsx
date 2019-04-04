@@ -5,11 +5,13 @@ import Homepage from "./pages/Homepage.jsx";
 import Recipe from "./pages/Recipe.jsx";
 import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
+import ChefPage from "./pages/ChefPage.jsx";
 
 const App = () => (
 	<div>
 		<Router>
 			<Route exact path="/" component={Homepage} />
+			<Route exact path={"/chef/:chefId"} component={ChefPage} />
 			<Route exact path="/recipe/:id" component={Recipe} />
 			<Route exact path="/login" component = {Login} />
 			<Route exact path="/signup" component = {Signup} />

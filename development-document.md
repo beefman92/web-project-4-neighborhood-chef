@@ -12,11 +12,25 @@
 | username | string | 用户名，同样是用户的唯一标识 |
 | password | number | 用户注册时的密码 |
 | address | string | 用户的地址 |
+| latitude | number | 维度 |
+| longitude | number | 经度 |
 | phone | string | 用户的联系电话 |
 | payment | string | 用户的账户信息 |
-| profile_pic | picture | 用户的头像 |
+| profile_pic | string | 用户的头像的url |
 | gender | string | 用户的性别 |
 
+表名：chefs  
+说明：这张表用于记录开店的信息  
+
+| 字段名 | 类型 | 说明 |
+|-------|-----|------|
+| _id | string | 对应于users中的_id字段 |
+| name | string | 厨师昵称 |
+| description | string | 厨师的简介 |
+| address | string | 厨师地址 |
+| latitude | number | 维度 |
+| longitude | number | 经度 |
+| phone | string | 厨师联系电话 |
 
 表名：orders  
 说明：这张表用于记录订单信息
@@ -28,7 +42,7 @@
 | end_time | date | 订单结束的时间 |
 | status | number | 订单当前的状态 |
 | customer_id | string | 下订单用户的id, 和Users表中的id一致 |
-| cook_ id | string | 创建订单用户的id, 和Users表中的id一致 |
+| chef_id | string | 创建订单用户的id, 和Users表中的id一致 |
 | recipe_id | string | 订单配料表的id |
 | count | number | 订单的数量 |
 | price | number | 订单的价格 |
@@ -41,11 +55,14 @@
 | 字段名 | 类型 | 说明 |
 |-------|-----|------|
 | _id | string | 备料表的id, 和Order表中的recipe_id一致 |
-| cook_id | string | 创建订单用户的id, 和users表中的id一致 |
+| chef_id | string | 创建订单用户的id, 和users表中的id一致 |
+| name | string | 菜名 |
+| picture | string | 配图片的url |
 | content | string | order 配料的具体内容 |
 | nutrition | string | 每份配料的营养成分，调用API |
 | price | string | 订单的价格， 和orders表中的价格一致 |
 | available_time | date | 订单有效的时间范围 |
+
 
 表名：recipe_comments
 说明：这张表用于记录评价信息，可以考虑合并到order表内
