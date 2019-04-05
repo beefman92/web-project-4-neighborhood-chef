@@ -52,9 +52,9 @@ Meteor.methods({
 		const maxLatitude = latitude + 0.01;
 		const minLongitude = longitude - 0.02;
 		const maxLongitude = longitude + 0.02;
-		console.log("latitude: " + latitude + ", longitude: " + longitude);
-		console.log("minLatitude: " + minLatitude + ", maxLatitude: " + maxLatitude);
-		console.log("minLongitude: " + minLongitude + ", maxLongitude: " + maxLongitude);
+		// console.log("latitude: " + latitude + ", longitude: " + longitude);
+		// console.log("minLatitude: " + minLatitude + ", maxLatitude: " + maxLatitude);
+		// console.log("minLongitude: " + minLongitude + ", maxLongitude: " + maxLongitude);
 		return Chefs.find(
 			{$and: [
 				{latitude: {$lt: maxLatitude}},
@@ -70,5 +70,11 @@ Meteor.methods({
 	"chefs.getByIds"(ids) {
 		check(ids, Array);
 		return Chefs.find({_id: {$in: ids}}).fetch();
+	},
+	"token.getMapToken"() {
+		if (Meteor.isServer) {
+			const token = Meteor.settings.MAPBOX_API_TOKEN;
+			return token;
+		}
 	}
 });

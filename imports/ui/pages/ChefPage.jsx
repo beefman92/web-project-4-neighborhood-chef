@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import NavigationBar from "../components/NavigationBar";
 import { withTracker } from "meteor/react-meteor-data";
 import { Link } from "react-router-dom";
 import { Meteor } from "meteor/meteor";
@@ -8,6 +7,9 @@ import { Row, Col, CardColumns, Card, Breadcrumb } from "react-bootstrap";
 
 import { Chefs } from "../../api/chefs";
 import { Recipes } from "../../api/recipes";
+import NavigationBar from "../components/NavigationBar";
+import ShoppingCart from "../components/ShoppingCart";
+import "../style/chef-page.css";
 
 class ChefPage extends Component {
 	constructor(props) {
@@ -50,7 +52,7 @@ class ChefPage extends Component {
 					</Card.Header>
 					<Card.Body>
 						<Link to={"/recipe/" + recipe._id}>
-							<img src={recipe.picture} alt={recipe.name} />
+							<img className={"recipe-list-image"} src={recipe.picture} alt={recipe.name} />
 						</Link>
 					</Card.Body>
 					<Card.Footer className="text-muted">
@@ -82,6 +84,7 @@ class ChefPage extends Component {
 		return (
 			<div>
 				<NavigationBar />
+				<ShoppingCart />
 				{this.renderBreadcrumbs()}
 				{this.renderChefInfo()}
 				<hr/>

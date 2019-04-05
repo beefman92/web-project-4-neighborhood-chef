@@ -6,8 +6,6 @@ import { Link } from "react-router-dom";
 
 import "../style/homepage.css";
 
-const mapboxToken = "";
-
 const degreeToPixels = [ { zoom: 0, pixels: 1.7492 }, { zoom: 1, pixels: 3.4984 }, { zoom: 2, pixels: 6.9968 }, { zoom: 3, pixels: 13.9936 },
 	{ zoom: 4, pixels: 27.9872 }, { zoom: 5, pixels: 55.9744 }, { zoom: 6, pixels: 111.9488 }, { zoom: 7, pixels: 223.8976 },
 	{ zoom: 8, pixels: 447.7952 }, { zoom: 9, pixels: 895.5904 }, { zoom: 10, pixels: 1791.1808 }, { zoom: 11, pixels: 3582.3616 },
@@ -34,6 +32,7 @@ export default class SearchBoard extends Component {
 			},
 			currentLat: 0.0,
 			currentLon: 0.0,
+			token: "",
 		};
 		this.searchByFood = true;
 		this.searchByChef = false;
@@ -43,6 +42,12 @@ export default class SearchBoard extends Component {
 
 
 	componentDidMount() {
+		Meteor.call("token.getMapToken", (error, result) => {
+			console.log(result);
+			this.setState({
+				token: result,
+			});
+		});
 		for (let i = 0; i < degreeToPixels.length; i++) {
 			const obj = degreeToPixels[i];
 			this.yRange.push(this.state.viewport.height / obj.pixels);
@@ -134,12 +139,11 @@ export default class SearchBoard extends Component {
 	}
 
 	renderMap() {
-		console.log(this.state.viewport.zoom);
 		return (
 			<ReactMapGL
 				id={"theMap"}
 				{...this.state.viewport}
-				mapboxApiAccessToken={mapboxToken}
+				mapboxApiAccessToken={this.state.token}
 				mapStyle={"mapbox://styles/mapbox/navigation-guidance-day-v4"}
 				onViewportChange={(v) => this.handleOnViewportChange(v)}>
 				<div style={{position: "absolute", top: 36, left: 0, padding: "10px"}}>
@@ -204,7 +208,7 @@ export default class SearchBoard extends Component {
 					const keys = Object.keys(recipeResult);
 					if (keys.length > 0) {
 						Meteor.call("chefs.getByIds", keys, (error, chefResult) => {
-							const newViewport = this.comnputeNewViewport(chefResult);
+							const newViewport = this.computeNewViewport(chefResult);
 							const chefInfo = chefResult.map(chefInfo => {
 								return {
 									info: chefInfo,
@@ -223,7 +227,7 @@ export default class SearchBoard extends Component {
 		} else {
 			Meteor.call("chefs.searchByName", this.state.searchField, (error, result) => {
 				if (result !== null && result.length > 0) {
-					const newViewport = this.comnputeNewViewport(result);
+					const newViewport = this.computeNewViewport(result);
 					this.setState({
 						chefs: result.map(info => {return {info: info, highLight: false, recipes: []};}),
 						viewport: newViewport,
@@ -233,7 +237,7 @@ export default class SearchBoard extends Component {
 		}
 	}
 
-	comnputeNewViewport(chefs) {
+	computeNewViewport(chefs) {
 		let minLat = this.state.currentLat;
 		let maxLat = this.state.currentLat;
 		let minLon = this.state.currentLon;
@@ -299,21 +303,24 @@ export default class SearchBoard extends Component {
 							<div>
 								<input type="radio" id="searchByFood" name="search-by-food" value="food" checked
 									onClick={() => this.handleSearchOptionOnClick()} onChange={() => {}} />
-								<label htmlFor="search-by-food">Search by food</label>
+								<label htmlFor="searchByFood">Search by food</label>
 							</div>
 							<div>
 								<input type="radio" id="searchByChef" name="search-by-chef" value="chef"
 									onClick={() => this.handleSearchOptionOnClick()} onChange={() => {}} />
-								<label htmlFor="search-by-food">Search by chef</label>
+								<label htmlFor="searchByChef">Search by chef</label>
 							</div>
 						</form>
 					</Col>
 					<Col lg="8">
-						<Form.Control
-							name={"searchField"}
-							value={this.state.searchField}
-							onChange={(e) => this.handleOnChange(e)}
-							onKeyDown={(e) => this.handleOnKeyDown(e)} />
+						<Form.Group controlId="searchField">
+							<Form.Label>Search</Form.Label>
+							<Form.Control
+								name={"searchField"}
+								value={this.state.searchField}
+								onChange={(e) => this.handleOnChange(e)}
+								onKeyDown={(e) => this.handleOnKeyDown(e)} />
+						</Form.Group>
 					</Col>
 					<Col lg={"2"}>
 						<Button variant={"success"} onClick={() => this.handleOnSubmit()}>Search</Button>
@@ -324,7 +331,7 @@ export default class SearchBoard extends Component {
 						{this.renderChefList()}
 					</Col>
 					<Col lg={"7"}>
-						{this.renderMap()}
+						{this.state.token !== null && this.state.token !== "" ? this.renderMap() : "Map is loading. Please wait. "}
 					</Col>
 				</Row>
 			</div>

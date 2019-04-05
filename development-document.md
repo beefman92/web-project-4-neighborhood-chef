@@ -48,6 +48,18 @@
 | price | number | 订单的价格 |
 | ready_time | date | 订单可取时间 |
 
+表名：shopping_carts  
+说明：这张表用于记录当前在购物车内尚未结算的订单信息  
+
+| 字段名 | 类型 | 说明 |
+|-------|-----|------|
+| _id | string | meteor自动生成，没有明显的含义 |
+| user_id | string | 用户的id |
+| recipe_id | string | 菜谱的id |
+| name | string | 菜名 |
+| time | date | 菜谱加入购物车的时间 |
+| unit_price | number | 菜谱的单价 |
+| count | number | 数量 |
 
 表名：recipes  
 说明：这张表用于记录菜谱的信息
@@ -60,7 +72,7 @@
 | picture | string | 配图片的url |
 | content | string | order 配料的具体内容 |
 | nutrition | string | 每份配料的营养成分，调用API |
-| price | string | 订单的价格， 和orders表中的价格一致 |
+| price | string | 单价 |
 | available_time | date | 订单有效的时间范围 |
 
 

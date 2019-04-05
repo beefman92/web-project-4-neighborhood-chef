@@ -2,11 +2,13 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withTracker } from "meteor/react-meteor-data";
 import { Meteor } from "meteor/meteor";
+import { Breadcrumb, Row, Col, Button } from "react-bootstrap";
 
 import NavigationBar from "../components/NavigationBar";
+import ShoppingCart from "../components/ShoppingCart";
 import { Recipes } from "../../api/recipes";
-import { RecipeComments} from "../../api/recipe-comments";
-import { Breadcrumb, Row, Col } from "react-bootstrap";
+import { RecipeComments } from "../../api/recipe-comments";
+import "../style/recipe-page.css";
 
 class Recipe extends Component {
 	constructor(props) {
@@ -22,12 +24,22 @@ class Recipe extends Component {
 		);
 	}
 
+	handleOrderFood(event) {
+		event.preventDefault();
+		Meteor.call("shoppingCarts.addNewOne", this.props.recipe._id, (error, result) => {
+			if (error === undefined || error === null) {
+				// TODO: add some animation
+			} else {
+				console.log(error);
+			}
+		});
+	}
+
 	renderRecipe() {
-		console.log(this.props.recipe);
 		return (
 			<Row>
 				<Col lg={"8"}>
-					<img src={this.props.recipe.picture} alt={this.props.recipe.name} />
+					<img className={"recipe-image"} src={this.props.recipe.picture} alt={this.props.recipe.name} />
 				</Col>
 				<Col lg={"4"}>
 					<div>
@@ -41,6 +53,9 @@ class Recipe extends Component {
 					</div>
 					<div>
 						{this.props.recipe.price}
+					</div>
+					<div>
+						<Button variant={"success"} onClick={(e) => this.handleOrderFood(e)}>Order</Button>
 					</div>
 				</Col>
 			</Row>
@@ -60,6 +75,7 @@ class Recipe extends Component {
 			return (
 				<div>
 					<NavigationBar/>
+					<ShoppingCart/>
 					{this.renderBreadcrumbs()}
 					<hr/>
 					{this.renderRecipe()}
