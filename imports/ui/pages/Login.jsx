@@ -5,6 +5,7 @@ import {Divider, Container, Button, Form, Grid, Header, Message, Segment, Label,
 import "../style/login.css";
 import {BrowserRouter} from "react-router-dom";
 import {browserHistory} from 'react-router';
+import NavigationBar from "../components/NavigationBar";
 
 export default class Login extends React.Component {
 	constructor(props) {
@@ -35,6 +36,7 @@ export default class Login extends React.Component {
 	render() {
 		return (
 			<div>
+				<NavigationBar />
 				<Container>
 					<Grid
 						textAlign = "center"
@@ -43,6 +45,8 @@ export default class Login extends React.Component {
 						verticalAligh = "middle"
 						id = "grid"
 					>
+						<br />
+						<br />
 						<Segment placeholder>
 							<Grid columns={2} relaxed ="very" stackable>
 								<Grid.Column>
@@ -111,6 +115,10 @@ export default class Login extends React.Component {
 						</Segment>
 					</Grid>
 				</Container>
+				<br />
+				<br />
+				<br />
+
 			</div>
 		);
 

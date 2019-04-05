@@ -11,6 +11,7 @@ if (Meteor.isServer) {
 	Meteor.publish("chefInfo", function(chefId) {
 		return Chefs.find({_id: chefId});
 	});
+
 }
 
 Meteor.methods({

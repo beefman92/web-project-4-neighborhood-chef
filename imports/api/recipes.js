@@ -28,5 +28,13 @@ Meteor.methods({
 			recipes.push(recipes);
 		});
 		return groupedResult;
+	},
+
+	"recipes.insert"(chefId, name, content) {
+		Recipes.insert({
+			chef_id: chefId,
+			name: name,
+			content: content
+		});
 	}
 })

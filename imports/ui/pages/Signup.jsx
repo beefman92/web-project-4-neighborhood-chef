@@ -1,10 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Container, Button, Form, Grid, Header, Message, Segment, Label, Icon } from "semantic-ui-react";
+
 import { Accounts } from "meteor/accounts-base";
 import "../style/login.css";
 import {BrowserRouter} from "react-router-dom";
+import { Container, Button, Form, Grid, Header, Message, Segment, Label, Icon } from "semantic-ui-react";
+
 import {browserHistory} from 'react-router';
+import NavigationBar from "../components/NavigationBar";
 
 export default class Signup extends React.Component {
 	constructor(props) {
@@ -54,6 +57,7 @@ export default class Signup extends React.Component {
 		return (
 			<div>
 				<Container>
+					<NavigationBar />
 					<Grid
 						textAlign = "center"
 						style = {{ height: "95vh"}}

@@ -7,6 +7,7 @@ import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
 import MyPage from "./pages/MyPage.jsx";
 import ChefPage from "./pages/ChefPage.jsx";
+import ChefInfo from "./pages/ChefInfo.jsx";
 
 const App = () => (
 	<div>
@@ -17,6 +18,7 @@ const App = () => (
 			<Route exact path="/login" component = {Login} />
 			<Route exact path="/signup" component = {Signup} />
 			<Route exact path="/mypage" component = {MyPage} />
+			<Route exact path="/chefinfo" component = {ChefInfo} />
 
 		</Router>
 	</div>
