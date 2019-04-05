@@ -103,6 +103,7 @@ During the development, we utilized following technologies
 ![Alt text](./homepage.png?raw=true "HomePage")
 ![Alt text](./signup.png?raw=true "Sign up")
 ![Alt text](./mypage.png?raw=true "My Page")
+![Alt text](./recipe.png?raw=true "Recipe")
 
 
 ### Homepage
