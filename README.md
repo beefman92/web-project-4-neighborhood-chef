@@ -22,45 +22,45 @@ Collection Name：users
 
 | column | data type| description |
 |-------|-----|------|
-| _id | string | meteor自动生成 |
-| username | string | 用户名，同样是用户的唯一标识 |
-| password | number | 用户注册时的密码 |
-| address | string | 用户的地址 |
-| latitude | number | 维度 |
-| longitude | number | 经度 |
-| phone | string | 用户的联系电话 |
-| payment | string | 用户的账户信息 |
-| profile_pic | string | 用户的头像的url |
-| gender | string | 用户的性别 |
+| _id | string | user id created by meteor |
+| username | string | registered username |
+| password | number | password for registration |
+| address | string | user's address |
+| latitude | number | google map -latitude |
+| longitude | number | google map -longitude |
+| phone | string | phone number of users |
+| payment | string | payment information of user |
+| profile_pic | string | url link of user's profile picture |
+| gender | string | user's gender |
 
 Collection Name：chefs  
 
 
 | column | data type | description |
 |-------|-----|------|
-| _id | string | 对应于users中的_id字段 |
-| name | string | 厨师昵称 |
-| description | string | 厨师的简介 |
-| address | string | 厨师地址 |
-| latitude | number | 维度 |
-| longitude | number | 经度 |
-| phone | string | 厨师联系电话 |
+| _id | string | user id created by meteor, same as the _id in users table |
+| name | string | name of chef |
+| description | string | description of chef |
+| address | string | address of chef |
+| latitude | number | address latitude for chef |
+| longitude | number | address longitude for chef |
+| phone | string | chef's contact information |
 
 Collection Name：orders  
 
 
 | column | data type | description |
 |-------|-----|------|
-| _id | string | 订单的id， meteor自动生成 |
-| create_time | date | 订单创建的时间 |
-| end_time | date | 订单结束的时间 |
-| status | number | 订单当前的状态 |
-| customer_id | string | 下订单用户的id, 和Users表中的id一致 |
-| chef_id | string | 创建订单用户的id, 和Users表中的id一致 |
-| recipe_id | string | 订单配料表的id |
-| count | number | 订单的数量 |
-| price | number | 订单的价格 |
-| ready_time | date | 订单可取时间 |
+| _id | string | id of cuisine order, created by meteor |
+| create_time | date | create time of cuisine order |
+| end_time | date | end time o cuisine order |
+| status | number | status of cuisine order |
+| customer_id | string | customer's id of consumer who order the cuisine, same id as in users table |
+| chef_id | string | chef's id of chef who order the cuisine, same id as in users table |
+| recipe_id | string | recipe id |
+| count | number | number of cuisine ordered |
+| price | number | price of order |
+| ready_time | date | available time for pick up cuisine |
 
 
 Collection Name：recipes  
@@ -68,14 +68,14 @@ Collection Name：recipes
 
 | column | data type | description |
 |-------|-----|------|
-| _id | string | 备料表的id, 和Order表中的recipe_id一致 |
-| chef_id | string | 创建订单用户的id, 和users表中的id一致 |
-| name | string | 菜名 |
-| picture | string | 配图片的url |
-| content | string | order 配料的具体内容 |
-| nutrition | string | 每份配料的营养成分，调用API |
-| price | string | 订单的价格， 和orders表中的价格一致 |
-| available_time | date | 订单有效的时间范围 |
+| _id | string | id of recipe, same id as in the order table's recipe_id |
+| chef_id | string | id of chef who creats the cuisine order, same id as in the user's table |
+| name | string | cuisine's name |
+| picture | string | url of picture of food |
+| content | string | recipe content |
+| nutrition | string | nutrition information of recipes, use API |
+| price | string | price of order, same as the price in the orders table |
+| available_time | date | available time of order |
 
 
 Collection Name：recipe_comments
@@ -83,9 +83,37 @@ Collection Name：recipe_comments
 
 | column | data type | description |
 |-------|-----|------|
-| _id | string | 评价食物id |
-| content | string | 评价的具体内容 |
-| time | date | 评价的时间 |
-| rating | number | 对食物的评分 |
-| order_id | string | 订单的id, 和orders 表中的id 一致 |
-| recipe_id | string | 备料表的id, 和 recipes 表中的id一致 |
+| _id | string | id of food comment |
+| content | string | comment content |
+| time | date | time of the comment published |
+| rating | number | rating of food |
+| order_id | string | order Id, same as the id in orders table |
+| recipe_id | string | recipe id, same as the id in the recipes table |
+
+## Technology
+During the development, we utilized following technologies
+  * Meteor
+  * Google API
+  * Nutrition API
+  * MongoDB
+  
+## Screenshots
+
+### Homepage
+
+### recipes page
+
+### persoanl information page
+
+### chef information page
+
+## Link to the video Demonstration
+
+## Reference to the class with link:
+For more information about the class, please go to this page:
+http://johnguerra.co/classes/webDevelopment_spring_2019/
+
+## Slide
+
+## License
+This repository is under MIT license.
