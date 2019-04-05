@@ -5,7 +5,7 @@ This is the fourth project for Web Development course (CS5610) in Northeastern U
 This project is made by [Yibo Zhao](http://18.144.2.153:8080/) and [Fang Hong](https://sososummer88.github.io/).
 
 ## Demo
-You can visit our website here.
+You can visit our website https://neighborhood-chef.herokuapp.com/.
 
 ## Feature
 For users:
