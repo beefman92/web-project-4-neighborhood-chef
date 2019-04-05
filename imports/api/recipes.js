@@ -31,10 +31,16 @@ Meteor.methods({
 	},
 
 	"recipes.insert"(chefId, name, content) {
-		Recipes.insert({
-			chef_id: chefId,
-			name: name,
-			content: content
-		});
+		if (Meteor.isServer) {
+			console.log(chefId);
+			console.log(name);
+			console.log(content);
+
+			Recipes.insert({
+				chef_id: chefId,
+				name: name,
+				content: content
+			});
+		}
 	}
 })

@@ -34,29 +34,9 @@ export default class ChefInfo extends React.Component {
 
         Meteor.call("recipes.insert", chefID, name, content, (error) => {
             if (error !== undefined && error !== null) {
-                // show some tips
             } else {
-                this.setState({
-                    content: "",
-                });
             }
         });
-        Recipe.uploadRecipe(
-            {username: username, email: email, password: password, profile: profile},
-            err => {
-                if (err) {
-                    this.setState({
-                        error: err.reason
-                    });
-                } else {
-                    this.setState({
-                        error: ""
-                    });
-                    // this.props.history.push("/mypage");
-                    this.props.history.push("/");
-                }
-            }
-        );
     }
     render() {
         return (
