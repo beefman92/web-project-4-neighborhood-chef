@@ -54,14 +54,14 @@ export default class Login extends React.Component {
 									Welcome! Please Login to Your Account!
 									</Header>
 									{this.state.error ? (
-									<Label
-										basic
-										color = "red"
-										pointing = "below"
-										size = "huge"
-									>
-									{this.state.error}
-									</Label>
+										<Label
+											basic
+											color = "red"
+											pointing = "below"
+											size = "huge"
+										>
+											{this.state.error}
+										</Label>
 									) : (undefined
 									)}
 									<Form
@@ -109,67 +109,6 @@ export default class Login extends React.Component {
 							</Grid>
 							<Divider vertical>Or</Divider>
 						</Segment>
-						{/*<Grid.Row columns = {2}>*/}
-							{/*<Grid.Column>*/}
-								{/*<Header*/}
-									{/*as = "h2"*/}
-									{/*textAlign ="center"*/}
-									{/*id = "loginHeader"*/}
-								{/*>*/}
-									{/*Welcome! Please Login to Your Account!*/}
-								{/*</Header>*/}
-								{/*{this.state.error ? (*/}
-									{/*<Label*/}
-										{/*basic*/}
-										{/*color = "red"*/}
-										{/*pointing = "below"*/}
-										{/*size = "huge"*/}
-									{/*>*/}
-										{/*{this.state.error}*/}
-									{/*</Label>*/}
-								{/*) : (undefined*/}
-								{/*)}*/}
-								{/*<Form*/}
-									{/*size = "huge"*/}
-									{/*onSubmit = {this.onSubmit.bind(this)}*/}
-									{/*noValidate*/}
-								{/*>*/}
-									{/*<Segment stacked>*/}
-										{/*<Form.Input*/}
-											{/*fluid*/}
-											{/*icon = "user"*/}
-											{/*iconPosition = "left"*/}
-											{/*type = "text"*/}
-											{/*name = "username"*/}
-											{/*placeholder = "Username"*/}
-											{/*size = "huge"*/}
-										{/*/>*/}
-										{/*<Form.Input*/}
-											{/*fluid*/}
-											{/*icon = "lock"*/}
-											{/*iconPosition = "left"*/}
-											{/*placeholder = "password"*/}
-											{/*name = "password"*/}
-											{/*type = "password"*/}
-											{/*size = "huge"*/}
-										{/*/>*/}
-										{/*<Button*/}
-											{/*fluid*/}
-											{/*size = "huge"*/}
-											{/*id = "loginButton"*/}
-										{/*>*/}
-											{/*Login*/}
-										{/*</Button>*/}
-									{/*</Segment>*/}
-								{/*</Form>*/}
-								{/*<Message*/}
-									{/*size = "huge"*/}
-								{/*>*/}
-									{/*Have not registered yet? {" "}*/}
-									{/*<Link to = "/signup"> Sign up </Link>*/}
-								{/*</Message>*/}
-							{/*</Grid.Column>*/}
-						{/*</Grid.Row>*/}
 					</Grid>
 				</Container>
 			</div>

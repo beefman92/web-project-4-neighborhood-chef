@@ -19,12 +19,12 @@ import { Accounts } from "meteor/accounts-base";
 
 if (Meteor.isServer) {
     // Meteor.publish("PersonInfo", function personInfoPublish() {
-    //     return UserInfo
+	//     return UserInfo
     //         .find({_id: Meteor.userId()}, {
     //             limit: 20
     //         });
-    // });
-    Accounts.validateNewUser(user => {
+	// });
+	Accounts.validateNewUser(user => {
         const username = user.username;
         const password = user.password;
 

@@ -62,94 +62,94 @@ export default class Signup extends React.Component {
 						id = "grid"
 					>
 						<Grid.Row columns = {2}>
-						 <Grid.Column>
-							<Header as = "h2" textAlign = "center" id = "signupHeader">
+							<Grid.Column>
+								<Header as = "h2" textAlign = "center" id = "signupHeader">
 								Sign Up
-							</Header>
-							{this.state.error ? (
-								<label
-									basic
-									color = "red"
-									pointing = "below"
+								</Header>
+								{this.state.error ? (
+									<label
+										basic
+										color = "red"
+										pointing = "below"
+										size = "huge"
+									>
+										{this.state.error}
+									</label>
+								) : (
+									undefined
+								)}
+								<Form
+									size = "huge"
+									onSubmit = {this.onSubmit.bind(this)}
+									onValidate
+								>
+									<Segment stacked>
+										<Form.Input
+											fluid
+											icon = "mail"
+											iconPosition = "left"
+											type = "email"
+											name = "email"
+											placeholder = "Email"
+											size = "huge"
+										/>
+										<Form.Input
+											fluid
+											icon = "user"
+											iconPosition = "left"
+											type = "text"
+											name = "username"
+											placeholder = "username"
+											size = "huge"
+										/>
+										<Form.Input
+											fluid
+											icon = "lock"
+											iconPosition = "left"
+											type = "password"
+											name = "password"
+											placeholder = "password"
+											size = "huge"
+										/>
+										<Form.Input
+											fluid
+											icon = "address book outline"
+											iconPosition = "left"
+											type = "address"
+											name = "address"
+											placeholder = "address"
+											size = "huge"
+										/>
+										<Form.Input
+											fluid
+											icon = "genderless"
+											iconPosition = "left"
+											type = "gender"
+											name = "gender"
+											placeholder = "gender"
+											size = "huge"
+										/>
+										<Form.Input
+											fluid
+											icon = "phone"
+											iconPosition = "left"
+											type = "phone"
+											name = "phone"
+											placeholder = "phone"
+											size = "huge"
+										/>
+										<Button fluid size = "huge" id = "accountButton">
+										Create Account
+										</Button>
+									</Segment>
+								</Form>
+								<Message
 									size = "huge"
 								>
-								{this.state.error}
-								</label>
-							) : (
-								undefined
-							)}
-							<Form
-								size = "huge"
-								onSubmit = {this.onSubmit.bind(this)}
-								onValidate
-							>
-								<Segment stacked>
-									<Form.Input
-										fluid
-										icon = "mail"
-										iconPosition = "left"
-										type = "email"
-										name = "email"
-										placeholder = "Email"
-										size = "huge"
-									/>
-									<Form.Input
-										fluid
-										icon = "user"
-										iconPosition = "left"
-										type = "text"
-										name = "username"
-										placeholder = "username"
-										size = "huge"
-									/>
-									<Form.Input
-										fluid
-										icon = "lock"
-										iconPosition = "left"
-										type = "password"
-										name = "password"
-										placeholder = "password"
-										size = "huge"
-									/>
-									<Form.Input
-										fluid
-										icon = "address book outline"
-										iconPosition = "left"
-										type = "address"
-										name = "address"
-										placeholder = "address"
-										size = "huge"
-									/>
-									<Form.Input
-										fluid
-										icon = "genderless"
-										iconPosition = "left"
-										type = "gender"
-										name = "gender"
-										placeholder = "gender"
-										size = "huge"
-									/>
-									<Form.Input
-										fluid
-										icon = "phone"
-										iconPosition = "left"
-										type = "phone"
-										name = "phone"
-										placeholder = "phone"
-										size = "huge"
-									/>
-									<Button fluid size = "huge" id = "accountButton">
-										Create Account
-									</Button>
-								</Segment>
-							</Form>
-							<Message
-								size = "huge"
-							>
-								If you already have an account? Please
-								<Link to = "Login"> Login </Link>
-							</Message>
-						   </Grid.Column>
+									If you already have an account? Please
+									<Link to = "Login"> Login </Link>
+								</Message>
+							</Grid.Column>
 						</Grid.Row>
 					</Grid>
 				</Container>
