@@ -98,6 +98,7 @@ During the development, we utilized following technologies
   * MongoDB
   
 ## Screenshots
+![Alt text](./chefInfo.png?raw=true "Chef Info")
 
 
 ### Homepage
