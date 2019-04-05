@@ -3,6 +3,8 @@ import {Meteor} from "meteor/meteor";
 import { Link } from "react-router-dom";
 import {Divider, Container, Button, Form, Grid, Header, Message, Segment, Label, Icon} from "semantic-ui-react";
 import "../style/login.css";
+import {BrowserRouter} from "react-router-dom";
+import {browserHistory} from 'react-router';
 
 export default class Login extends React.Component {
 	constructor(props) {
@@ -24,6 +26,8 @@ export default class Login extends React.Component {
 				this.setState({
 					error: ""
 				});
+				// this.props.history.push("/mypage");
+				BrowserHistory.push('/Homepage');
 			}
 		});
 	}
@@ -74,6 +78,8 @@ export default class Login extends React.Component {
 												label = "Username"
 												placeholder = "Username"
 												size = "huge"
+												name="username"
+												id="username"
 											/>
 											<Form.Input
 												fluid
@@ -83,6 +89,8 @@ export default class Login extends React.Component {
 												label="Password"
 												placeholder = "Password"
 												size = "huge"
+												name="password"
+												id="password"
 											/>
 											<Button
 												content= "Login"

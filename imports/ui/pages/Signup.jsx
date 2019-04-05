@@ -1,7 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Container, Button, Form, Grid, Header, Message, Segment, Label, Icon } from "semantic-ui-react";
+import { Accounts } from "meteor/accounts-base";
 import "../style/login.css";
+import {BrowserRouter} from "react-router-dom";
+import {browserHistory} from 'react-router';
 
 export default class Signup extends React.Component {
 	constructor(props) {
@@ -12,10 +15,13 @@ export default class Signup extends React.Component {
 	}
 
 	onSubmit(e) {
-		e.preventDafault();
+		e.preventDefault();
 		let username = e.target.username.value.trim();
 		let email = e.target.email.value.trim();
 		let password = e.target.password.value.trim();
+		let address = e.target.address.value.trim();
+		let gender = e.target.gender.value.trim();
+		let phone = e.target.phone.value.trim();
 
 		if (password.length < 8) {
 			return this.setState( {
@@ -23,17 +29,22 @@ export default class Signup extends React.Component {
 			});
 
 		}
+		let profile = {
+			address: address, gender: gender, phone: phone
+		};
 		Accounts.createUser(
-			{username: username, email: email, password: password},
+			{username: username, email: email, password: password, profile: profile},
 			err => {
 				if(err) {
 					this.setState( {
 						error: err.reason
-						});
+					});
 				} else {
 					this.setState({
 						error: ""
 					});
+					// this.props.history.push("/mypage");
+					BrowserHistory.push('/Homepage');
 				}
 			}
 		);
@@ -98,6 +109,33 @@ export default class Signup extends React.Component {
 										type = "password"
 										name = "password"
 										placeholder = "password"
+										size = "huge"
+									/>
+									<Form.Input
+										fluid
+										icon = "address book outline"
+										iconPosition = "left"
+										type = "address"
+										name = "address"
+										placeholder = "address"
+										size = "huge"
+									/>
+									<Form.Input
+										fluid
+										icon = "genderless"
+										iconPosition = "left"
+										type = "gender"
+										name = "gender"
+										placeholder = "gender"
+										size = "huge"
+									/>
+									<Form.Input
+										fluid
+										icon = "phone"
+										iconPosition = "left"
+										type = "phone"
+										name = "phone"
+										placeholder = "phone"
 										size = "huge"
 									/>
 									<Button fluid size = "huge" id = "accountButton">

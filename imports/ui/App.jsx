@@ -5,6 +5,7 @@ import Homepage from "./pages/Homepage.jsx";
 import Recipe from "./pages/Recipe.jsx";
 import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
+import MyPage from "./pages/MyPage.jsx";
 
 const App = () => (
 	<div>
@@ -13,6 +14,7 @@ const App = () => (
 			<Route exact path="/recipe/:id" component={Recipe} />
 			<Route exact path="/login" component = {Login} />
 			<Route exact path="/signup" component = {Signup} />
+			<Route exact path="/mypage" component = {MyPage} />
 
 		</Router>
 	</div>
