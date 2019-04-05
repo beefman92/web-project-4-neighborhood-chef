@@ -99,6 +99,8 @@ During the development, we utilized following technologies
   
 ## Screenshots
 ![Alt text](./chefInfo.png?raw=true "Chef Info")
+![Alt text](./login.png?raw=true "Log In")
+![Alt text](./homepage.png?raw=true "HomePage")
 
 
 ### Homepage
