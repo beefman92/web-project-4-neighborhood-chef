@@ -14,7 +14,7 @@ const App = () => (
 		<Router>
 			<Route exact path="/" component={Homepage} />
 			<Route exact path={"/chef/:chefId"} component={ChefPage} />
-			<Route exact path="/recipe/:id" component={Recipe} />
+			<Route exact path="/recipe/:recipeId" component={Recipe} />
 			<Route exact path="/login" component = {Login} />
 			<Route exact path="/signup" component = {Signup} />
 			<Route exact path="/mypage" component = {MyPage} />

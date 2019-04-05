@@ -62,8 +62,13 @@ Meteor.methods({
 				{longitude: {$lt: maxLongitude}},
 				{longitude: {$gt: minLongitude}}]}).fetch();
 	},
-	"chefs.getChefsByName"(id) {
-		check(id, String);
-
+	"chefs.searchByName"(name) {
+		check(name, String);
+		const regexp = ".*" + name + ".*";
+		return Chefs.find({name: {$regex: regexp, $options: "i"}}).fetch();
+	},
+	"chefs.getByIds"(ids) {
+		check(ids, Array);
+		return Chefs.find({_id: {$in: ids}}).fetch();
 	}
-})
+});

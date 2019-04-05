@@ -38,4 +38,9 @@
     /*border-width: 5px;*/
     /*border-color: yellow;*/
     background-color: #C1FFFF;
+    background-color: green;
+}
+
+ul.recipe-list {
+    list-style-type: none;
 }

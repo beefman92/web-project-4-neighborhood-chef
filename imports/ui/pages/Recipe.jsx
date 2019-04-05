@@ -23,6 +23,7 @@ class Recipe extends Component {
 	}
 
 	renderRecipe() {
+		console.log(this.props.recipe);
 		return (
 			<Row>
 				<Col lg={"8"}>
@@ -55,16 +56,25 @@ class Recipe extends Component {
 	}
 
 	render() {
-		return (
-			<div>
-				<NavigationBar />
-				{this.renderBreadcrumbs()}
-				<hr/>
-				{this.renderRecipe()}
-				<hr/>
-				{this.renderComments()}
-			</div>
-		);
+		if (this.props.ready) {
+			return (
+				<div>
+					<NavigationBar/>
+					{this.renderBreadcrumbs()}
+					<hr/>
+					{this.renderRecipe()}
+					<hr/>
+					{this.renderComments()}
+				</div>
+			);
+		} else {
+			return (
+				<div>
+					<NavigationBar/>
+					Loading...
+				</div>
+			);
+		}
 	}
 }
 
@@ -76,13 +86,16 @@ Recipe.propTypes = {
 	}),
 	recipe: PropTypes.object,
 	recipeComments: PropTypes.array,
+	ready: PropTypes.bool,
 };
 
 export default withTracker((props) => {
-	Meteor.subscribe("recipe", props.match.params.recipeId);
-	Meteor.subscribe("recipeComments", props.match.params.recipeId);
+	const recipeHandler = Meteor.subscribe("recipe", props.match.params.recipeId);
+	const recipeCommentsHandler = Meteor.subscribe("recipeComments", props.match.params.recipeId);
+	const ready = recipeHandler.ready() && recipeCommentsHandler.ready();
 	return {
 		recipe: Recipes.findOne({_id: props.match.params.recipeId}),
-		recipeComments: RecipeComments.find({recipe_id: props.match.params.recipeId}),
+		recipeComments: RecipeComments.find({recipe_id: props.match.params.recipeId}).fetch(),
+		ready: ready,
 	};
 })(Recipe);

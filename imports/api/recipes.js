@@ -25,7 +25,7 @@ Meteor.methods({
 				recipes = [];
 				groupedResult[chefId] = recipes;
 			}
-			recipes.push(recipes);
+			recipes.push(recipe);
 		});
 		return groupedResult;
 	},
@@ -43,4 +43,4 @@ Meteor.methods({
 			});
 		}
 	}
-})
+});
