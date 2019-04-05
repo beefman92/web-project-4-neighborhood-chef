@@ -1,51 +1,54 @@
 import React, { Component } from "react";
 import {Meteor} from "meteor/meteor";
-import {Redirect} from "react-router-dom";
-import {withTracker} from "meteor/react-meteor-data";
-import { Segment, Header, Icon, Image } from "semantic-ui-react";
-import PropTypes from "prop-types";
+import { Redirect } from "react-router-dom";
+import { Segment, Icon } from "semantic-ui-react";
+import { Row, Col } from "react-bootstrap";
 
+import NavigationBar from "../components/NavigationBar";
+import ShoppingCart from "../components/ShoppingCart";
 
-class MyPage extends Component {
+export default class MyPage extends Component {
 	constructor(props) {
 		super(props);
-
 	}
 
 	render() {
-		// if (Meteor.user() === undefined || Meteor.user() === null) {
-		//         return (
-		//             <Redirect to = {"/"}/>
-		//         );
-		// }
-		return (
-			<div>
-				<Header as='h2' icon textAlign='center'>
-					<Icon name='users' circular />
-					<Header.Content>Personal Information</Header.Content>
-				</Header>
-				{Meteor.user()? (
+		if (Meteor.user()) {
+			return (
+				<div>
+					<NavigationBar/>
+					<ShoppingCart/>
+					<Row>
+						<Col className={"text-center"} lg={"12"}>
+							<Icon name="users" circular />
+							<div>
+								<h2>Personal Information</h2>
+							</div>
+						</Col>
+					</Row>
 					<div>
 						<Segment color='orange'>Username: {Meteor.user().username}</Segment>
 						<Segment color='orange'>Address: {Meteor.user().profile.address}</Segment>
 						<Segment color='orange'>Phone Number: {Meteor.user().profile.phone}</Segment>
 						<Segment color='orange'>Gender: {Meteor.user().profile.gender}</Segment>
 					</div>
-				) :
-					<div></div>}
-			</div>
-		);
+				</div>
+			);
+		} else {
+			return (<Redirect to={"/login"}/>);
+		}
+
 	}
 }
 
-MyPage.propTypes = {
-	personal_info: PropTypes.object,
-};
-
-// return will fill in the target
-export default withTracker(() => {
-	return {
-		personal_info: Meteor.user()
-
-	};
-})(MyPage); // Target
+// MyPage.propTypes = {
+// 	personal_info: PropTypes.object,
+// };
+//
+// // return will fill in the target
+// export default withTracker(() => {
+// 	return {
+// 		personal_info: Meteor.user()
+//
+// 	};
+// })(MyPage); // Target

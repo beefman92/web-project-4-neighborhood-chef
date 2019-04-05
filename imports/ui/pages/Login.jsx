@@ -1,10 +1,8 @@
 import React from "react";
 import {Meteor} from "meteor/meteor";
 import { Link } from "react-router-dom";
-import {Divider, Container, Button, Form, Grid, Header, Message, Segment, Label, Icon} from "semantic-ui-react";
+import {Divider, Container, Button, Form, Grid, Header, Segment, Label} from "semantic-ui-react";
 import "../style/login.css";
-import {BrowserRouter} from "react-router-dom";
-import {browserHistory} from 'react-router';
 import NavigationBar from "../components/NavigationBar";
 
 export default class Login extends React.Component {

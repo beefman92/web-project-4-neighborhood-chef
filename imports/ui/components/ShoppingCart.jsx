@@ -47,7 +47,6 @@ class ShoppingCart extends Component {
 	}
 
 	handlePlusOrMinusClick(mark, id, recipeId, event) {
-		// TODO: modify data
 		event.preventDefault();
 		if (mark === "+") {
 			Meteor.call("shoppingCarts.plusOne", recipeId);
@@ -57,6 +56,10 @@ class ShoppingCart extends Component {
 	}
 
 	render() {
+		let sum = 0;
+		this.props.items.forEach((item) => {
+			sum += item.count * item.unit_price;
+		});
 		return (
 			<div>
 				<div id={"shoppingCartDiv"} onClick={() => this.handleOnClick()}>
@@ -67,24 +70,23 @@ class ShoppingCart extends Component {
 						<span aria-hidden="true">×</span>
 						<span className="sr-only">Close</span>
 					</button>
-					<div id={"shoppingCartTitle"}><h4>Shopping List</h4></div>
+					<div id={"shoppingCartTitle"}>Shopping List</div>
 					<hr/>
 					<div id={"shoppingCartItemsList"}>
 						{
-							this.props.items.map((item, index) => {
-								const className = this.state.mouseOver === index ?
-									"plus-minus-mark" : "plus-minus-mark-hidden";
+							this.props.items.map((item) => {
+								// const className = this.state.mouseOver === index ?
+								// 	"plus-minus-mark" : "plus-minus-mark-hidden";
+								const className = "plus-minus-mark";
 								return (
 									<div key={item._id} className={"shopping-cart-item"}>
 										<div className={"shopping-cart-item-info"}>{item.name}</div>
-										<div className={"shopping-cart-item-count"}
-											onMouseOver={() => this.handleOnMouseOver(index)}
-											onMouseOut={() => this.handleOnMouseOut()}>
-											<span className={className}
-												onClick={(e) => this.handlePlusOrMinusClick("+", item._id, item.recipe_id, e)}> + </span>
+										<div className={"shopping-cart-item-count"}>
+											<button className={className}
+												onClick={(e) => this.handlePlusOrMinusClick("+", item._id, item.recipe_id, e)}> + </button>
 											<span className={"count"}>{item.count}</span>
-											<span className={className}
-												onClick={(e) => this.handlePlusOrMinusClick("-", item._id, item.recipe_id, e)}> - </span>
+											<button className={className}
+												onClick={(e) => this.handlePlusOrMinusClick("-", item._id, item.recipe_id, e)}> - </button>
 										</div>
 										<div className={"shopping-cart-item-price"}>$ {item.count * item.unit_price}</div>
 									</div>
@@ -96,7 +98,7 @@ class ShoppingCart extends Component {
 					<div id={"shoppingCartFooter"}>
 						<div className={"shopping-cart-left-box"}>
 							<div style={{textAlign: "left", width: "100%", marginLeft: "10%"}}>
-								Price: 0 $
+								Price: $ {sum}
 							</div>
 						</div>
 						<div className={"shopping-cart-right-box"}>

@@ -16,6 +16,11 @@
     width: 40px;
 }
 
+#shoppingCartTitle {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
 #shoppingCart {
     /*display: none;*/
     position: fixed;
@@ -53,6 +58,8 @@
 
 .shopping-cart-item-info {
     flex: 50%;
+    height: 100%;
+    line-height: 60px;
     margin-left: 2%;
     margin-right: 2%;
     overflow: hidden;
@@ -60,6 +67,8 @@
 
 .shopping-cart-item-count {
     flex: 25%;
+    height: 100%;
+    line-height: 60px;
     text-align: center;
 }
 
@@ -68,12 +77,17 @@
 }
 
 .plus-minus-mark {
+    font-size: 1.2rem;
+    background-color: white;
+    border-width: 0;
     cursor: pointer;
     visibility: visible;
 }
 
 .shopping-cart-item-price {
     flex: 25%;
+    height: 100%;
+    line-height: 60px;
     text-align: center;
 }
 

@@ -21,14 +21,19 @@ Meteor.methods({
 			}
 			const recipe = Recipes.findOne({_id: recipeId});
 			if (recipe !== undefined && recipe !== null) {
-				ShoppingCarts.insert({
-					user_id: Meteor.userId(),
-					recipe_id: recipeId,
-					name: recipe.name,
-					time: new Date(),
-					unit_price: recipe.price,
-					count: 1,
-				});
+				const currentRecord = ShoppingCarts.findOne({user_id: Meteor.userId(), recipe_id: recipeId});
+				if (currentRecord !== undefined && currentRecord !== null) {
+					ShoppingCarts.update({user_id: Meteor.userId(), recipe_id: recipeId}, {$inc: {count: 1}});
+				} else {
+					ShoppingCarts.insert({
+						user_id: Meteor.userId(),
+						recipe_id: recipeId,
+						name: recipe.name,
+						time: new Date(),
+						unit_price: recipe.price,
+						count: 1,
+					});
+				}
 			} else {
 				throw new Meteor.Error("Cannot find recipe " + recipeId);
 			}
@@ -42,10 +47,10 @@ Meteor.methods({
 			}
 			const recipe = Recipes.findOne({_id: recipeId});
 			if (recipe !== undefined && recipe !== null) {
-				ShoppingCarts.update({user_id: Meteor.user(), recipe_id: recipeId}, {$inc: {count: -1}});
-				ShoppingCarts.remove({user_id: Meteor.user(), recipe_id: recipeId, count: {$lte: 0}});
+				ShoppingCarts.update({user_id: Meteor.userId(), recipe_id: recipeId}, {$inc: {count: -1}});
+				ShoppingCarts.remove({user_id: Meteor.userId(), recipe_id: recipeId, count: {$lte: 0}});
 			} else {
-				ShoppingCarts.remove({user_id: Meteor.user(), recipe_id: recipeId});
+				ShoppingCarts.remove({user_id: Meteor.userId(), recipe_id: recipeId});
 			}
 		}
 	},
@@ -57,9 +62,9 @@ Meteor.methods({
 			}
 			const recipe = Recipes.findOne({_id: recipeId});
 			if (recipe !== undefined && recipe !== null) {
-				ShoppingCarts.update({user_id: Meteor.user(), recipe_id: recipeId}, {$inc: {count: 1}});
+				ShoppingCarts.update({user_id: Meteor.userId(), recipe_id: recipeId}, {$inc: {count: 1}});
 			} else {
-				ShoppingCarts.remove({user_id: Meteor.user(), recipe_id: recipeId});
+				ShoppingCarts.remove({user_id: Meteor.userId(), recipe_id: recipeId});
 			}
 		}
 	}
