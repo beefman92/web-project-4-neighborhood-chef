@@ -127,6 +127,7 @@ For more information about the class, please go to this page:
 http://johnguerra.co/classes/webDevelopment_spring_2019/
 
 ## Slide
+https://docs.google.com/presentation/d/1UWd0qvlt9MY9uV4j7z96SZeh55RYE6FZQOQV-MbiL7c/edit#slide=id.p
 
 ## License
 This repository is under MIT license.
