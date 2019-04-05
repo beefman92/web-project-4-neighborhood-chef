@@ -99,6 +99,7 @@ During the development, we utilized following technologies
   
 ## Screenshots
 
+
 ### Homepage
 
 ### recipes page
