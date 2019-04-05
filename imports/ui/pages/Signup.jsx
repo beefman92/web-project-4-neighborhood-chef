@@ -1,13 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
 import { Accounts } from "meteor/accounts-base";
-import "../style/login.css";
-import {BrowserRouter} from "react-router-dom";
-import { Container, Button, Form, Grid, Header, Message, Segment, Label, Icon } from "semantic-ui-react";
+import { Container, Button, Form, Grid, Header, Message, Segment } from "semantic-ui-react";
+import PropTypes from "prop-types";
 
-import {browserHistory} from 'react-router';
 import NavigationBar from "../components/NavigationBar";
+import "../style/login.css";
 
 export default class Signup extends React.Component {
 	constructor(props) {
@@ -46,7 +44,6 @@ export default class Signup extends React.Component {
 					this.setState({
 						error: ""
 					});
-					// this.props.history.push("/mypage");
 					this.props.history.push("/");
 				}
 			}
@@ -161,3 +158,7 @@ export default class Signup extends React.Component {
 		);
 	}
 }
+
+Signup.propTypes = {
+	history: PropTypes.object,
+};

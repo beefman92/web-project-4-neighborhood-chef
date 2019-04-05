@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import {Divider, Container, Button, Form, Grid, Header, Segment, Label} from "semantic-ui-react";
 import "../style/login.css";
 import NavigationBar from "../components/NavigationBar";
+import PropTypes from "prop-types";
 
 export default class Login extends React.Component {
 	constructor(props) {
@@ -122,3 +123,7 @@ export default class Login extends React.Component {
 
 	}
 }
+
+Login.propTypes = {
+	history: PropTypes.object,
+};

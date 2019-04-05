@@ -26,11 +26,9 @@ class Recipe extends Component {
 
 	handleOrderFood(event) {
 		event.preventDefault();
-		Meteor.call("shoppingCarts.addNewOne", this.props.recipe._id, (error, result) => {
+		Meteor.call("shoppingCarts.addNewOne", this.props.recipe._id, (error) => {
 			if (error === undefined || error === null) {
 				// TODO: add some animation
-			} else {
-				console.log(error);
 			}
 		});
 	}
