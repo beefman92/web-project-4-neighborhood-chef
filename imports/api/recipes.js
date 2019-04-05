@@ -32,9 +32,9 @@ Meteor.methods({
 
 	"recipes.insert"(chefId, name, content) {
 		if (Meteor.isServer) {
-			console.log(chefId);
-			console.log(name);
-			console.log(content);
+			// console.log(chefId);
+			// console.log(name);
+			// console.log(content);
 
 			Recipes.insert({
 				chef_id: chefId,

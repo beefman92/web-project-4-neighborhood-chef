@@ -28,9 +28,9 @@ export default class ChefInfo extends React.Component {
         let price = e.target.price.value.trim();
         let available_time = e.target.available_time.value.trim();
 
-        console.log(chefID);
-        console.log(name);
-        console.log(content);
+        // console.log(chefID);
+        // console.log(name);
+        // console.log(content);
 
         Meteor.call("recipes.insert", chefID, name, content, (error) => {
             if (error !== undefined && error !== null) {
@@ -53,7 +53,7 @@ export default class ChefInfo extends React.Component {
                         <Grid.Row columns = {2}>
                             <Grid.Column>
                                 <Header as = "h2" textAlign = "center" id = "signupHeader">
-                                    Sign Up
+                                    Add Recipe
                                 </Header>
 
                                 <Form
@@ -61,6 +61,7 @@ export default class ChefInfo extends React.Component {
                                     onSubmit = {this.onSubmit.bind(this)}
                                     onValidate
                                 >
+
                                     <Segment stacked>
                                         <Form.Input
                                             fluid
