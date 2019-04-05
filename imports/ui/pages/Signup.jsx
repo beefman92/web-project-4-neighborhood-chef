@@ -44,7 +44,7 @@ export default class Signup extends React.Component {
 						error: ""
 					});
 					// this.props.history.push("/mypage");
-					BrowserHistory.push('/Homepage');
+					this.props.history.push("/");
 				}
 			}
 		);

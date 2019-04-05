@@ -27,7 +27,7 @@ export default class Login extends React.Component {
 					error: ""
 				});
 				// this.props.history.push("/mypage");
-				BrowserHistory.push('/Homepage');
+				this.props.history.push("/");
 			}
 		});
 	}
