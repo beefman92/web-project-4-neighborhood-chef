@@ -96,6 +96,7 @@ During the development, we utilized following technologies
   * Google API
   * Nutrition API
   * MongoDB
+  * Accessibility
   
 ## Screenshots
 
