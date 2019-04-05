@@ -85,7 +85,9 @@ export default class Signup extends React.Component {
 									onValidate
 								>
 									<Segment stacked>
+										<label htmlFor="mail">Email</label>
 										<Form.Input
+											id={"mail"}
 											fluid
 											icon = "mail"
 											iconPosition = "left"
@@ -94,7 +96,9 @@ export default class Signup extends React.Component {
 											placeholder = "Email"
 											size = "huge"
 										/>
+										<label htmlFor="username">Username</label>
 										<Form.Input
+											id={"username"}
 											fluid
 											icon = "user"
 											iconPosition = "left"
@@ -103,7 +107,9 @@ export default class Signup extends React.Component {
 											placeholder = "username"
 											size = "huge"
 										/>
+										<label htmlFor="password">Password</label>
 										<Form.Input
+											id={"password"}
 											fluid
 											icon = "lock"
 											iconPosition = "left"
@@ -112,7 +118,9 @@ export default class Signup extends React.Component {
 											placeholder = "password"
 											size = "huge"
 										/>
+										<label htmlFor="address">Address</label>
 										<Form.Input
+											id={"address"}
 											fluid
 											icon = "address book outline"
 											iconPosition = "left"
@@ -121,7 +129,9 @@ export default class Signup extends React.Component {
 											placeholder = "address"
 											size = "huge"
 										/>
+										<label htmlFor="gender">Gender</label>
 										<Form.Input
+											id={"gender"}
 											fluid
 											icon = "genderless"
 											iconPosition = "left"
@@ -130,7 +140,9 @@ export default class Signup extends React.Component {
 											placeholder = "gender"
 											size = "huge"
 										/>
+										<label htmlFor="phone">Phone</label>
 										<Form.Input
+											id={"phone"}
 											fluid
 											icon = "phone"
 											iconPosition = "left"
