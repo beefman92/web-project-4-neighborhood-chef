@@ -33,7 +33,7 @@ export default class Signup extends React.Component {
 
 		}
 		let profile = {
-			address: address, gender: gender, phone: phone
+			address: address, gender: gender, phone: phone, is_chef: false,
 		};
 		Accounts.createUser(
 			{username: username, email: email, password: password, profile: profile},

@@ -30,16 +30,21 @@ Meteor.methods({
 		return groupedResult;
 	},
 
-	"recipes.insert"(chefId, name, content) {
+	"recipes.insert"(name, content, picture, price) {
+		check(name, String);
+		check(content, String);
+		check(picture, String);
+		check(price, Number);
 		if (Meteor.isServer) {
-			// console.log(chefId);
-			// console.log(name);
-			// console.log(content);
-
+			if (!Meteor.userId()) {
+				throw new Meteor.Error("not-authorized");
+			}
 			Recipes.insert({
-				chef_id: chefId,
+				chef_id: Meteor.userId(),
 				name: name,
-				content: content
+				content: content,
+				picture: picture,
+				price: price,
 			});
 		}
 	}

@@ -43,7 +43,6 @@ export default class SearchBoard extends Component {
 
 	componentDidMount() {
 		Meteor.call("token.getMapToken", (error, result) => {
-			console.log(result);
 			this.setState({
 				token: result,
 			});

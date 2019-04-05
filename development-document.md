@@ -18,6 +18,7 @@
 | payment | string | 用户的账户信息 |
 | profile_pic | string | 用户的头像的url |
 | gender | string | 用户的性别 |
+| is_chef | boolean | 是否已经是厨师 |
 
 表名：chefs  
 说明：这张表用于记录开店的信息  

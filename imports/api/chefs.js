@@ -4,7 +4,6 @@ import { check } from "meteor/check";
 
 export const Chefs = new Mongo.Collection("chefs");
 
-//Meteor.settings.MAPBOX_API_TOKEN
 const geoCoding = require("@mapbox/mapbox-sdk/services/geocoding");
 
 if (Meteor.isServer) {
@@ -15,11 +14,15 @@ if (Meteor.isServer) {
 }
 
 Meteor.methods({
-	"chefs.insertOrUpdate"(chefInfo) {
+	"chefs.insertOrUpdate"() {
 		if (Meteor.isServer) {
 			if (!Meteor.userId()) {
 				throw new Meteor.Error("not-authorized");
 			}
+			const chefInfo = {};
+			chefInfo.name = Meteor.user().username;
+			chefInfo.address = Meteor.user().profile.address;
+			chefInfo.phone = Meteor.user().profile.phone;
 			check(chefInfo.name, String);
 			check(chefInfo.address, String);
 			check(chefInfo.phone, String);
@@ -31,13 +34,16 @@ Meteor.methods({
 				chefInfo.address = accurateAdd;
 				if (chefInfo._id === undefined || chefInfo._id === null || chefInfo._id === "") {
 					// create new restaurant
+
 					Chefs.insert({
 						_id: Meteor.userId(),
 						name: chefInfo.name,
 						address: chefInfo.address,
 						latitude: location[1],
 						longitude: location[0],
-						phone: chefInfo.phone});
+						phone: chefInfo.phone}, function() {
+						Meteor.users.update({_id: Meteor.userId()}, {$set: {"profile.is_chef": true}});
+					});
 				} else {
 					// update restaurant info
 					// TODO: check if this user has already had a restaurant.
@@ -52,9 +58,6 @@ Meteor.methods({
 		const maxLatitude = latitude + 0.01;
 		const minLongitude = longitude - 0.02;
 		const maxLongitude = longitude + 0.02;
-		// console.log("latitude: " + latitude + ", longitude: " + longitude);
-		// console.log("minLatitude: " + minLatitude + ", maxLatitude: " + maxLatitude);
-		// console.log("minLongitude: " + minLongitude + ", maxLongitude: " + maxLongitude);
 		return Chefs.find(
 			{$and: [
 				{latitude: {$lt: maxLatitude}},
