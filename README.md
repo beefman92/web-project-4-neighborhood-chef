@@ -98,21 +98,26 @@ During the development, we utilized following technologies
   * MongoDB
   
 ## Screenshots
-![Alt text](./chefInfo.png?raw=true "Chef Info")
-![Alt text](./login.png?raw=true "Log In")
+
+### Homepage
 ![Alt text](./homepage.png?raw=true "HomePage")
+
+### Chef Info Page
+![Alt text](./chefInfo.png?raw=true "Chef Info")
+
+### Login page
+![Alt text](./login.png?raw=true "Log In")
+
+### Sign Up page
 ![Alt text](./signup.png?raw=true "Sign up")
+
+### Consumer Personal Page
 ![Alt text](./mypage.png?raw=true "My Page")
+
+### Adding Recipe Page
 ![Alt text](./recipe.png?raw=true "Recipe")
 
 
-### Homepage
-
-### recipes page
-
-### persoanl information page
-
-### chef information page
 
 ## Link to the video Demonstration
 
