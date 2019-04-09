@@ -56,6 +56,7 @@
 |-------|-----|------|
 | _id | string | meteor自动生成，没有明显的含义 |
 | user_id | string | 用户的id |
+| chef_id | string | 厨师的id |
 | recipe_id | string | 菜谱的id |
 | name | string | 菜名 |
 | time | date | 菜谱加入购物车的时间 |
