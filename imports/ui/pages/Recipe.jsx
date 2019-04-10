@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withTracker } from "meteor/react-meteor-data";
 import { Meteor } from "meteor/meteor";
-import { Breadcrumb, Row, Col, Button } from "react-bootstrap";
+import { Container, Grid, Button } from "semantic-ui-react";
 
 import NavigationBar from "../components/NavigationBar";
 import ShoppingCart from "../components/ShoppingCart";
@@ -15,14 +15,14 @@ class Recipe extends Component {
 		super(props);
 	}
 
-	renderBreadcrumbs() {
-		return (
-			<Breadcrumb className={"my-3"}>
-				<Breadcrumb.Item href="/">Home</Breadcrumb.Item>
-				<Breadcrumb.Item active>Recipe</Breadcrumb.Item>
-			</Breadcrumb>
-		);
-	}
+	// renderBreadcrumbs() {
+	// 	return (
+	// 		<Breadcrumb className={"my-3"}>
+	// 			<Breadcrumb.Item href="/">Home</Breadcrumb.Item>
+	// 			<Breadcrumb.Item active>Recipe</Breadcrumb.Item>
+	// 		</Breadcrumb>
+	// 	);
+	// }
 
 	handleOrderFood(event) {
 		event.preventDefault();
@@ -35,11 +35,11 @@ class Recipe extends Component {
 
 	renderRecipe() {
 		return (
-			<Row>
-				<Col lg={"8"}>
+			<Grid.Row>
+				<Grid.Column width={"8"}>
 					<img className={"recipe-image"} src={this.props.recipe.picture} alt={this.props.recipe.name} />
-				</Col>
-				<Col lg={"4"}>
+				</Grid.Column>
+				<Grid.Column width={"4"}>
 					<div>
 						{this.props.recipe.name}
 					</div>
@@ -53,18 +53,18 @@ class Recipe extends Component {
 						{this.props.recipe.price}
 					</div>
 					<div>
-						<Button variant={"success"} onClick={(e) => this.handleOrderFood(e)}>Order</Button>
+						<Button color={"green"} onClick={(e) => this.handleOrderFood(e)}>Order</Button>
 					</div>
-				</Col>
-			</Row>
+				</Grid.Column>
+			</Grid.Row>
 		);
 	}
 
 	renderComments() {
 		return (
-			<Row>
+			<Grid.Row>
 				Comments
-			</Row>
+			</Grid.Row>
 		);
 	}
 
@@ -74,11 +74,15 @@ class Recipe extends Component {
 				<div>
 					<NavigationBar/>
 					<ShoppingCart/>
-					{this.renderBreadcrumbs()}
-					<hr/>
-					{this.renderRecipe()}
-					<hr/>
-					{this.renderComments()}
+					<Container>
+						<Grid>
+							{/*{this.renderBreadcrumbs()}*/}
+							{/*<hr/>*/}
+							{this.renderRecipe()}
+							{/*<hr/>*/}
+							{this.renderComments()}
+						</Grid>
+					</Container>
 				</div>
 			);
 		} else {

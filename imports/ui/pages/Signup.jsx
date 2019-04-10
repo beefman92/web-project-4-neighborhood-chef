@@ -53,11 +53,11 @@ export default class Signup extends React.Component {
 	render() {
 		return (
 			<div>
+				<NavigationBar />
 				<Container>
-					<NavigationBar />
 					<Grid
 						textAlign = "center"
-						style = {{ height: "95vh"}}
+						style = {{ height: "50vh"}}
 						divided = "vertically"
 						verticalAlign = "middle"
 						id = "grid"

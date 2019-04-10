@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { withTracker } from "meteor/react-meteor-data";
-import { Button } from "react-bootstrap";
+import { Button } from "semantic-ui-react";
 import { Meteor } from "meteor/meteor";
 import PropTypes from "prop-types";
 
@@ -13,6 +13,7 @@ class ShoppingCart extends Component {
 		this.hidden = true;
 		this.state = {
 			mouseOver: -1,
+			disabled: this.props.items.length === 0,
 		};
 	}
 
@@ -53,6 +54,10 @@ class ShoppingCart extends Component {
 		} else if (mark === "-") {
 			Meteor.call("shoppingCarts.minusOne", recipeId);
 		}
+	}
+
+	handleSubmit() {
+
 	}
 
 	render() {
@@ -103,7 +108,7 @@ class ShoppingCart extends Component {
 						</div>
 						<div className={"shopping-cart-right-box"}>
 							<div style={{textAlign: "right", width: "100%", marginRight: "10%"}}>
-								<Button variant={"success"}>Check</Button>
+								<Button color={"green"} onClick={() => this.handleSubmit()} disabled={this.state.disable}>Checkout</Button>
 							</div>
 						</div>
 					</div>

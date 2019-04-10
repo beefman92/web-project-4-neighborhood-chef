@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row, Col, Card, Form, Button } from "react-bootstrap";
+import { Container, Grid, Button, Card, Form } from "semantic-ui-react";
 import { Meteor } from "meteor/meteor";
 import ReactMapGL, { NavigationControl, Marker } from "react-map-gl";
 import { Link } from "react-router-dom";
@@ -88,19 +88,22 @@ export default class SearchBoard extends Component {
 			const recipes = chef.recipes;
 			return (
 				<Card
+					fluid
 					className={className}
 					key={chefInfo._id}
 					onMouseOver={() => this.handleOnMouseOverOrOut(index)}
 					onMouseOut={() => this.handleOnMouseOverOrOut(index)}>
-					<Card.Body>
-						<Card.Title><Link to={"/chef/" + chefInfo._id}>{chefInfo.name}</Link></Card.Title>
-						<Card.Subtitle className="mb-2 text-muted">{chefInfo.description}</Card.Subtitle>
-						<Card.Text>
+					<Card.Content>
+						<Card.Header><Link to={"/chef/" + chefInfo._id}>{chefInfo.name}</Link></Card.Header>
+						<Card.Meta>
+							{chefInfo.description}
+						</Card.Meta>
+						<Card.Description>
 							<b>Address: </b>{chefInfo.address}<br />
 							<b>Contact: </b>{chefInfo.phone}<br />
-						</Card.Text>
-						{this.renderRecipe(recipes)}
-					</Card.Body>
+						</Card.Description>
+					</Card.Content>
+					{this.renderRecipe(recipes)}
 				</Card>
 			);
 		});
@@ -116,11 +119,11 @@ export default class SearchBoard extends Component {
 				);
 			});
 			return (
-				<Card.Footer>
+				<Card.Content extra>
 					<ul className={"recipe-list"}>
 						{content}
 					</ul>
-				</Card.Footer>
+				</Card.Content>
 			);
 		} else {
 			return "";
@@ -293,47 +296,50 @@ export default class SearchBoard extends Component {
 	}
 
 	render() {
-		// console.log("SearchBoard render");
 		return (
-			<div>
-				<Row className={"my-5"}>
-					<Col lg={"2"}>
-						<form>
-							<div>
-								<input type="radio" id="searchByFood" name="search-by-food" value="food" checked
-									onClick={() => this.handleSearchOptionOnClick()} onChange={() => {}} />
-								<label htmlFor="searchByFood">Search by food</label>
-							</div>
-							<div>
-								<input type="radio" id="searchByChef" name="search-by-chef" value="chef"
-									onClick={() => this.handleSearchOptionOnClick()} onChange={() => {}} />
-								<label htmlFor="searchByChef">Search by chef</label>
-							</div>
-						</form>
-					</Col>
-					<Col lg="8">
-						<Form.Group controlId="searchField">
-							<Form.Label>Search</Form.Label>
-							<Form.Control
-								name={"searchField"}
-								value={this.state.searchField}
-								onChange={(e) => this.handleOnChange(e)}
-								onKeyDown={(e) => this.handleOnKeyDown(e)} />
-						</Form.Group>
-					</Col>
-					<Col lg={"2"}>
-						<Button variant={"success"} onClick={() => this.handleOnSubmit()}>Search</Button>
-					</Col>
-				</Row>
-				<Row>
-					<Col lg={"5"}>
-						{this.renderChefList()}
-					</Col>
-					<Col lg={"7"}>
-						{this.state.token !== null && this.state.token !== "" ? this.renderMap() : "Map is loading. Please wait. "}
-					</Col>
-				</Row>
-			</div>
+			<Container>
+				<Grid divided>
+					<Grid.Row>
+						<Grid.Column width={3}>
+							<form>
+								<div>
+									<input type="radio" id="searchByFood" name="search-by-food" value="food" checked
+										onClick={() => this.handleSearchOptionOnClick()} onChange={() => {}} />
+									<label htmlFor="searchByFood">Search by food</label>
+								</div>
+								<div>
+									<input type="radio" id="searchByChef" name="search-by-chef" value="chef"
+										onClick={() => this.handleSearchOptionOnClick()} onChange={() => {}} />
+									<label htmlFor="searchByChef">Search by chef</label>
+								</div>
+							</form>
+						</Grid.Column>
+						<Grid.Column width={10}>
+							<Form>
+								<Form.Field>
+									<label>Search</label>
+									<input
+										name={"searchField"}
+										value={this.state.searchField}
+										onChange={(e) => this.handleOnChange(e)}
+										onKeyDown={(e) => this.handleOnKeyDown(e)}/>
+								</Form.Field>
+							</Form>
+						</Grid.Column>
+						<Grid.Column width={3}>
+							<Button color={"green"} onClick={() => this.handleOnSubmit()}>Search</Button>
+						</Grid.Column>
+					</Grid.Row>
+					<Grid.Row>
+						<Grid.Column width={"7"}>
+							{this.renderChefList()}
+						</Grid.Column>
+						<Grid.Column width={"9"}>
+							{this.state.token !== null && this.state.token !== "" ? this.renderMap() : "Map is loading. Please wait. "}
+						</Grid.Column>
+					</Grid.Row>
+				</Grid>
+			</Container>
 		);
 	}
 }

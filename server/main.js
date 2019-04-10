@@ -6,6 +6,7 @@ import "../imports/api/chefs";
 import "../imports/api/recipes";
 import "../imports/api/recipe-comments";
 import "../imports/api/shopping-carts";
+import "../imports/api/orders";
 
 if (Meteor.isServer) {
 	const rule = {

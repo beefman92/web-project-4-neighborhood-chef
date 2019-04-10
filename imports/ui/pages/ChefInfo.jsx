@@ -107,7 +107,6 @@ class ChefInfo extends Component {
 								<Header as = "h2" textAlign = "center" id = "signupHeader">
 									Add Recipe
 								</Header>
-
 								<Form
 									size = "big"
 									onSubmit = {this.onSubmit.bind(this)}

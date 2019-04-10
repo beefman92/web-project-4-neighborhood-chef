@@ -39,13 +39,11 @@ export default class Login extends React.Component {
 				<Container>
 					<Grid
 						textAlign = "center"
-						style = {{height: "95vh"}}
+						style = {{height: "50vh"}}
 						divided ="vertically"
 						verticalAligh = "middle"
 						id = "grid"
 					>
-						<br />
-						<br />
 						<Segment placeholder>
 							<Grid columns={2} relaxed ="very" stackable>
 								<Grid.Column>
@@ -103,7 +101,6 @@ export default class Login extends React.Component {
 										</Form>
 									</Form>
 								</Grid.Column>
-
 								<Grid.Column verticalAlign="middle">
 									<Link to = "/signup">
 										<Button content="Sign up" primary icon="signup" size="huge" />
@@ -114,10 +111,6 @@ export default class Login extends React.Component {
 						</Segment>
 					</Grid>
 				</Container>
-				<br />
-				<br />
-				<br />
-
 			</div>
 		);
 
