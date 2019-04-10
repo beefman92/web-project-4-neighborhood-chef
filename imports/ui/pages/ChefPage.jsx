@@ -3,7 +3,7 @@ import { withTracker } from "meteor/react-meteor-data";
 import { Link } from "react-router-dom";
 import { Meteor } from "meteor/meteor";
 import PropTypes from "prop-types";
-import { Row, Col, CardColumns, Card, Breadcrumb } from "react-bootstrap";
+import { Grid, Card, Container } from "semantic-ui-react";
 
 import { Chefs } from "../../api/chefs";
 import { Recipes } from "../../api/recipes";
@@ -21,20 +21,20 @@ class ChefPage extends Component {
 			return (
 				<div>
 					<h2>Chef&#39;s introduction: </h2>
-					<Row>
-						<Col lg={"3"}>
+					<Grid.Row>
+						<Grid.Column width={"4"}>
 							<h3>{this.props.chefInfo.name}</h3>
-						</Col>
-						<Col lg={"9"}>
+						</Grid.Column>
+						<Grid.Column width={"12"}>
 							<div>{this.props.chefInfo.description}</div>
 							<div>{this.props.chefInfo.address}</div>
 							<div>{this.props.chefInfo.phone}</div>
-						</Col>
-					</Row>
+						</Grid.Column>
+					</Grid.Row>
 				</div>
 			);
 		} else {
-			return (<Row><Col lg={"12"}><p>Loading...</p></Col></Row>);
+			return (<Grid.Row><Grid.Column width={"16"}><p>Loading...</p></Grid.Column></Grid.Row>);
 		}
 	}
 
@@ -42,42 +42,48 @@ class ChefPage extends Component {
 		// TODO: get orders number from server end.
 		const recipes = this.props.recipes.map(recipe => {
 			return (
-				<Card key={recipe._id}>
-					<Card.Header>
-						<Card.Title>
+				<Card key={recipe._id} color='orange'>
+					<Card.Content>
+						<Card.Header>
 							<Link to={"/recipe/" + recipe._id}>
 								{recipe.name}
 							</Link>
-						</Card.Title>
-					</Card.Header>
-					<Card.Body>
-						<Link to={"/recipe/" + recipe._id}>
-							<img className={"recipe-list-image"} src={recipe.picture} alt={recipe.name} />
-						</Link>
-					</Card.Body>
-					<Card.Footer className="text-muted">
+						</Card.Header>
+						<Card.Description>
+							<Link to={"/recipe/" + recipe._id}>
+								<img className={"recipe-list-image"} src={recipe.picture} alt={recipe.name} />
+							</Link>
+						</Card.Description>
+					</Card.Content>
+					<Card.Content extra>
 						{"0 customers have ordered"}
-					</Card.Footer>
+					</Card.Content>
 				</Card>
 			);
 		});
 		return (
 			<div>
-				<h2>Recipes: </h2>
-				<CardColumns>
-					{recipes}
-				</CardColumns>
+				<Grid.Row>
+					<Grid.Column width={"16"}>
+						<h2>Recipes: </h2>
+					</Grid.Column>
+				</Grid.Row>
+				<Grid.Row>
+					<Card.Group>
+						{recipes}
+					</Card.Group>
+				</Grid.Row>
 			</div>
 		);
 	}
 
 	renderBreadcrumbs() {
-		return (
-			<Breadcrumb className={"my-3"}>
-				<Breadcrumb.Item href="/">Home</Breadcrumb.Item>
-				<Breadcrumb.Item active>Chef</Breadcrumb.Item>
-			</Breadcrumb>
-		);
+		// return (
+		// 	<Breadcrumb className={"my-3"}>
+		// 		<Breadcrumb.Item href="/">Home</Breadcrumb.Item>
+		// 		<Breadcrumb.Item active>Chef</Breadcrumb.Item>
+		// 	</Breadcrumb>
+		// );
 	}
 
 	render() {
@@ -85,10 +91,13 @@ class ChefPage extends Component {
 			<div>
 				<NavigationBar />
 				<ShoppingCart />
-				{this.renderBreadcrumbs()}
-				{this.renderChefInfo()}
-				<hr/>
-				{this.renderRecipes()}
+				<Container>
+					<Grid divided>
+						{this.renderBreadcrumbs()}
+						{this.renderChefInfo()}
+						{this.renderRecipes()}
+					</Grid>
+				</Container>
 			</div>
 		);
 	}

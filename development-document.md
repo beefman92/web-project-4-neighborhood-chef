@@ -28,7 +28,9 @@
 | _id | string | 对应于users中的_id字段 |
 | name | string | 厨师昵称 |
 | description | string | 厨师的简介 |
-| address | string | 厨师地址 |
+| address | string | 厨师详细地址 |
+| city | string | 厨师所在城市 |
+| postcode | string | 厨师所在地区的邮编 |
 | latitude | number | 维度 |
 | longitude | number | 经度 |
 | phone | string | 厨师联系电话 |
@@ -39,15 +41,25 @@
 | 字段名 | 类型 | 说明 |
 |-------|-----|------|
 | _id | string | 订单的id， meteor自动生成 |
+| type | number | 订单类型。0表示普通订单，1表示拆分订单的父订单，2表示拆分订单的子订单 |
+| parent | string | 父订单id。只有当type为2时这个字段才有效 |
+| children | array\[string\] | 子订单id。只有当type为1时这个字段才有效 |
 | create_time | date | 订单创建的时间 |
 | end_time | date | 订单结束的时间 |
 | status | number | 订单当前的状态 |
+| chef_id | string | 厨师id |
 | customer_id | string | 下订单用户的id, 和Users表中的id一致 |
-| chef_id | string | 创建订单用户的id, 和Users表中的id一致 |
-| recipe_id | string | 订单配料表的id |
-| count | number | 订单的数量 |
-| price | number | 订单的价格 |
-| ready_time | date | 订单可取时间 |
+| ready_time | date | 可以取货的时间 |
+| recipes | array\[object\] | 订单中菜的信息 |
+
+recipes中对象的结构
+
+| 字段名 | 类型 | 说明 |
+|-------|-----|------|
+| recipe_id | string | 菜id |
+| price | number | 菜品总价 |
+| count | number | 份数 |
+| status | number | 当前菜品的状态 |
 
 表名：shopping_carts  
 说明：这张表用于记录当前在购物车内尚未结算的订单信息  
@@ -75,15 +87,14 @@
 | content | string | order 配料的具体内容 |
 | nutrition | string | 每份配料的营养成分，调用API |
 | price | string | 单价 |
-| available_time | date | 订单有效的时间范围 |
-
+| waiting_time | date | 从下单到可取菜的最小时间间隔 |
 
 表名：recipe_comments
 说明：这张表用于记录评价信息，可以考虑合并到order表内
 
 | 字段名 | 类型 | 说明 |
 |-------|-----|------|
-| _id | string | 评价食物id |
+| _id | string | 评论的id |
 | content | string | 评价的具体内容 |
 | time | date | 评价的时间 |
 | rating | number | 对食物的评分 |

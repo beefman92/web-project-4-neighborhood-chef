@@ -43,7 +43,6 @@ export default class ChefInfo extends Component {
 								<Header as = "h2" textAlign = "center" id = "signupHeader">
 									Add Recipe
 								</Header>
-
 								<Form
 									size = "huge"
 									onSubmit = {this.onSubmit.bind(this)}
@@ -95,7 +94,6 @@ export default class ChefInfo extends Component {
 										</Button>
 									</Segment>
 								</Form>
-
 							</Grid.Column>
 						</Grid.Row>
 					</Grid>
