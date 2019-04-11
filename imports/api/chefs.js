@@ -74,6 +74,13 @@ Meteor.methods({
 		check(ids, Array);
 		return Chefs.find({_id: {$in: ids}}).fetch();
 	},
+
+	// let chef edit their own personal information
+	"chefs.updateInfo"(address, phone) {
+		Chefs.update ({_id: Meteor.userId()},
+			{$set: {address: address, phone: phone}});
+	},
+
 	"token.getMapToken"() {
 		if (Meteor.isServer) {
 			const token = Meteor.settings.MAPBOX_API_TOKEN;

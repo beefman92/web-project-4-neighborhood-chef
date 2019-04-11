@@ -14,6 +14,7 @@ import {Chefs} from "../../api/chefs";
 class ChefInfo extends Component {
 	constructor(props) {
 		super(props);
+		console.log("constructor");
 	}
 
 	onSubmit(e) {
@@ -32,6 +33,28 @@ class ChefInfo extends Component {
 		});
 	}
 
+	//let chef edit their own information
+	handleChefInfo1(e) {
+		console.log("hahahaha");
+		e.preventDefault();
+		let address = e.target.address.value.trim();
+		let phone = e.target.phone.value.trim();
+		console.log("hello world! ");
+		Meteor.call("chefs.updateInfo", address, phone,(error)=>{
+			if(error === undefined || error === null) {
+
+			}
+		});
+	}
+
+	handleChefInfoOnChange(e) {
+		const newChefInfo = Object.assign({}, this.state.chefInfo);
+		newChefInfo[e.target.name] = e.target.value;
+		this.setState({
+			chefInfo: newChefInfo
+		});
+	}
+
 	renderChefInfo() {
 		if (this.props.ready === true) {
 			return (
@@ -43,9 +66,44 @@ class ChefInfo extends Component {
 						</Header>
 						<Col lg={"9"}>
 							<div>{this.props.chefInfo.description}</div>
-							<div>{this.props.chefInfo.address}</div>
-							<div>{this.props.chefInfo.phone}</div>
+							<div>Address: {this.props.chefInfo.address}</div>
+							<div>Phone: {this.props.chefInfo.phone}</div>
 						</Col>
+						<div>
+							<Form
+								size = "big"
+								onSubmit = {this.handleChefInfo1.bind(this)}
+								onValidate
+							>
+								<Segment stacked>
+									<label htmlFor="address">Address</label>
+									<Form.Input
+										id ={"address"}
+										fluid
+										iconPosition = "left"
+										type = "text"
+										name = "address"
+										placeholder = "address"
+										size = "big"
+										value={this.state.chefInfo.address}
+										onChange={(e) => this.handleChefInfoOnChange(e)}
+									/>
+									<label htmlFor="phoneNumber">Phone</label>
+									<Form.Input
+										id={"phoneNumber"}
+										fluid
+										iconPosition = "left"
+										type = "number"
+										name = "phone"
+										placeholder = "phone number"
+										size = "big"
+										value={this.state.chefInfo.phone}
+										onChange={(e) => this.handleChefInfoOnChange(e)}
+									/>
+								</Segment>
+								<Button color={"green"}>Edit</Button>
+							</Form>
+						</div>
 					</Segment>
 				</div>
 			);
@@ -58,28 +116,30 @@ class ChefInfo extends Component {
 		// TODO: get orders number from server end.
 		const recipes = this.props.recipes.map(recipe => {
 			return (
-				<Card key={recipe._id}>
-					<Card.Header>
-						<Card.Title>
+				<Segment>
+					<Card key={recipe._id}>
+						<Card.Header>
+							<Card.Title>
+								<Link to={"/recipe/" + recipe._id}>
+									{recipe.name}
+								</Link>
+							</Card.Title>
+						</Card.Header>
+						<Card.Body>
 							<Link to={"/recipe/" + recipe._id}>
-								{recipe.name}
+								<img className={"recipe-list-image"} src={recipe.picture} alt={recipe.name} />
 							</Link>
-						</Card.Title>
-					</Card.Header>
-					<Card.Body>
-						<Link to={"/recipe/" + recipe._id}>
-							<img className={"recipe-list-image"} src={recipe.picture} alt={recipe.name} />
-						</Link>
-					</Card.Body>
-					<Card.Footer className="text-muted">
-						{"0 customers have ordered"}
-					</Card.Footer>
-				</Card>
+						</Card.Body>
+						<Card.Footer className="text-muted">
+							{"0 customers have ordered"}
+						</Card.Footer>
+					</Card>
+				</Segment>
 			);
 		});
 		return (
 			<div>
-				<h2>Recipes: </h2>
+				<h2>Recipes List: </h2>
 				<CardColumns>
 					{recipes}
 				</CardColumns>
@@ -87,14 +147,26 @@ class ChefInfo extends Component {
 		);
 	}
 
+	UNSAFE_componentWillReceiveProps(nextProps) {
+		this.setState({
+			chefInfo: nextProps.chefInfo
+		});
+	}
 
 	render() {
+		console.log("render");
+		if (!this.props.ready) {
+			return (
+				<p>Loading...</p>
+			);
+		}
 		return (
 			<div>
 				<Container>
 					<NavigationBar />
 					{this.renderChefInfo()}
 					{this.renderRecipes()}
+
 					<Grid
 						textAlign = "center"
 						style = {{ height: "95vh"}}
@@ -161,7 +233,6 @@ class ChefInfo extends Component {
 							</Grid.Column>
 						</Grid.Row>
 					</Grid>
-
 				</Container>
 				{/*{this.renderRecipes()}*/}
 
@@ -180,19 +251,20 @@ ChefInfo.propTypes = {
 	chefInfo: PropTypes.object,
 	history: PropTypes.object,
 	recipes: PropTypes.array,
+	ready: PropTypes.bool,
 };
 
 export default withTracker((props)=>{
 	const userId = Meteor.userId();
-	const handler = Meteor.subscribe("chefInfo", userId);
-	const ready = handler.ready();
-
-	Meteor.subscribe("chefRecipes", userId);
+	const chefInfoHandler = Meteor.subscribe("chefInfo", userId);
+	const chefRecipesHandler = Meteor.subscribe("chefRecipes", userId);
+	const ready = chefInfoHandler.ready() && chefRecipesHandler.ready();
+	console.log("withTracker");
 	return {
 		chefInfo: Chefs.findOne({_id: userId}),
 		recipes: Recipes.find({chef_id: userId}).fetch(),
 		ready: ready,
-	}
+	};
 
 })(ChefInfo);
 
