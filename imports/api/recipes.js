@@ -12,6 +12,9 @@ if (Meteor.isServer) {
 	Meteor.publish("recipe", function(recipeId) {
 		return Recipes.find({_id: recipeId});
 	});
+	Meteor.publish("recipes", function(recipeIds) {
+		return Recipes.find({_id: {$in: recipeIds}});
+	});
 }
 
 Meteor.methods({
@@ -30,12 +33,10 @@ Meteor.methods({
 		});
 		return groupedResult;
 	},
-
 	"recipes.updateRecipes"(id, name, content, picture, price) {
 		Recipes.update ({_id: id},
 			{$set: {name: name, content: content, picture: picture, price: price}});
 	},
-
 	"recipes.insert"(name, content, picture, price) {
 		check(name, String);
 		check(content, String);
@@ -53,5 +54,9 @@ Meteor.methods({
 				price: price,
 			});
 		}
+	},
+	"recipes.searchById"(recipeId) {
+		check(recipeId, String);
+		return Recipes.findOne({_id: recipeId});
 	}
 });

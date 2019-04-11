@@ -69,11 +69,12 @@ class Recipe extends Component {
 	}
 
 	render() {
+		const chefId = this.props.recipe !== undefined && this.props.recipe !== null ? this.props.recipe.chef_id : "";
 		if (this.props.ready) {
 			return (
 				<div>
 					<NavigationBar/>
-					<ShoppingCart/>
+					<ShoppingCart chefId={chefId}/>
 					<Container>
 						<Grid>
 							{/*{this.renderBreadcrumbs()}*/}

@@ -57,7 +57,15 @@ class ShoppingCart extends Component {
 	}
 
 	handleSubmit() {
-
+		if (this.props.items.length > 0) {
+			Meteor.call("shopping.checkout", this.props.chefId, (error, result) => {
+				if (error === undefined && error === null) {
+					// TODO: error handler.
+				} else {
+					// TODO: jump to other page.
+				}
+			});
+		}
 	}
 
 	render() {
@@ -120,11 +128,12 @@ class ShoppingCart extends Component {
 
 ShoppingCart.propTypes = {
 	items: PropTypes.array,
+	chefId: PropTypes.string.isRequired,
 };
 
-export default withTracker(() => {
-	Meteor.subscribe("userShoppingCarts");
+export default withTracker((props) => {
+	Meteor.subscribe("userShoppingCarts", props.chefId);
 	return {
-		items: ShoppingCarts.find({user_id: Meteor.userId()}).fetch(),
+		items: ShoppingCarts.find({user_id: Meteor.userId(), chef_id: props.chefId}).fetch(),
 	};
 })(ShoppingCart);

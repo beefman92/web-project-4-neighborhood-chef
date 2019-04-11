@@ -41,9 +41,6 @@
 | 字段名 | 类型 | 说明 |
 |-------|-----|------|
 | _id | string | 订单的id， meteor自动生成 |
-| type | number | 订单类型。0表示普通订单，1表示拆分订单的父订单，2表示拆分订单的子订单 |
-| parent | string | 父订单id。只有当type为2时这个字段才有效 |
-| children | array\[string\] | 子订单id。只有当type为1时这个字段才有效 |
 | create_time | date | 订单创建的时间 |
 | end_time | date | 订单结束的时间 |
 | status | number | 订单当前的状态 |
@@ -86,7 +83,7 @@ recipes中对象的结构
 | picture | string | 配图片的url |
 | content | string | order 配料的具体内容 |
 | nutrition | string | 每份配料的营养成分，调用API |
-| price | string | 单价 |
+| price | number | 单价 |
 | waiting_time | date | 从下单到可取菜的最小时间间隔 |
 
 表名：recipe_comments

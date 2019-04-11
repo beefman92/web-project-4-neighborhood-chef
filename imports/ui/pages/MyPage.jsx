@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 import {Meteor} from "meteor/meteor";
 import { Redirect } from "react-router-dom";
-import { Segment, Icon } from "semantic-ui-react";
-import { Row, Col, Button } from "react-bootstrap";
+import { Segment, Icon, Button, Grid, Container } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 
 import NavigationBar from "../components/NavigationBar";
-import ShoppingCart from "../components/ShoppingCart";
+import CustomerOrderList from "../components/CustomerOrderList";
 
 export default class MyPage extends Component {
 	constructor(props) {
@@ -19,21 +18,21 @@ export default class MyPage extends Component {
 	renderChefInfoLink() {
 		if (Meteor.user().profile.is_chef || this.state.isChef) {
 			return (
-				<Row>
-					<Col lg={"10"}></Col>
-					<Col lg={"2"}><Link to={"/chefinfo"}><Button variant={"success"}>Add new recipe</Button></Link></Col>
-				</Row>
+				<Grid.Row>
+					<Grid.Column width={"13"}></Grid.Column>
+					<Grid.Column width={"3"}><Link to={"/chefinfo"}><Button color={"green"}>Add new recipe</Button></Link></Grid.Column>
+				</Grid.Row>
 			);
 		} else {
 			return  (
-				<Row>
-					<Col lg={"10"}></Col>
-					<Col lg={"2"}>
-						<Button variant={"success"} onClick={() => {this.handleCreateNewChef();}}>
+				<Grid.Row>
+					<Grid.Column width={"13"}></Grid.Column>
+					<Grid.Column width={"3"}>
+						<Button color={"green"} onClick={() => {this.handleCreateNewChef();}}>
 							I want to be a chef!
 						</Button>
-					</Col>
-				</Row>
+					</Grid.Column>
+				</Grid.Row>
 			);
 		}
 	}
@@ -46,44 +45,57 @@ export default class MyPage extends Component {
 		});
 	}
 
+	renderPersonalInfo() {
+		return (
+			<Grid.Row>
+				<Grid.Column width={"16"}>
+					<Segment color={"orange"}>
+						Username: {Meteor.user().username}
+					</Segment>
+				</Grid.Column>
+				<Grid.Column width={"16"}>
+					<Segment color={"orange"}>
+						Address: {Meteor.user().profile.address}
+					</Segment>
+				</Grid.Column>
+				<Grid.Column width={"16"}>
+					<Segment color={"orange"}>
+						Phone Number: {Meteor.user().profile.phone}
+					</Segment>
+				</Grid.Column>
+				<Grid.Column width={"16"}>
+					<Segment color={"orange"}>
+					Gender: {Meteor.user().profile.gender}
+					</Segment>
+				</Grid.Column>
+			</Grid.Row>
+		);
+	}
+
 	render() {
 		if (Meteor.user()) {
 			return (
 				<div>
 					<NavigationBar/>
-					<ShoppingCart/>
-					<Row>
-						<Col className={"text-center"} lg={"12"}>
-							<Icon name="users" circular />
-							<div>
-								<h2>Personal Information</h2>
-							</div>
-						</Col>
-					</Row>
-					{this.renderChefInfoLink()}
-					<div>
-						<Segment color='orange'>Username: {Meteor.user().username}</Segment>
-						<Segment color='orange'>Address: {Meteor.user().profile.address}</Segment>
-						<Segment color='orange'>Phone Number: {Meteor.user().profile.phone}</Segment>
-						<Segment color='orange'>Gender: {Meteor.user().profile.gender}</Segment>
-					</div>
+					<Container>
+						<Grid>
+							<Grid.Row>
+								<Grid.Column className={"text-center"} width={"16"}>
+									<Icon name="users" circular />
+									<div>
+										<h2>Personal Information</h2>
+									</div>
+								</Grid.Column>
+							</Grid.Row>
+							{this.renderChefInfoLink()}
+							{this.renderPersonalInfo()}
+							<CustomerOrderList />
+						</Grid>
+					</Container>
 				</div>
 			);
 		} else {
 			return (<Redirect to={"/login"}/>);
 		}
-
 	}
 }
-
-// MyPage.propTypes = {
-// 	personal_info: PropTypes.object,
-// };
-//
-// // return will fill in the target
-// export default withTracker(() => {
-// 	return {
-// 		personal_info: Meteor.user()
-//
-// 	};
-// })(MyPage); // Target

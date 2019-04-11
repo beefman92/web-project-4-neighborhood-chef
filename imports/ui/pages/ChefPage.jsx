@@ -19,19 +19,19 @@ class ChefPage extends Component {
 	renderChefInfo() {
 		if (this.props.ready === true) {
 			return (
-				<div>
-					<h2>Chef&#39;s introduction: </h2>
-					<Grid.Row>
-						<Grid.Column width={"4"}>
-							<h3>{this.props.chefInfo.name}</h3>
-						</Grid.Column>
-						<Grid.Column width={"12"}>
-							<div>{this.props.chefInfo.description}</div>
-							<div>{this.props.chefInfo.address}</div>
-							<div>{this.props.chefInfo.phone}</div>
-						</Grid.Column>
-					</Grid.Row>
-				</div>
+				<Grid.Row>
+					<Grid.Column width={"16"}>
+						<h2>Chef&#39;s introduction: </h2>
+					</Grid.Column>
+					<Grid.Column width={"4"}>
+						<h3>{this.props.chefInfo.name}</h3>
+					</Grid.Column>
+					<Grid.Column width={"12"}>
+						<div>{this.props.chefInfo.description}</div>
+						<div>{this.props.chefInfo.address}</div>
+						<div>{this.props.chefInfo.phone}</div>
+					</Grid.Column>
+				</Grid.Row>
 			);
 		} else {
 			return (<Grid.Row><Grid.Column width={"16"}><p>Loading...</p></Grid.Column></Grid.Row>);
@@ -90,7 +90,7 @@ class ChefPage extends Component {
 		return (
 			<div>
 				<NavigationBar />
-				<ShoppingCart />
+				<ShoppingCart chefId={this.props.match.params.chefId}/>
 				<Container>
 					<Grid divided>
 						{this.renderBreadcrumbs()}

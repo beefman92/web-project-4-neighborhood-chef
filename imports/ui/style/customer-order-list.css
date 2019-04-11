@@ -1,0 +1,27 @@
+.recipe-display-area {
+    display: flex;
+}
+
+.recipe-picture-area {
+    flex: 25%
+}
+
+.recipe-description-area {
+    flex: 25%;
+    padding-left: 3%;
+    padding-right: 3%;
+}
+
+.recipe-count-area {
+    flex: 25%;
+    text-align: center;
+}
+
+.recipe-price-area {
+    flex: 25%;
+    text-align: center;
+}
+
+.order-picture {
+    width: 100%;
+}

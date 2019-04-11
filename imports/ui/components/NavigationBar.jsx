@@ -9,7 +9,7 @@ export default class NavigationBar extends Component {
 	renderUserMode() {
 		if (!Meteor.userId()) {
 			return (
-				<Menu.Menu position='right'>
+				<Menu.Menu position="right">
 					<Menu.Item>
 						<Link to={"/signup"}><Button color={"blue"}>Sign Up</Button></Link>
 					</Menu.Item>
@@ -20,7 +20,7 @@ export default class NavigationBar extends Component {
 			);
 		} else {
 			return (
-				<Menu.Menu position='right'>
+				<Menu.Menu position="right">
 					<Menu.Item>
 						<Button onClick={() => {Meteor.logout(() => {this.forceUpdate();});}}>Logout</Button>
 					</Menu.Item>
