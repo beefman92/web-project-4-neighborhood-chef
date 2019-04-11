@@ -60,6 +60,15 @@ Meteor.methods({
 			Orders.update({_id: orderId, customer_id: Meteor.userId()}, {$set: {status: PICKED_UP}});
 		}
 	},
+	"orders.customerDeleteOrder"(orderId) {
+		if (Meteor.isServer) {
+			check(orderId, String);
+			if (!Meteor.userId()) {
+				throw new Meteor.Error("not-authorized");
+			}
+			Orders.remove({_id: orderId, customer_id: Meteor.userId()});
+		}
+	},
 	"orders.chefConfirmCancel"(orderId) {
 		if (Meteor.isServer) {
 			check(orderId, String);

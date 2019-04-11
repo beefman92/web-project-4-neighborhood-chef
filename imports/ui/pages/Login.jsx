@@ -66,39 +66,36 @@ export default class Login extends React.Component {
 									) : (undefined
 									)}
 									<Form
-										size = "huge"
 										onSubmit = {this.onSubmit.bind(this)}
 										noValidate
 									>
-										<Form>
-											<Form.Input
-												fluid
-												icon = "user"
-												iconPosition = "left"
-												type = "text"
-												label = "Username"
-												placeholder = "Username"
-												size = "huge"
-												name="username"
-												id="username"
-											/>
-											<Form.Input
-												fluid
-												icon="lock"
-												iconPosition="left"
-												type="password"
-												label="Password"
-												placeholder = "Password"
-												size = "huge"
-												name="password"
-												id="password"
-											/>
-											<Button
-												content= "Login"
-												primary
-												size = "huge"
-											/>
-										</Form>
+										<Form.Input
+											fluid
+											icon = "user"
+											iconPosition = "left"
+											type = "text"
+											label = "Username"
+											placeholder = "Username"
+											size = "huge"
+											name="username"
+											id="username"
+										/>
+										<Form.Input
+											fluid
+											icon="lock"
+											iconPosition="left"
+											type="password"
+											label="Password"
+											placeholder = "Password"
+											size = "huge"
+											name="password"
+											id="password"
+										/>
+										<Button
+											content= "Login"
+											primary
+											size = "huge"
+										/>
 									</Form>
 								</Grid.Column>
 								<Grid.Column verticalAlign="middle">

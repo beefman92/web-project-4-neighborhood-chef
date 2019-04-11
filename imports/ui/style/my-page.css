@@ -25,3 +25,20 @@
 .order-picture {
     width: 100%;
 }
+
+.header-wrapper {
+    display: flex;
+}
+
+.header-order-time {
+    flex: 30%;
+}
+
+.header-order-id {
+    flex: 60%;
+}
+
+.header-delete-icon {
+    flex: 10%;
+    text-align: right;
+}

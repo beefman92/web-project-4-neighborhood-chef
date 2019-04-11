@@ -2,19 +2,31 @@ import React, { Component } from "react";
 import { Meteor } from "meteor/meteor";
 import { withTracker } from "meteor/react-meteor-data";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 import { Orders } from "../../api/orders";
 import { Recipes } from "../../api/recipes";
-import { Grid, Card, Segment, Button } from "semantic-ui-react";
+import { Grid, Card, Segment, Button, Icon } from "semantic-ui-react";
 import { ACCEPTED, CANCELING, CANCELED, FINISHED, NEW, PICKED_UP, READY } from "../../api/order-status";
-import "../style/customer-order-list.css";
+import "../style/my-page.css";
 
-class CustomerOrderList extends Component {
+class CustomerOrderBoard extends Component {
 	constructor(props) {
 		super(props);
 	}
 
 	renderOrderList() {
+		if (this.props.orders.length === 0) {
+			return (
+				<Grid.Row>
+					<Grid.Column width={"16"}>
+						<Segment style={{fontSize: "20px"}} textAlign={"center"}>
+							It seems like your order history is empty. <Link to={"/"}>Go to get your first order!</Link>
+						</Segment>
+					</Grid.Column>
+				</Grid.Row>
+			);
+		}
 		return (
 			this.props.orders.map(value => {
 				return (
@@ -22,7 +34,19 @@ class CustomerOrderList extends Component {
 						<Grid.Column width={"16"}>
 							<Card fluid color={"orange"}>
 								<Card.Content>
-									<Card.Header>{value.create_time + "   Order id: " + value._id}</Card.Header>
+									<Card.Header>
+										<div className={"header-wrapper"}>
+											<div className={"header-order-time"}>
+												{value.create_time.toLocaleString("en-US")}
+											</div>
+											<div className={"header-order-id"}>
+												{"Order id: " + value._id}
+											</div>
+											<div className={"header-delete-icon"}>
+												<Icon link name={"trash"} onClick={() => this.handleDeleteOrder(value._id)}/>
+											</div>
+										</div>
+									</Card.Header>
 								</Card.Content>
 								<Card.Content>
 									<Grid divided>
@@ -58,6 +82,10 @@ class CustomerOrderList extends Component {
 			sum += value.price;
 		});
 		return sum;
+	}
+
+	handleDeleteOrder(id) {
+		Meteor.call("orders.customerDeleteOrder", id);
 	}
 
 	handleCancelOrder(id) {
@@ -97,7 +125,7 @@ class CustomerOrderList extends Component {
 			);
 		case CANCELING:
 			return (
-				<Button disabled={true} negative>Canceling...</Button>
+				<Button disabled={true} negative>Canceling</Button>
 			);
 		case CANCELED:
 			return (
@@ -182,7 +210,7 @@ class CustomerOrderList extends Component {
 	}
 }
 
-CustomerOrderList.propTypes = {
+CustomerOrderBoard.propTypes = {
 	recipes: PropTypes.object,
 	orders: PropTypes.array,
 	ready: PropTypes.bool,
@@ -191,8 +219,6 @@ CustomerOrderList.propTypes = {
 export default withTracker(() => {
 	const orderHandler = Meteor.subscribe("customerAllOrders");
 	const orders = Orders.find({customer_id: Meteor.userId()}, {sort: {create_time: -1}}).fetch();
-	console.log("orders");
-	console.log(orders);
 	const recipeIdSet = new Set();
 	for (let i = 0; i < orders.length; i++) {
 		const recipes = orders[i].recipes;
@@ -203,8 +229,6 @@ export default withTracker(() => {
 	const recipeIds = Array.from(recipeIdSet);
 	const recipeHandler = Meteor.subscribe("recipes", recipeIds);
 	const recipeInfos = Recipes.find({_id: {$in: recipeIds}}).fetch();
-	console.log("recipes");
-	console.log(recipeInfos);
 	const recipeInfoObj = {};
 	for (let i = 0; i < recipeInfos.length; i++) {
 		const recipe = recipeInfos[i];
@@ -216,4 +240,4 @@ export default withTracker(() => {
 		orders: orders,
 		ready: ready,
 	};
-})(CustomerOrderList);
+})(CustomerOrderBoard);

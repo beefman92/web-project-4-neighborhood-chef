@@ -1,6 +1,7 @@
-import {Meteor} from "meteor/meteor";
+import { Meteor } from "meteor/meteor";
 import SimpleSchema from "simpl-schema";
 import { Accounts } from "meteor/accounts-base";
+import { check } from "meteor/check";
 
 if (Meteor.isServer) {
 	Accounts.validateNewUser(user => {
@@ -28,3 +29,16 @@ if (Meteor.isServer) {
 		return true;
 	});
 }
+
+Meteor.methods({
+	"users.updateProfile"(username, newProfile) {
+		check(username, String);
+		if (!Meteor.userId()) {
+			throw new Meteor.Error("not-authorized");
+		}
+		if (Meteor.isServer) {
+			return Meteor.users.update({_id: Meteor.userId()},
+				{$set: {username: username, profile: newProfile}});
+		}
+	}
+})
