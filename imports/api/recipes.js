@@ -1,6 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { Mongo } from "meteor/mongo";
 import { check } from "meteor/check";
+import {Chefs} from "./chefs";
 
 export const Recipes = new Mongo.Collection("recipes");
 
@@ -28,6 +29,11 @@ Meteor.methods({
 			recipes.push(recipe);
 		});
 		return groupedResult;
+	},
+
+	"recipes.updateRecipes"(id, name, content, picture, price) {
+		Recipes.update ({_id: id},
+			{$set: {name: name, content: content, picture: picture, price: price}});
 	},
 
 	"recipes.insert"(name, content, picture, price) {

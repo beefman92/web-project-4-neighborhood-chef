@@ -35,11 +35,11 @@ class ChefInfo extends Component {
 
 	//let chef edit their own information
 	handleChefInfo1(e) {
-		console.log("hahahaha");
+		// console.log("hahahaha");
 		e.preventDefault();
 		let address = e.target.address.value.trim();
 		let phone = e.target.phone.value.trim();
-		console.log("hello world! ");
+		// console.log("hello world! ");
 		Meteor.call("chefs.updateInfo", address, phone,(error)=>{
 			if(error === undefined || error === null) {
 
@@ -47,11 +47,36 @@ class ChefInfo extends Component {
 		});
 	}
 
-	handleChefInfoOnChange(e) {
-		const newChefInfo = Object.assign({}, this.state.chefInfo);
-		newChefInfo[e.target.name] = e.target.value;
+	handleRecipeInfo(id, index) {
+		let name = this.state.recipe[index].name;
+		let picture = this.state.recipe[index].picture;
+		let content = this.state.recipe[index].content;
+		let price = Number(this.state.recipe[index].price);
+		Meteor.call("recipes.updateRecipes", id, name, content, picture, price, (error) => {
+			if (error !== undefined && error !== null) {
+				alert(error);
+			}
+		});
+	}
+
+	handleRecipeOnChange(e, index) {
+		const newRecipe = [];
+		for (let i = 0; i < this.state.recipe.length; i++) {
+			const temp = Object.assign({}, this.state.recipe[i]);
+			newRecipe.push(temp);
+		}
+		const item = newRecipe[index];
+		item[e.target.name] = e.target.value;
 		this.setState({
-			chefInfo: newChefInfo
+			recipe: newRecipe
+		});
+	}
+
+	handleChefInfoOnChange(e) {
+		const newChefInfo = Object.assign({}, this.state.chefInfo);//copy chefInfo to newChefInfo
+		newChefInfo[e.target.name] = e.target.value; // change
+		this.setState({
+			chefInfo: newChefInfo  //设置回去
 		});
 	}
 
@@ -101,7 +126,7 @@ class ChefInfo extends Component {
 										onChange={(e) => this.handleChefInfoOnChange(e)}
 									/>
 								</Segment>
-								<Button color={"green"}>Edit</Button>
+								<Button color={"green"} floated="right">Edit</Button>
 							</Form>
 						</div>
 					</Segment>
@@ -114,27 +139,75 @@ class ChefInfo extends Component {
 
 	renderRecipes() {
 		// TODO: get orders number from server end.
-		const recipes = this.props.recipes.map(recipe => {
+		const recipes = this.state.recipe.map((recipe, index) => {
 			return (
-				<Segment>
+				<Segment key={recipe._id}>
 					<Card key={recipe._id}>
 						<Card.Header>
 							<Card.Title>
-								<Link to={"/recipe/" + recipe._id}>
-									{recipe.name}
-								</Link>
+								Recipe Name: {this.props.recipes[index].name}
 							</Card.Title>
 						</Card.Header>
 						<Card.Body>
-							<Link to={"/recipe/" + recipe._id}>
-								<img className={"recipe-list-image"} src={recipe.picture} alt={recipe.name} />
-							</Link>
+							<img className={"recipe-list-image"} src={this.props.recipes[index].picture} />
+							<br/>
+							Price: {this.props.recipes[index].price}
+							<br/>
+							Content: {this.props.recipes[index].content}
+							<Button onClick={() => this.handleRecipeInfo(recipe._id, index)} color={"green"} floated="right">Edit</Button>
 						</Card.Body>
+
 						<Card.Footer className="text-muted">
 							{"0 customers have ordered"}
 						</Card.Footer>
 					</Card>
+					<div>
+						<Form
+							size = "big"
+							onValidate
+						>
+							<Segment stacked>
+								<label htmlFor="name">Recipe Name</label>
+								<Form.Input
+									id ={"name"}
+									fluid
+									iconPosition = "left"
+									type = "text"
+									name = "name"
+									placeholder = "recipe name"
+									size = "big"
+									value={recipe.name}
+									onChange={(e) => this.handleRecipeOnChange(e, index)}
+								/>
+								<label htmlFor="price">Recipe Price</label>
+								<Form.Input
+									id={"price"}
+									fluid
+									iconPosition = "left"
+									type = "number"
+									name = "price"
+									placeholder = "recipe price"
+									size = "big"
+									value={recipe.price}
+									onChange={(e) => this.handleRecipeOnChange(e, index)}
+								/>
+								<label htmlFor="content">Recipe Content</label>
+								<Form.Input
+									id={"content"}
+									fluid
+									iconPosition = "left"
+									type = "text"
+									name = "content"
+									placeholder = "recipe content"
+									size = "big"
+									value={recipe.content}
+									onChange={(e) => this.handleRecipeOnChange(e, index)}
+								/>
+							</Segment>
+						</Form>
+					</div>
 				</Segment>
+
 			);
 		});
 		return (
@@ -149,7 +222,8 @@ class ChefInfo extends Component {
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
 		this.setState({
-			chefInfo: nextProps.chefInfo
+			chefInfo: nextProps.chefInfo,
+			recipe: nextProps.recipes
 		});
 	}
 
