@@ -90,7 +90,7 @@ class CustomerOrderBoard extends Component {
 		);
 	}
 
-	handleChangeRating(index, data, event) {
+	handleChangeRating(index, data) {
 		const newArray = this.state.rating.slice();
 		newArray[index] = data.value;
 		this.setState({

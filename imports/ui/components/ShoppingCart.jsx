@@ -58,7 +58,7 @@ class ShoppingCart extends Component {
 
 	handleSubmit() {
 		if (this.props.items.length > 0) {
-			Meteor.call("shopping.checkout", this.props.chefId, (error, result) => {
+			Meteor.call("shopping.checkout", this.props.chefId, (error) => {
 				if (error === undefined && error === null) {
 					// TODO: error handler.
 				} else {

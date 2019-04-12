@@ -1,7 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { Mongo } from "meteor/mongo";
 import { check } from "meteor/check";
-import {Chefs} from "./chefs";
 
 export const Recipes = new Mongo.Collection("recipes");
 

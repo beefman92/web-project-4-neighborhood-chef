@@ -1,6 +1,4 @@
 import { Meteor } from "meteor/meteor";
-import SimpleSchema from "simpl-schema";
-import { Accounts } from "meteor/accounts-base";
 import { check } from "meteor/check";
 
 if (Meteor.isServer) {
@@ -41,4 +39,4 @@ Meteor.methods({
 				{$set: {username: username, profile: newProfile}});
 		}
 	}
-})
+});

@@ -44,8 +44,8 @@ class ChefInfo extends Component {
 		let address = e.target.address.value.trim();
 		let phone = e.target.phone.value.trim();
 		Meteor.call("chefs.updateInfo", address, phone,(error)=>{
-			if(error === undefined || error === null) {
-
+			if (error === undefined || error === null) {
+				// TODO: error handler
 			}
 		});
 	}

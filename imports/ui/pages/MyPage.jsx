@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import {Meteor} from "meteor/meteor";
 import { Redirect } from "react-router-dom";
-import { Segment, Icon, Button, Grid, Container, Menu } from "semantic-ui-react";
+import { Segment, Button, Grid, Container, Menu } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 
 import NavigationBar from "../components/NavigationBar";
