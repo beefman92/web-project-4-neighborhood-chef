@@ -92,6 +92,10 @@ class CustomerOrderBoard extends Component {
 		Meteor.call("orders.customerCancel", id);
 	}
 
+	handlePickup(id) {
+		Meteor.call("orders.customerPickedUpFood", id);
+	}
+
 	handleConfirmation(id) {
 		Meteor.call("orders.customerConfirm", id);
 	}
@@ -109,15 +113,16 @@ class CustomerOrderBoard extends Component {
 		case READY:
 			return (
 				<div>
-					<Button
-						color={"green"}
-						onClick={() => this.handleConfirmation(order._id)}>Confirmation of receipt</Button>
+					<Button onClick={() => this.handlePickup(order._id)} positive>Pick</Button>
 					<Button onClick={() => this.handleCancelOrder(order._id)} negative>Cancel</Button>
 				</div>
 			);
 		case PICKED_UP:
 			return (
-				<Button onClick={() => this.handleCancelOrder(order._id)} negative>Cancel</Button>
+				<div>
+					<Button onClick={() => this.handleConfirmation(order._id)} positive>Confirm</Button>
+					<Button onClick={() => this.handleCancelOrder(order._id)} negative>Cancel</Button>
+				</div>
 			);
 		case FINISHED:
 			return (
@@ -154,7 +159,7 @@ class CustomerOrderBoard extends Component {
 			);
 		case FINISHED:
 			return (
-				<p>Please finish this order after confirming the meal.</p>
+				<p>This order is finished.</p>
 			);
 		case CANCELING:
 			return (

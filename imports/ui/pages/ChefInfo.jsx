@@ -3,18 +3,17 @@ import {Meteor} from "meteor/meteor";
 import { Image, Container, Button, Form, Grid, Header, Segment} from "semantic-ui-react";
 import PropTypes from "prop-types";
 import { withTracker } from "meteor/react-meteor-data";
-import { Recipes } from "../../api/recipes";
 import { Row, Col, CardColumns, Card, Breadcrumb } from "react-bootstrap";
 
 import NavigationBar from "../components/NavigationBar";
-
+import ChefOrderList from "../components/ChefOrderList";
 import {Link} from "react-router-dom";
 import {Chefs} from "../../api/chefs";
+import { Recipes } from "../../api/recipes";
 
 class ChefInfo extends Component {
 	constructor(props) {
 		super(props);
-		console.log("constructor");
 	}
 
 	onSubmit(e) {
@@ -35,11 +34,9 @@ class ChefInfo extends Component {
 
 	//let chef edit their own information
 	handleChefInfo1(e) {
-		// console.log("hahahaha");
 		e.preventDefault();
 		let address = e.target.address.value.trim();
 		let phone = e.target.phone.value.trim();
-		// console.log("hello world! ");
 		Meteor.call("chefs.updateInfo", address, phone,(error)=>{
 			if(error === undefined || error === null) {
 
@@ -228,7 +225,6 @@ class ChefInfo extends Component {
 	}
 
 	render() {
-		console.log("render");
 		if (!this.props.ready) {
 			return (
 				<p>Loading...</p>
@@ -238,6 +234,7 @@ class ChefInfo extends Component {
 			<div>
 				<Container>
 					<NavigationBar />
+					<ChefOrderList />
 					{this.renderChefInfo()}
 					{this.renderRecipes()}
 
@@ -333,7 +330,6 @@ export default withTracker((props)=>{
 	const chefInfoHandler = Meteor.subscribe("chefInfo", userId);
 	const chefRecipesHandler = Meteor.subscribe("chefRecipes", userId);
 	const ready = chefInfoHandler.ready() && chefRecipesHandler.ready();
-	console.log("withTracker");
 	return {
 		chefInfo: Chefs.findOne({_id: userId}),
 		recipes: Recipes.find({chef_id: userId}).fetch(),

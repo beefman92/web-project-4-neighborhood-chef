@@ -69,6 +69,15 @@ Meteor.methods({
 			Orders.remove({_id: orderId, customer_id: Meteor.userId()});
 		}
 	},
+	"orders.chefCancel"(orderId) {
+		if (Meteor.isServer) {
+			check(orderId, String);
+			if (!Meteor.userId()) {
+				throw new Meteor.Error("not-authorized");
+			}
+			Orders.update({_id: orderId, chef_id: Meteor.userId()}, {$set: {status: CANCELED}});
+		}
+	},
 	"orders.chefConfirmCancel"(orderId) {
 		if (Meteor.isServer) {
 			check(orderId, String);
