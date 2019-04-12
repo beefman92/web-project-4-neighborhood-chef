@@ -123,7 +123,7 @@ During the development, we utilized following technologies
 ## Link to the video Demonstration
 https://www.youtube.com/watch?v=brNfguIqk6I&feature=youtu.be
 
-Update Video: https://www.youtube.com/watch?v=zC8MiJFN4po&feature=youtu.be
+Updated Video: https://www.youtube.com/watch?v=zC8MiJFN4po&feature=youtu.be
 
 ## Reference to the class with link:
 For more information about the class, please go to this page:
