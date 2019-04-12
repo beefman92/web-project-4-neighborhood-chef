@@ -18,11 +18,12 @@
 }
 
 .chef-list-item {
+    background-color: white !important;
     transition: background-color 0.2s;
 }
 
 .chef-list-item-hover {
-    background-color: gold;
+    background-color: orange !important;
     transition: background-color 0.2s;
 }
 

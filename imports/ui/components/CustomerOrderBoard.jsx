@@ -9,6 +9,7 @@ import { Recipes } from "../../api/recipes";
 import { Grid, Card, Segment, Button, Icon, Form, Radio, TextArea } from "semantic-ui-react";
 import { ACCEPTED, CANCELING, CANCELED, FINISHED, NEW, PICKED_UP, READY } from "../../api/order-status";
 import "../style/my-page.css";
+import {Chefs} from "../../api/chefs";
 
 class CustomerOrderBoard extends Component {
 	constructor(props) {
@@ -81,6 +82,7 @@ class CustomerOrderBoard extends Component {
 									</Grid>
 								</Card.Content>
 								<Card.Content>
+									<b>Pick up address: </b>{this.props.chefAddressMap.get(value.chef_id)}
 								</Card.Content>
 							</Card>
 						</Grid.Column>
@@ -341,6 +343,7 @@ class CustomerOrderBoard extends Component {
 
 CustomerOrderBoard.propTypes = {
 	recipes: PropTypes.object,
+	chefAddressMap: PropTypes.object,
 	orders: PropTypes.array,
 	ready: PropTypes.bool,
 };
@@ -349,12 +352,15 @@ export default withTracker(() => {
 	const orderHandler = Meteor.subscribe("customerAllOrders");
 	const orders = Orders.find({customer_id: Meteor.userId()}, {sort: {create_time: -1}}).fetch();
 	const recipeIdSet = new Set();
+	const chefIdSet = new Set();
 	for (let i = 0; i < orders.length; i++) {
 		const recipes = orders[i].recipes;
 		for (let j = 0; j < recipes.length; j++) {
 			recipeIdSet.add(recipes[j].recipe_id);
 		}
+		chefIdSet.add(orders[i].chef_id);
 	}
+	const chefIds = Array.from(chefIdSet);
 	const recipeIds = Array.from(recipeIdSet);
 	const recipeHandler = Meteor.subscribe("recipes", recipeIds);
 	const recipeInfos = Recipes.find({_id: {$in: recipeIds}}).fetch();
@@ -363,9 +369,19 @@ export default withTracker(() => {
 		const recipe = recipeInfos[i];
 		recipeInfoObj[recipe._id] = recipe;
 	}
-	const ready = orderHandler.ready() && recipeHandler.ready();
+
+
+	const chefInfoHandler = Meteor.subscribe("chefInfos", chefIds);
+	const temp = Chefs.find({_id: {$in: chefIds}}).fetch();
+	const chefAddressMap = new Map();
+	for (let i = 0; i < temp.length; i++) {
+		chefAddressMap.set(temp[i]._id, temp[i].address);
+	}
+
+	const ready = orderHandler.ready() && recipeHandler.ready() && chefInfoHandler.ready();
 	return {
 		recipes: recipeInfoObj,
+		chefAddressMap: chefAddressMap,
 		orders: orders,
 		ready: ready,
 	};

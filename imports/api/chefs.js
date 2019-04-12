@@ -10,7 +10,9 @@ if (Meteor.isServer) {
 	Meteor.publish("chefInfo", function(chefId) {
 		return Chefs.find({_id: chefId});
 	});
-
+	Meteor.publish("chefInfos", function(chefIds) {
+		return Chefs.find({_id: {$in: chefIds}});
+	});
 }
 
 Meteor.methods({
