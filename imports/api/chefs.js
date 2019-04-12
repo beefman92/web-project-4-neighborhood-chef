@@ -53,6 +53,24 @@ Meteor.methods({
 			});
 		}
 	},
+	"chef.update"(chefInfo) {
+		if (Meteor.isServer) {
+			if (!Meteor.userId()) {
+				throw new Meteor.Error("not-authorized");
+			}
+			check(chefInfo, Object);
+
+			const geoCodingClient = geoCoding({accessToken: Meteor.settings.MAPBOX_API_TOKEN});
+			const completeAddress = chefInfo.address + ", " + chefInfo.city + ", " + chefInfo.postcode;
+			geoCodingClient.forwardGeocode({query: completeAddress, limit: 2}).send().then(response => {
+				const body = response.body;
+				const location = body.features[0].center;
+				chefInfo.latitude = location[1];
+				chefInfo.longitude = location[0];
+				Chefs.update({_id: Meteor.userId()}, {$set: chefInfo});
+			});
+		}
+	},
 	"chefs.getNearbyChefs"(latitude, longitude) {
 		const minLatitude = latitude - 0.01;
 		const maxLatitude = latitude + 0.01;

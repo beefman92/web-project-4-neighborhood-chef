@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { withTracker } from "meteor/react-meteor-data";
-import { Button } from "semantic-ui-react";
+import {Button, Icon} from "semantic-ui-react";
 import { Meteor } from "meteor/meteor";
 import PropTypes from "prop-types";
 
@@ -79,10 +79,7 @@ class ShoppingCart extends Component {
 					<img id={"shoppingCartIcon"} src="/images/shopping-cart.png" alt="shopping cart"/>
 				</div>
 				<div id={"shoppingCart"}>
-					<button type="button" className="close" onClick={() => this.handleClose()}>
-						<span aria-hidden="true">×</span>
-						<span className="sr-only">Close</span>
-					</button>
+					<div style={{textAlign: "right"}}><Icon link name={"close"} onClick={() => this.handleClose()}/></div>
 					<div id={"shoppingCartTitle"}>Shopping List</div>
 					<hr/>
 					<div id={"shoppingCartItemsList"}>

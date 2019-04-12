@@ -18,7 +18,6 @@ const degreeToPixels = [ { zoom: 0, pixels: 1.7492 }, { zoom: 1, pixels: 3.4984 
 export default class SearchBoard extends Component {
 	constructor(props) {
 		super(props);
-		// console.log("Construct SearchBoard");
 		this.state = {
 			search: false,
 			searchField: "",
@@ -52,7 +51,6 @@ export default class SearchBoard extends Component {
 			this.yRange.push(this.state.viewport.height / obj.pixels);
 			this.xRange.push(this.state.viewport.width / obj.pixels);
 		}
-		// console.log("SearchBoard did mount");
 		navigator.geolocation.getCurrentPosition((position) => {
 			const latitude = position.coords.latitude;
 			const longitude = position.coords.longitude;
@@ -76,12 +74,7 @@ export default class SearchBoard extends Component {
 		});
 	}
 
-	componentWillUnmount() {
-		// console.log("SearchBoard will unmount");
-	}
-
 	renderChefList() {
-		// console.log("renderChefList");
 		return this.state.chefs.map((chef, index) => {
 			const className = chef.highLight ? "chef-list-item-hover" : "chef-list-item";
 			const chefInfo = chef.info;
@@ -95,10 +88,10 @@ export default class SearchBoard extends Component {
 					onMouseOut={() => this.handleOnMouseOverOrOut(index)}>
 					<Card.Content>
 						<Card.Header><Link to={"/chef/" + chefInfo._id}>{chefInfo.name}</Link></Card.Header>
-						<Card.Meta>
-							{chefInfo.description}
-						</Card.Meta>
+					</Card.Content>
+					<Card.Content>
 						<Card.Description>
+							<b>Introduction: </b>{chefInfo.description}<br />
 							<b>Address: </b>{chefInfo.address}<br />
 							<b>Contact: </b>{chefInfo.phone}<br />
 						</Card.Description>
@@ -119,7 +112,7 @@ export default class SearchBoard extends Component {
 				);
 			});
 			return (
-				<Card.Content extra>
+				<Card.Content>
 					<ul className={"recipe-list"}>
 						{content}
 					</ul>

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Meteor } from "meteor/meteor";
 
 import "../style/homepage.css";
-import { Menu, Button } from "semantic-ui-react";
+import { Menu, Button, Container } from "semantic-ui-react";
 
 export default class NavigationBar extends Component {
 	renderUserMode() {
@@ -35,12 +35,14 @@ export default class NavigationBar extends Component {
 
 	render() {
 		return (
-			<Menu>
-				<Menu.Item header>Neighborhood Chef</Menu.Item>
-				<Menu.Item>
-					<Link to={"/"}>Home</Link>
-				</Menu.Item>
-				{this.renderUserMode()}
+			<Menu style={{marginBottom: "4em"}}>
+				<Container>
+					<Menu.Item header>Neighborhood Chef</Menu.Item>
+					<Menu.Item>
+						<Link to={"/"}>Home</Link>
+					</Menu.Item>
+					{this.renderUserMode()}
+				</Container>
 			</Menu>
 		);
 	}

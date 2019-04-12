@@ -3,7 +3,7 @@ import { withTracker } from "meteor/react-meteor-data";
 import { Link } from "react-router-dom";
 import { Meteor } from "meteor/meteor";
 import PropTypes from "prop-types";
-import { Grid, Card, Container } from "semantic-ui-react";
+import {Grid, Card, Container, Segment} from "semantic-ui-react";
 
 import { Chefs } from "../../api/chefs";
 import { Recipes } from "../../api/recipes";
@@ -14,22 +14,34 @@ import "../style/chef-page.css";
 class ChefPage extends Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			count: {}
+		};
 	}
 
 	renderChefInfo() {
 		if (this.props.ready === true) {
 			return (
-				<Grid.Row>
-					<Grid.Column width={"16"}>
-						<h2>Chef&#39;s introduction: </h2>
+				<Grid.Row divided>
+					<Grid.Column width={"3"}>
+						<img
+							style={{width: "100px", borderRadius: "50%"}}
+							src="https://st2.depositphotos.com/4908849/9632/v/950/depositphotos_96323190-stock-illustration-italian-chef-vector.jpg"
+							alt="chef's profile picture"/>
 					</Grid.Column>
-					<Grid.Column width={"4"}>
-						<h3>{this.props.chefInfo.name}</h3>
-					</Grid.Column>
-					<Grid.Column width={"12"}>
-						<div>{this.props.chefInfo.description}</div>
-						<div>{this.props.chefInfo.address}</div>
-						<div>{this.props.chefInfo.phone}</div>
+					<Grid.Column width={"13"}>
+						<Segment>
+							<h2>{this.props.chefInfo.name}&#39;s Information</h2>
+						</Segment>
+						<Segment>
+							{this.props.chefInfo.description}
+						</Segment>
+						<Segment>
+							{"Address: " + this.props.chefInfo.address}
+						</Segment>
+						<Segment>
+							{"Contact: " + this.props.chefInfo.phone}
+						</Segment>
 					</Grid.Column>
 				</Grid.Row>
 			);
@@ -39,10 +51,13 @@ class ChefPage extends Component {
 	}
 
 	renderRecipes() {
-		// TODO: get orders number from server end.
 		const recipes = this.props.recipes.map(recipe => {
+			let orderCount = this.state.count[recipe._id];
+			if (orderCount === undefined || orderCount === null) {
+				orderCount = 0;
+			}
 			return (
-				<Card key={recipe._id} color='orange'>
+				<Card key={recipe._id} color="orange">
 					<Card.Content>
 						<Card.Header>
 							<Link to={"/recipe/" + recipe._id}>
@@ -56,7 +71,7 @@ class ChefPage extends Component {
 						</Card.Description>
 					</Card.Content>
 					<Card.Content extra>
-						{"0 customers have ordered"}
+						{orderCount > 1 ?  orderCount + " customers have ordered" : orderCount + " customer has ordered"}
 					</Card.Content>
 				</Card>
 			);
@@ -84,6 +99,24 @@ class ChefPage extends Component {
 		// 		<Breadcrumb.Item active>Chef</Breadcrumb.Item>
 		// 	</Breadcrumb>
 		// );
+	}
+
+	UNSAFE_componentWillReceiveProps(nextProps) {
+		if (nextProps.ready && nextProps.recipes.length > 0) {
+			const recipeIds = [];
+			for (let i = 0; i < nextProps.recipes.length; i++) {
+				recipeIds.push(nextProps.recipes[i]._id);
+			}
+			Meteor.call("recipeComments.getNumberOfOrders", recipeIds, (error, result) => {
+				const countObject = {};
+				result.forEach(value => {
+					countObject[value._id] = value.finished_count;
+				});
+				this.setState({
+					count: countObject,
+				});
+			});
+		}
 	}
 
 	render() {

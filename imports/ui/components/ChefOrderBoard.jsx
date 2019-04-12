@@ -4,10 +4,10 @@ import { Meteor } from "meteor/meteor";
 import { Orders } from "../../api/orders";
 import { Recipes } from "../../api/recipes";
 import { NEW, ACCEPTED, READY, PICKED_UP, FINISHED, CANCELED, CANCELING} from "../../api/order-status";
-import {Grid, Card, Icon, Segment, Button} from "semantic-ui-react";
+import {Grid, Card, Segment, Button} from "semantic-ui-react";
 import PropTypes from "prop-types";
 
-class ChefOrderList extends Component {
+class ChefOrderBoard extends Component {
 	constructor(props) {
 		super(props);
 	}
@@ -38,9 +38,6 @@ class ChefOrderList extends Component {
 											</div>
 											<div className={"header-order-id"}>
 												{"Order id: " + value._id}
-											</div>
-											<div className={"header-delete-icon"}>
-												<Icon link name={"trash"} onClick={() => this.handleDeleteOrder(value._id)}/>
 											</div>
 										</div>
 									</Card.Header>
@@ -204,7 +201,7 @@ class ChefOrderList extends Component {
 	}
 }
 
-ChefOrderList.propTypes = {
+ChefOrderBoard.propTypes = {
 	recipes: PropTypes.object,
 	orders: PropTypes.array,
 	ready: PropTypes.bool,
@@ -242,4 +239,4 @@ export default withTracker(() => {
 		orders: orders,
 		ready: ready,
 	};
-})(ChefOrderList);
+})(ChefOrderBoard);
