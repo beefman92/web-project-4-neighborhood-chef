@@ -101,11 +101,3 @@ recipes中对象的结构
 | order_id | string | 订单的id, 和orders 表中的id 一致 |
 | customer_id | string | 下单用户的id |
 | chef_id | string | 厨师的id |
-
-表名：recipe_count  
-说明：在解决如何在meteor中使用aggregate方法之前，先用这个表临时记一下  
-
-| 字段名 | 类型 | 说明 |
-|-------|-----|------|
-| _id | string | 对应于recipe的id |
-| finished_count | number | 完成的订单数 |

@@ -110,7 +110,7 @@ class ChefPage extends Component {
 			Meteor.call("recipeComments.getNumberOfOrders", recipeIds, (error, result) => {
 				const countObject = {};
 				result.forEach(value => {
-					countObject[value._id] = value.finished_count;
+					countObject[value._id] = value.count;
 				});
 				this.setState({
 					count: countObject,

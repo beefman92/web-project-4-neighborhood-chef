@@ -2,7 +2,6 @@ import { Meteor } from "meteor/meteor";
 import { Mongo } from "meteor/mongo";
 
 export const RecipeComments = new Mongo.Collection("recipe_comments");
-export const RecipeCount = new Mongo.Collection("recipe_count");
 
 if (Meteor.isServer) {
 	Meteor.publish("recipeComments", function(recipeId) {
@@ -16,7 +15,13 @@ Meteor.methods({
 			if (!Meteor.userId()) {
 				throw new Meteor.Error("not-authorized");
 			}
-			return RecipeCount.find({_id: {$in: recipeIds}}).fetch();
+
+			const option = [{
+				$match: {recipe_id: {$in: recipeIds}},
+			}, {
+				$group: {_id: "$recipe_id", count: {$sum: 1}}
+			}];
+			return RecipeComments.rawCollection().aggregate(option).toArray();
 		}
 	},
 	"recipeComments.comment"(orderId, recipeIds, rating, comment) {

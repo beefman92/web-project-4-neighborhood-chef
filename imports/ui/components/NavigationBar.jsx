@@ -25,8 +25,13 @@ export default class NavigationBar extends Component {
 						<Button onClick={() => {Meteor.logout(() => {this.forceUpdate();});}}>Logout</Button>
 					</Menu.Item>
 					<Menu.Item>
-						<Link to={"/mypage"}><Button color={"blue"}>My Page</Button></Link>
+						<Link to={"/mypage"}><Button color={"blue"}>User Page</Button></Link>
 					</Menu.Item>
+					{Meteor.user().profile.is_chef ?
+						<Menu.Item>
+							<Link to={"/chefinfo"}><Button color={"blue"}>Chef Page</Button></Link>
+						</Menu.Item>
+						: ""}
 				</Menu.Menu>
 
 			);

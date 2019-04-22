@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import {Meteor} from "meteor/meteor";
 import { Redirect } from "react-router-dom";
 import { Segment, Button, Grid, Container, Menu } from "semantic-ui-react";
-import { Link } from "react-router-dom";
 
 import NavigationBar from "../components/NavigationBar";
 import CustomerOrderBoard from "../components/CustomerOrderBoard";
@@ -23,7 +22,7 @@ export default class MyPage extends Component {
 	renderChefInfoLink() {
 		if (Meteor.user().profile.is_chef || this.state.isChef) {
 			return (
-				<Link to={"/chefinfo"}><Button color={"green"}>Add new recipe</Button></Link>
+				""
 			);
 		} else {
 			return  (
