@@ -73,6 +73,23 @@ Meteor.methods({
 			});
 		}
 	},
+	"chefs.getAddress"(latitude, longitude) {
+		check(latitude, Number);
+		check(longitude, Number);
+		if (Meteor.isServer) {
+			const geoCodingClient = geoCoding({accessToken: Meteor.settings.MAPBOX_API_TOKEN});
+			return geoCodingClient.reverseGeocode({
+				query: [longitude, latitude],
+				limit: 5,
+				types: ["address"],
+			}).send().then(response => {
+				const match = response.body;
+				return match;
+			}).catch(error => {
+				return error;
+			});
+		}
+	},
 	"chefs.getNearbyChefs"(latitude, longitude) {
 		const minLatitude = latitude - 0.01;
 		const maxLatitude = latitude + 0.01;

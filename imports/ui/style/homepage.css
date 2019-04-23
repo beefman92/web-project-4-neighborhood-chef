@@ -45,3 +45,185 @@
 ul.recipe-list {
     list-style-type: none;
 }
+
+.top-part-background-image {
+    height: 600px;
+    background-image: url(http://www.deskier.com/uploads/allimg/160913/1-160913154348.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.top-part-shadow {
+    height: 100%;
+    width: 100%;
+    background: rgba(0,0,0,0.35);    /*shadow的最佳实现*/
+}
+
+.top-part {
+    height: 100%;
+}
+
+.homepage-menu {
+    background-color: transparent !important;
+}
+
+.homepage-menu-button {
+    background-color: transparent !important;
+    color: white !important;
+    font-weight: 700 !important;
+    border-width: 0 0 3px 0 !important;
+    border-radius: 0 !important;
+    border-style: solid !important;
+    border-color: transparent !important;
+}
+
+.homepage-menu-button:hover {
+    border-color: white !important;
+}
+
+.trademark-row {
+    margin-top: 80px;
+}
+
+.trademark-title {
+    padding-right: 1em;
+    position: relative;
+    bottom: 40px;
+    display: inline-block;
+    color: white;
+}
+
+.trademark-icon {
+    height: 100%;
+    display: inline-block;
+}
+
+.search-input-option {
+    padding: 0.3em 0.8em;
+    border-width: 1px;
+    border-style: solid;
+    border-color: white;
+    background-color: white;
+    display: inline-block;
+    font-size: 17px;
+    cursor: pointer;
+}
+
+.search-input-option-active {
+    background-color: #FF3008;
+    border-color: #FF3008;
+    color: white;
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.search-input-wrapper {
+    height: 48px;
+    width: 100%
+}
+
+.search-input-label {
+    box-sizing: border-box;
+    padding: .67857143em 0 .67857143em 1em;
+    border-width: 0;
+    border-color: rgba(34,36,38,.15);
+    border-style: solid;
+    font-size: 18px;
+    font-weight: 600;
+    background-color: white;
+    width: 47.5% ;
+    height: 48px;
+    display: inline-block;  /*inline的元素不能设置width和height，必须用inline-block或block*/
+}
+
+.search-input-label-left {
+    border-right-width: 1px;
+    border-top-width: 1px;
+}
+
+.search-input-label-right {
+    border-left-width: 1px;
+    border-top-width: 1px;
+}
+
+.search-input-label-content {
+    display: inline-block;
+    width: 10%
+}
+
+.search-input {
+    padding: 0 1em;
+    border: 0 solid transparent;
+    border-radius: .28571429rem;
+    height: 23px;
+    font-size: 18px;
+    width: 90%
+}
+
+.search-input:focus {
+    outline: none;  /*这样设置可以取消input被选中时默认的蓝色边框*/
+}
+
+.search-input-button {
+    float: right;
+    border-width: 0;
+    display: inline-block;
+    padding: 0.9em 0;
+    height: 48px;
+    width: 5%;
+    text-align: center;
+    background-color: #FF3008;
+    cursor: pointer;
+}
+
+.search-input-button:focus {
+    outline: none;
+}
+
+.search-input-button-image {
+    height: 100%;
+    cursor: pointer;
+}
+
+.address-options-wrapper {
+    width: 100%;
+}
+
+.address-options-placeholder {
+    display: inline-block;
+    width: 47.5%;
+    border-right-width: 1px;
+    border-style: solid;
+    border-color: transparent;
+}
+
+.address-options-list {
+    background-color: white;
+    display: inline-block;
+    width: 47.5%;
+    border-style: solid;
+    border-color: rgba(34,36,38,.15);
+    max-height: 150px;
+    border-width: 1px;
+    overflow: auto;
+    font-size: 16px;
+}
+
+.address-options-item {
+    padding: .67857143em 1em;
+    border-style: solid;
+    border-color: rgba(34,36,38,.15);
+    border-width: 1px 0;
+}
+
+.address-options-item:hover {
+    background-color: #FF3008;
+    border-color: #FF3008;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.bottom-part {
+    margin: 4em;
+}

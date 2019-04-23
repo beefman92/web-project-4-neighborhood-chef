@@ -40,7 +40,7 @@ export default class NavigationBar extends Component {
 
 	render() {
 		return (
-			<Menu style={{marginBottom: "4em"}}>
+			<Menu style={{marginBottom: "4em"}} inverted color={"orange"}>
 				<Container>
 					<Menu.Item header>Neighborhood Chef</Menu.Item>
 					<Menu.Item>
