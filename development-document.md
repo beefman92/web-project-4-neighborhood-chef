@@ -48,6 +48,7 @@
 | customer_id | string | 下订单用户的id, 和Users表中的id一致 |
 | ready_time | date | 可以取货的时间 |
 | recipes | array\[object\] | 订单中菜的信息 |
+| comment_status | number | 是否已经评论过 |
 
 recipes中对象的结构
 
@@ -98,6 +99,20 @@ recipes中对象的结构
 | comment_time | date | 添加评论的时间 |
 | recipe_id | string | 备料表的id, 和 recipes 表中的id一致 |
 | count | number | 订单中这道菜的数量 |
+| order_id | string | 订单的id, 和orders 表中的id 一致 |
+| customer_id | string | 下单用户的id |
+| chef_id | string | 厨师的id |
+
+表名：chef_comments
+说明：这张表用于记录用户对于厨师的评价信息  
+
+| 字段名 | 类型 | 说明 |
+|-------|-----|------|
+| _id | string | 评论的id，meteor自动生成 |
+| comment | string | 评价的具体内容 |
+| rating | number | 对厨师的评分 |
+| create_time | date | 创建这条记录的时间 |
+| comment_time | date | 添加评论的时间 |
 | order_id | string | 订单的id, 和orders 表中的id 一致 |
 | customer_id | string | 下单用户的id |
 | chef_id | string | 厨师的id |

@@ -23,7 +23,8 @@
 }
 
 .order-picture {
-    width: 100%;
+    max-width: 100%;
+    max-height: 100px;
 }
 
 .header-wrapper {
@@ -41,4 +42,18 @@
 .header-delete-icon {
     flex: 10%;
     text-align: right;
+}
+
+.comment-image {
+    max-width: 100%;
+    max-height: 100px;
+}
+
+.comment-recipe-name {
+    font-weight: 600;
+}
+
+.subheader {
+    font-size: 1.2em;
+    font-weight: 600;
 }

@@ -71,7 +71,7 @@ export default class MyPage extends Component {
 							</Grid.Row>
 							<Grid.Row>
 								<Grid.Column width={3}>
-									<Menu fluid vertical>
+									<Menu fluid vertical pointing>
 										<Menu.Item
 											color={"orange"}
 											name={INFO}

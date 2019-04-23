@@ -8,7 +8,7 @@ import $ from "jquery";
 import NavigationBar from "../components/NavigationBar";
 import ShoppingCart from "../components/ShoppingCart";
 import { Recipes } from "../../api/recipes";
-import { RecipeComments } from "../../api/recipe-comments";
+import { RecipeComments } from "../../api/comments";
 import "../style/recipe-page.css";
 
 class Recipe extends Component {

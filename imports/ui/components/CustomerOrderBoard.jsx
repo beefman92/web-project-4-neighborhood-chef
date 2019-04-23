@@ -6,26 +6,23 @@ import { Link } from "react-router-dom";
 
 import { Orders } from "../../api/orders";
 import { Recipes } from "../../api/recipes";
-import { Grid, Card, Segment, Button, Icon, Form, Radio, TextArea } from "semantic-ui-react";
-import { ACCEPTED, CANCELING, CANCELED, FINISHED, NEW, PICKED_UP, READY } from "../../api/order-status";
+import { Grid, Card, Segment, Button, Icon} from "semantic-ui-react";
+import { ACCEPTED, CANCELING, CANCELED, FINISHED, NEW, PICKED_UP, READY, HAS_COMMENT, NO_COMMENT } from "../../api/order-status";
 import "../style/my-page.css";
 import {Chefs} from "../../api/chefs";
+import CommentModal from "../components/CommentModal";
 
 class CustomerOrderBoard extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			openComments: Array(this.props.orders.length).fill(false),
-			rating: Array(this.props.orders.length).fill("5"),
-			comments: Array(this.props.orders.length).fill(""),
 		};
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
 		this.setState({
 			openComments: Array(nextProps.orders.length).fill(false),
-			rating: Array(this.props.orders.length).fill("5"),
-			comments: Array(this.props.orders.length).fill(""),
 		});
 	}
 
@@ -78,7 +75,7 @@ class CustomerOrderBoard extends Component {
 												{this.renderOperationButton(value, index)}
 											</Grid.Column>
 										</Grid.Row>
-										{this.renderCommentForm(index)}
+										{this.renderCommentForm(value, index)}
 									</Grid>
 								</Card.Content>
 								<Card.Content>
@@ -92,102 +89,23 @@ class CustomerOrderBoard extends Component {
 		);
 	}
 
-	handleChangeRating(index, data) {
-		const newArray = this.state.rating.slice();
-		newArray[index] = data.value;
+	handleModalClose(index) {
+		const open = this.state.openComments.slice();
+		open[index] = false;
 		this.setState({
-			rating: newArray,
+			openComments: open,
 		});
 	}
 
-	handleChangeComments(index, event) {
-		const newArray = this.state.comments.slice();
-		newArray[index] = event.target.value;
-		this.setState({
-			comments: newArray,
-		});
-	}
-
-	handleSubmit(index, e) {
-		e.preventDefault();
-		const rating = Number(this.state.rating[index]);
-		const comment = this.state.comments[index];
-		const order = this.props.orders[index];
-		const orderId = order._id;
-		const recipeIds = [];
-		for (let i = 0; i < order.recipes.length; i++) {
-			recipeIds.push(order.recipes[i].recipe_id);
-		}
-		Meteor.call("recipeComments.comment", orderId, recipeIds, rating, comment, (error) => {
-			if (error === undefined || error === null) {
-				const newRating = this.state.rating.slice();
-				newRating[index] = "5";
-				const newComments = this.state.comments.slice();
-				newComments[index] = "";
-				const newOpen = this.state.openComments.slice();
-				newOpen[index] = false;
-				this.setState({
-					openComments: newOpen,
-					rating: newRating,
-					comments: newComments,
-				});
-			}
-		});
-	}
-
-	renderCommentForm(index) {
-		if (this.state.openComments[index]) {
+	renderCommentForm(order, index) {
+		if (order.comment_status === NO_COMMENT) {
 			return (
-				<Grid.Row>
-					<Form onSubmit = {(e) => this.handleSubmit(index, e)}>
-						<Form.Group inline>
-							<label>Rating</label>
-							<Form.Field
-								control={Radio}
-								label="1"
-								value="1"
-								checked={this.state.rating[index] === "1"}
-								onChange={(e, data) => this.handleChangeRating(index, data, e)}
-							/>
-							<Form.Field
-								control={Radio}
-								label="2"
-								value="2"
-								checked={this.state.rating[index] === "2"}
-								onChange={(e, data) => this.handleChangeRating(index, data, e)}
-							/>
-							<Form.Field
-								control={Radio}
-								label="3"
-								value="3"
-								checked={this.state.rating[index] === "3"}
-								onChange={(e, data) => this.handleChangeRating(index, data, e)}
-							/>
-							<Form.Field
-								control={Radio}
-								label="4"
-								value="4"
-								checked={this.state.rating[index] === "4"}
-								onChange={(e, data) => this.handleChangeRating(index, data, e)}
-							/>
-							<Form.Field
-								control={Radio}
-								label="5"
-								value="5"
-								checked={this.state.rating[index] === "5"}
-								onChange={(e, data) => this.handleChangeRating(index, data, e)}
-							/>
-						</Form.Group>
-						<Form.Field
-							control={TextArea}
-							name="comments"
-							label="comments"
-							value={this.state.comments[index]}
-							placeholder='Tell us more about you...'
-							onChange={(e) => this.handleChangeComments(index, e)}/>
-						<Button positive>Submit</Button>
-					</Form>
-				</Grid.Row>
+				<CommentModal
+					order={order}
+					recipes={this.props.recipes}
+					open={this.state.openComments[index]}
+					onClose={() => this.handleModalClose(index)}
+				/>
 			);
 		} else {
 			return "";
@@ -251,9 +169,15 @@ class CustomerOrderBoard extends Component {
 				</div>
 			);
 		case FINISHED:
-			return (
-				<Button onClick={() => this.openCommentForm(index)} positive>Comment</Button>
-			);
+			if (order.comment_status === HAS_COMMENT) {
+				return "Thanks for your comments. ";
+			} else if (order.comment_status === NO_COMMENT) {
+				return (
+					<Button onClick={() => this.openCommentForm(index)} positive>Comment</Button>
+				);
+			} else {
+				return "";
+			}
 		case CANCELING:
 			return (
 				<Button disabled={true} negative>Canceling</Button>

@@ -7,7 +7,7 @@ import { Menu, Button, Container } from "semantic-ui-react";
 
 export default class NavigationBar extends Component {
 	renderUserMode() {
-		if (!Meteor.userId()) {
+		if (!Meteor.user()) {
 			return (
 				<Menu.Menu position="right">
 					<Menu.Item>
@@ -33,7 +33,6 @@ export default class NavigationBar extends Component {
 						</Menu.Item>
 						: ""}
 				</Menu.Menu>
-
 			);
 		}
 	}

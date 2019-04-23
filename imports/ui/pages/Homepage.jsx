@@ -69,7 +69,7 @@ export default class Homepage extends Component {
 	}
 
 	renderMenu() {
-		if (!Meteor.userId()) {
+		if (!Meteor.user()) {
 			return (
 				<Menu.Menu position="right">
 					<Menu.Item>

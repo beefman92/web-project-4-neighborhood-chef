@@ -4,7 +4,7 @@ import { check } from "meteor/check";
 
 import { Recipes } from "./recipes";
 import { Orders } from "./orders";
-import { NEW } from "./order-status";
+import { NEW, COMMENT_DISABLE } from "./order-status";
 
 export const ShoppingCarts = new Mongo.Collection("shopping_carts");
 
@@ -105,6 +105,7 @@ Meteor.methods({
 					count: value.count,
 				};
 			});
+			newOrder.comment_status = COMMENT_DISABLE;
 			const id = Orders.insert(newOrder);
 
 			// remove these entries in shopping_cart
