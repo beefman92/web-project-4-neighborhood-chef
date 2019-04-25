@@ -25,8 +25,8 @@ export default class SearchBoard extends Component {
 			viewport: {
 				latitude: 0.0,
 				longitude: 0.0,
-				width: 600,
-				height: 600,
+				width: 400,
+				height: 400,
 				zoom: 14,
 			},
 			currentLat: 0.0,
@@ -324,10 +324,10 @@ export default class SearchBoard extends Component {
 						</Grid.Column>
 					</Grid.Row>
 					<Grid.Row>
-						<Grid.Column width={"7"}>
+						<Grid.Column width={"10"}>
 							{this.renderChefList()}
 						</Grid.Column>
-						<Grid.Column width={"9"}>
+						<Grid.Column width={"6"}>
 							{this.state.token !== null && this.state.token !== "" ? this.renderMap() : "Map is loading. Please wait. "}
 						</Grid.Column>
 					</Grid.Row>

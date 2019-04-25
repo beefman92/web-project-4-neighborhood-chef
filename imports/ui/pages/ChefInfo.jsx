@@ -3,12 +3,13 @@ import {Meteor} from "meteor/meteor";
 import { Container, Button, Form, Grid, Header, Segment, Menu} from "semantic-ui-react";
 import PropTypes from "prop-types";
 import { withTracker } from "meteor/react-meteor-data";
-import { Row, Col, CardColumns, Card } from "react-bootstrap";
+import { CardColumns, Card } from "react-bootstrap";
 
 import NavigationBar from "../components/NavigationBar";
 import ChefOrderBoard from "../components/ChefOrderBoard";
 import { Chefs } from "../../api/chefs";
 import { Recipes } from "../../api/recipes";
+import ChefInfoBoard from "../components/ChefInfoBoard";
 
 const INFO = "INFO";
 const RECIPES = "RECIPES";
@@ -38,18 +39,6 @@ class ChefInfo extends Component {
 		});
 	}
 
-	//let chef edit their own information
-	handleChefInfo1(e) {
-		e.preventDefault();
-		let address = e.target.address.value.trim();
-		let phone = e.target.phone.value.trim();
-		Meteor.call("chefs.updateInfo", address, phone,(error)=>{
-			if (error === undefined || error === null) {
-				// TODO: error handler
-			}
-		});
-	}
-
 	handleRecipeInfo(id, index) {
 		let name = this.state.recipe[index].name;
 		let picture = this.state.recipe[index].picture;
@@ -73,68 +62,6 @@ class ChefInfo extends Component {
 		this.setState({
 			recipe: newRecipe
 		});
-	}
-
-	handleChefInfoOnChange(e) {
-		const newChefInfo = Object.assign({}, this.state.chefInfo);//copy chefInfo to newChefInfo
-		newChefInfo[e.target.name] = e.target.value; // change
-		this.setState({
-			chefInfo: newChefInfo  //设置回去
-		});
-	}
-
-	renderChefInfo() {
-		if (this.props.ready === true) {
-			return (
-				<Segment compact>
-					<Header>
-						{this.props.chefInfo.name}
-					</Header>
-					<Col lg={"9"}>
-						<div>{this.props.chefInfo.description}</div>
-						<div>Address: {this.props.chefInfo.address}</div>
-						<div>Phone: {this.props.chefInfo.phone}</div>
-					</Col>
-					<div>
-						<Form
-							size = "big"
-							onSubmit = {this.handleChefInfo1.bind(this)}
-							onValidate
-						>
-							<Segment stacked>
-								<label htmlFor="address">Address</label>
-								<Form.Input
-									id ={"address"}
-									fluid
-									iconPosition = "left"
-									type = "text"
-									name = "address"
-									placeholder = "address"
-									size = "big"
-									value={this.state.chefInfo.address}
-									onChange={(e) => this.handleChefInfoOnChange(e)}
-								/>
-								<label htmlFor="phoneNumber">Phone</label>
-								<Form.Input
-									id={"phoneNumber"}
-									fluid
-									iconPosition = "left"
-									type = "number"
-									name = "phone"
-									placeholder = "phone number"
-									size = "big"
-									value={this.state.chefInfo.phone}
-									onChange={(e) => this.handleChefInfoOnChange(e)}
-								/>
-							</Segment>
-							<Button color={"green"} floated="right">Edit</Button>
-						</Form>
-					</div>
-				</Segment>
-			);
-		} else {
-			return (<Row><Col lg={"12"}><p>Loading...</p></Col></Row>);
-		}
 	}
 
 	renderRecipes() {
@@ -294,7 +221,7 @@ class ChefInfo extends Component {
 	renderSubPage() {
 		switch (this.state.activeItem) {
 		case INFO:
-			return this.renderChefInfo();
+			return (<ChefInfoBoard />);
 		case RECIPES:
 			return this.renderRecipes();
 		case ORDERS:
@@ -314,16 +241,22 @@ class ChefInfo extends Component {
 				<p>Loading...</p>
 			);
 		}
+		let pictureUrl = "";
+		if (!this.props.chefInfo.picture) {
+			pictureUrl = "https://st2.depositphotos.com/4908849/9632/v/950/depositphotos_96323190-stock-illustration-italian-chef-vector.jpg"
+		} else {
+			pictureUrl = this.props.chefInfo.picture;
+		}
 		return (
 			<div>
 				<NavigationBar />
 				<Container>
 					<Grid>
 						<Grid.Row divided>
-							<Grid.Column width={"2"}>
+							<Grid.Column className={"chef-icon-wrapper"} width={"2"}>
 								<img
-									style={{width: "100px", borderRadius: "50%"}}
-									src="https://st2.depositphotos.com/4908849/9632/v/950/depositphotos_96323190-stock-illustration-italian-chef-vector.jpg"
+									className={"chef-icon"}
+									src={pictureUrl}
 									alt="chef's profile picture"/>
 							</Grid.Column>
 							<Grid.Column width={"14"}>
@@ -334,7 +267,7 @@ class ChefInfo extends Component {
 						</Grid.Row>
 						<Grid.Row>
 							<Grid.Column width={"2"}>
-								<Menu fluid vertical>
+								<Menu fluid vertical pointing>
 									<Menu.Item
 										color={"orange"}
 										name={INFO}
@@ -365,11 +298,6 @@ class ChefInfo extends Component {
 
 
 ChefInfo.propTypes = {
-	match: PropTypes.shape({
-		params: PropTypes.shape({
-			chefId: PropTypes.string.isRequired,
-		}),
-	}),
 	chefInfo: PropTypes.object,
 	history: PropTypes.object,
 	recipes: PropTypes.array,

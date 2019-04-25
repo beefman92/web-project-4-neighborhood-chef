@@ -25,11 +25,13 @@ class ChefInfoBoard extends Component {
 
 	handleSave() {
 		const newProfile = {
-			name: this.state.info.name,
 			description: this.state.info.description,
+			picture: this.state.info.picture,
 			address: this.state.info.address,
 			city: this.state.info.city,
 			postcode: this.state.info.postcode,
+			province: this.state.info.province,
+			country: this.state.info.country,
 			phone: this.state.info.phone,
 		};
 		Meteor.call("chef.update", newProfile, (error) => {
@@ -52,10 +54,13 @@ class ChefInfoBoard extends Component {
 			info: {
 				name: this.props.chefInfo.name,
 				description: this.props.chefInfo.description,
+				picture: this.props.chefInfo.picture,
+				phone: this.props.chefInfo.phone,
 				address: this.props.chefInfo.address,
 				city: this.props.chefInfo.city,
 				postcode: this.props.chefInfo.postcode,
-				phone: this.props.chefInfo.phone,
+				province: this.props.chefInfo.province,
+				country: this.props.chefInfo.country,
 			}
 		});
 	}
@@ -91,10 +96,13 @@ class ChefInfoBoard extends Component {
 			info: {
 				name: this.props.chefInfo.name,
 				description: this.props.chefInfo.description,
+				picture: this.props.chefInfo.picture,
+				phone: this.props.chefInfo.phone,
 				address: this.props.chefInfo.address,
 				city: this.props.chefInfo.city,
 				postcode: this.props.chefInfo.postcode,
-				phone: this.props.chefInfo.phone,
+				province: this.props.chefInfo.province,
+				country: this.props.chefInfo.country,
 			}
 		});
 	}
@@ -104,6 +112,7 @@ class ChefInfoBoard extends Component {
 		const value = event.target.value;
 		const newInfo = Object.assign({}, this.state.info);
 		newInfo[name] = value;
+		console.log(newInfo);
 		this.setState({
 			info: newInfo,
 		});
@@ -119,47 +128,44 @@ class ChefInfoBoard extends Component {
 							name="name"
 							value={this.state.info.name}
 							placeholder="name"
+							disabled={true}
 							onChange={this.handleModifyForm}/>
-					</Segment>
-					<Segment>
 						<Form.Input
 							label={"Description"}
 							name="description"
 							value={this.state.info.description}
 							placeholder="description"
 							onChange={this.handleModifyForm}/>
-					</Segment>
-					<Segment>
 						<Form.Input
-							label={"Address"}
-							name="address"
-							value={this.state.info.address}
-							placeholder="address"
+							label={"Picture"}
+							name="picture"
+							value={this.state.info.picture}
+							placeholder="picture"
 							onChange={this.handleModifyForm}/>
-					</Segment>
-					<Segment>
-						<Form.Input
-							label={"City"}
-							name="city"
-							value={this.state.info.city}
-							placeholder="city"
-							onChange={this.handleModifyForm}/>
-					</Segment>
-					<Segment>
-						<Form.Input
-							label={"Postcode"}
-							name="postcode"
-							value={this.state.info.postcode}
-							placeholder="postcode"
-							onChange={this.handleModifyForm}/>
-					</Segment>
-					<Segment>
 						<Form.Input
 							label={"Phone"}
 							name="phone"
 							value={this.state.info.phone}
 							placeholder="phone"
 							onChange={this.handleModifyForm}/>
+					</Segment>
+					<Segment>
+						<Form.Input
+							label={"Address"}
+							fluid
+							name="address"
+							placeholder="address"
+							value={this.state.info.address}
+							onChange={this.handleModifyForm}
+						/>
+						<Form.Group widths={"equal"}>
+							<Form.Input fluid label="City" name={"city"} placeholder="City" value={this.state.info.city} onChange={this.handleModifyForm}/>
+							<Form.Input fluid label="Postcode" name={"postcode"} placeholder="Postcode" value={this.state.info.postcode} onChange={this.handleModifyForm}/>
+						</Form.Group>
+						<Form.Group widths={"equal"}>
+							<Form.Input fluid label="Province/State" name={"province"} placeholder="Province/State" value={this.state.info.province} onChange={this.handleModifyForm}/>
+							<Form.Input fluid label="Country" name={"country"} placeholder="Country" value={this.state.info.country} onChange={this.handleModifyForm}/>
+						</Form.Group>
 					</Segment>
 				</Segment.Group>
 				<Message

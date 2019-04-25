@@ -28,9 +28,12 @@
 | _id | string | 对应于users中的_id字段 |
 | name | string | 厨师昵称 |
 | description | string | 厨师的简介 |
+| formal_address | string | 从地图api中获得的规范化地址 |
 | address | string | 厨师详细地址 |
 | city | string | 厨师所在城市 |
 | postcode | string | 厨师所在地区的邮编 |
+| province | string | 厨师所在省或州 |
+| country | string | 厨师所在国家 |
 | latitude | number | 维度 |
 | longitude | number | 经度 |
 | phone | string | 厨师联系电话 |

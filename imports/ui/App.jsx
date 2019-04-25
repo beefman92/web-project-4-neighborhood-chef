@@ -8,13 +8,13 @@ import Signup from "./pages/Signup.jsx";
 import MyPage from "./pages/MyPage.jsx";
 import ChefPage from "./pages/ChefPage.jsx";
 import ChefInfo from "./pages/ChefInfo.jsx";
-import SearchResultPage from "./pages/SearchResultPage";
+import SearchPage from "./pages/SearchPage";
 
 const App = () => (
 	<div>
 		<Router>
 			<Route exact path="/" component={Homepage} />
-			<Route exact path={"/search"} component={SearchResultPage}/>
+			<Route path={"/search"} component={SearchPage}/>
 			<Route exact path={"/chef/:chefId"} component={ChefPage} />
 			<Route exact path="/recipe/:recipeId" component={Recipe} />
 			<Route exact path="/login" component = {Login} />

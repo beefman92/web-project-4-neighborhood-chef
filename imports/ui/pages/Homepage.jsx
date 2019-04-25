@@ -6,6 +6,7 @@ import { withTracker } from "meteor/react-meteor-data";
 import PropTypes from "prop-types";
 import { Card } from "semantic-ui-react";
 
+import CroppedImage from "../components/CroppedImage";
 import "../style/homepage.css";
 
 const OPTION_FOOD = 0;
@@ -49,7 +50,11 @@ class Homepage extends Component {
 
 	handleSearch(event) {
 		event.preventDefault();
-		console.log(this.props.history);
+		console.log(this.state);
+		this.props.history.push("/search", {
+			find: this.state.find,
+			near: this.state.near,
+		});
 	}
 
 	handleClickOption(option) {
@@ -95,7 +100,7 @@ class Homepage extends Component {
 						if (innerResult !== undefined && innerResult !== null) {
 							const rating = new Map();
 							innerResult.forEach((value) => {
-								rating.set(value._id, value.totalRating / value.count);
+								rating.set(value._id, (value.totalRating / value.count).toFixed(2));
 							});
 							this.setState({
 								currentCity: result.city,
@@ -146,7 +151,7 @@ class Homepage extends Component {
 					</Menu.Item>
 					{Meteor.user().profile.is_chef ?
 						<Menu.Item>
-							<Link className={"homepage-menu-button-wrapper"} to={"/chefinfo"}><Button className={"homepage-menu-button"} color={"blue"}>Chef Page</Button></Link>
+							<Link className={"homepage-menu-button-wrapper"} to={"/chefinfo/"}><Button className={"homepage-menu-button"} color={"blue"}>Chef Page</Button></Link>
 						</Menu.Item>
 						: ""}
 				</Menu.Menu>
@@ -202,7 +207,7 @@ class Homepage extends Component {
 						onChange={(e) => this.handleInputOnChange(e)}/>
 				</label>
 				<button className={"search-input-button"} onClick={(e) => this.handleSearch(e)}>
-					<img className={"search-input-button-image"} src={"/images/search.svg"} alt={"search button"} onClick={(e) => this.handleSearch(e)}/>
+					<img className={"search-input-button-image"} src={"/images/search.svg"} alt={"search button"} />
 				</button>
 			</div>
 		);
@@ -289,11 +294,23 @@ class Homepage extends Component {
 	renderNearBusiness() {
 		return (
 			this.state.nearBusiness.map((value) => {
+				const rating = this.state.rating.get(value._id);
+				let pictureUrl = "";
+				if (!value.picture) {
+					pictureUrl = "https://st2.depositphotos.com/4908849/9632/v/950/depositphotos_96323190-stock-illustration-italian-chef-vector.jpg";
+				} else {
+					pictureUrl = value.picture;
+				}
 				return (
 					<Card key={value._id}>
+						<CroppedImage
+							url={pictureUrl}
+							height={"200px"}
+							alt={"chef picture"}
+							onClick={() => {this.props.history.push(/chef/ + value._id);}}/>
 						<Card.Content>
 							<Card.Header>
-								{value.name}
+								<Link to={/chef/ + value._id}>{value.name}</Link>
 							</Card.Header>
 							<Card.Meta>
 								<div>
@@ -308,7 +325,7 @@ class Homepage extends Component {
 							</Card.Description>
 						</Card.Content>
 						<Card.Content extra>
-							Rating: {this.state.rating.get(value._id) + "/5.0"}
+							Rating: {(rating === undefined || rating === null ? "0.00" : rating) + "/5.00"}
 						</Card.Content>
 					</Card>
 				);
@@ -371,6 +388,7 @@ class Homepage extends Component {
 }
 
 Homepage.propTypes = {
+	history: PropTypes.object,
 	user: PropTypes.object,
 };
 

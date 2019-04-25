@@ -240,3 +240,21 @@ ul.recipe-list {
 .recommendation-title {
     color: #FF3008;
 }
+
+.cropped-image-wrapper {
+    overflow: hidden;
+    width: 100%;
+}
+
+.cropped-image {
+    width: 100%;
+}
+
+.clickable-cropped-image {
+    width: 100%;
+}
+
+.clickable-cropped-image:hover {
+    width: 100%;
+    cursor: pointer;
+}

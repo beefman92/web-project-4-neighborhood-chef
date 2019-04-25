@@ -15,43 +15,49 @@ if (Meteor.isServer) {
 	});
 }
 
+function buildAddress(addressObject) {
+	return addressObject.address + ", " + addressObject.city + ", " + addressObject.province
+		+ " " + addressObject.postcode + ", " + addressObject.country;
+}
+
+function buildAddress2(address, city, province, postcode, country) {
+	return address + ", " + city + ", " + province + " " + postcode + ", " + country;
+}
+
 Meteor.methods({
-	"chefs.insertOrUpdate"() {
+	"chefs.insert"(chefInfo) {
 		if (Meteor.isServer) {
 			if (!Meteor.userId()) {
 				throw new Meteor.Error("not-authorized");
 			}
-			const chefInfo = {};
-			chefInfo.name = Meteor.user().username;
-			chefInfo.address = Meteor.user().profile.address;
-			chefInfo.phone = Meteor.user().profile.phone;
+			check(chefInfo, Object);
 			check(chefInfo.name, String);
-			check(chefInfo.address, String);
+			check(chefInfo.description, String);
+			check(chefInfo.optionAddress, Object);
 			check(chefInfo.phone, String);
+			const address = buildAddress(chefInfo.optionAddress);
 			const geoCodingClient = geoCoding({accessToken: Meteor.settings.MAPBOX_API_TOKEN});
-			geoCodingClient.forwardGeocode({query: chefInfo.address, limit: 2}).send().then(response => {
+			geoCodingClient.forwardGeocode({query: address, limit: 2}).send().then(response => {
 				const body = response.body;
 				const accurateAdd = body.features[0].place_name;
 				const location = body.features[0].center;
-				chefInfo.address = accurateAdd;
-				if (chefInfo._id === undefined || chefInfo._id === null || chefInfo._id === "") {
-					// create new restaurant
-
-					Chefs.insert({
-						_id: Meteor.userId(),
-						name: chefInfo.name,
-						address: chefInfo.address,
-						latitude: location[1],
-						longitude: location[0],
-						phone: chefInfo.phone}, function() {
-						Meteor.users.update({_id: Meteor.userId()}, {$set: {"profile.is_chef": true}});
-					});
-				} else {
-					// update restaurant info
-					// TODO: check if this user has already had a restaurant.
-					Chefs.update({_id: chefInfo._id},
-						{$set: {address: chefInfo.address, latitude: location[1], longitude: location[0], phone: chefInfo.phone}});
-				}
+				chefInfo.formal_address = accurateAdd;
+				Chefs.insert({
+					_id: Meteor.userId(),
+					name: chefInfo.name,
+					description: chefInfo.description,
+					picture: chefInfo.picture,
+					formal_address: chefInfo.formal_address,
+					address: chefInfo.optionAddress.address,
+					city: chefInfo.optionAddress.city,
+					postcode: chefInfo.optionAddress.postcode,
+					province: chefInfo.optionAddress.province,
+					country: chefInfo.optionAddress.country,
+					latitude: location[1],
+					longitude: location[0],
+					phone: chefInfo.phone}, function() {
+					Meteor.users.update({_id: Meteor.userId()}, {$set: {"profile.is_chef": true}});
+				});
 			});
 		}
 	},
@@ -63,7 +69,12 @@ Meteor.methods({
 			check(chefInfo, Object);
 
 			const geoCodingClient = geoCoding({accessToken: Meteor.settings.MAPBOX_API_TOKEN});
-			const completeAddress = chefInfo.address + ", " + chefInfo.city + ", " + chefInfo.postcode;
+			const completeAddress = buildAddress2(
+				chefInfo.address,
+				chefInfo.city,
+				chefInfo.postcode,
+				chefInfo.province,
+				chefInfo.country);
 			geoCodingClient.forwardGeocode({query: completeAddress, limit: 2}).send().then(response => {
 				const body = response.body;
 				const location = body.features[0].center;
