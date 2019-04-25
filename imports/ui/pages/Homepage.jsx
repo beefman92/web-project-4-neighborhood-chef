@@ -37,6 +37,12 @@ class Homepage extends Component {
 	}
 
 	buildUsualAddress() {
+		if (Meteor.user().profile.addressBook === undefined) {
+			return {
+				address: [],
+				city: "San Jose",
+			};
+		}
 		return Meteor.user().profile.addressBook.map((value) => {
 			const address = value.address + ", " + value.city + ", "
 				+ value.province + " " + value.postcode + ", " + value.country;
