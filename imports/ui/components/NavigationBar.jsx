@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { Meteor } from "meteor/meteor";
+import { Menu, Button, Container } from "semantic-ui-react";
+import { withTracker } from "meteor/react-meteor-data";
 
 import "../style/homepage.css";
-import { Menu, Button, Container } from "semantic-ui-react";
 
-export default class NavigationBar extends Component {
+class NavigationBar extends Component {
 	renderUserMode() {
 		if (!Meteor.user()) {
 			return (
@@ -51,3 +52,9 @@ export default class NavigationBar extends Component {
 		);
 	}
 }
+
+export default withTracker(() => {
+	return {
+		user: Meteor.user(),
+	};
+})(NavigationBar);

@@ -2,25 +2,54 @@ import React, { Component } from "react";
 import {Button, Container, Grid, Menu} from "semantic-ui-react";
 import {Meteor} from "meteor/meteor";
 import {Link} from "react-router-dom";
+import { withTracker } from "meteor/react-meteor-data";
+import PropTypes from "prop-types";
+import { Card } from "semantic-ui-react";
 
 import "../style/homepage.css";
 
 const OPTION_FOOD = 0;
 const OPTION_CHEF = 1;
 
-export default class Homepage extends Component {
+class Homepage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			searchOption: OPTION_FOOD,
-			addressOptions: ["hahahaha"],
+			usualAddressOptions: [],
+			recommendAddressOptions: [],
 			find: "",
 			near: "",
+			currentCity: "",
+			nearBusiness: [],
+			rating: null,
 		};
+	}
+
+	UNSAFE_componentWillReceiveProps(nextProps) {
+		if (nextProps.user) {
+			const address = this.buildUsualAddress();
+			this.setState({
+				usualAddressOptions: address,
+			});
+		}
+	}
+
+	buildUsualAddress() {
+		return Meteor.user().profile.addressBook.map((value) => {
+			const address = value.address + ", " + value.city + ", "
+				+ value.province + " " + value.postcode + ", " + value.country;
+			const city = value.city;
+			return {
+				address: address,
+				city: city,
+			};
+		});
 	}
 
 	handleSearch(event) {
 		event.preventDefault();
+		console.log(this.props.history);
 	}
 
 	handleClickOption(option) {
@@ -37,6 +66,12 @@ export default class Homepage extends Component {
 
 	componentDidMount() {
 		this.getCurrentLocation();
+		if (Meteor.user()) {
+			const address = this.buildUsualAddress();
+			this.setState({
+				usualAddressOptions: address,
+			});
+		}
 	}
 
 	getCurrentLocation() {
@@ -45,9 +80,29 @@ export default class Homepage extends Component {
 			const longitude = position.coords.longitude;
 			Meteor.call("chefs.getAddress", latitude, longitude, (error, result) => {
 				if (result !== undefined && result !== null) {
-					const addressOptions = result.features.map(value => value.place_name);
+					const recommendAddress = result.features.map(value => value.place_name);
 					this.setState({
-						addressOptions: addressOptions,
+						recommendAddressOptions: recommendAddress,
+					});
+				}
+			});
+			Meteor.call("chef.getNearChefByGeo", latitude, longitude, (error, result) => {
+				if (result !== undefined && result !== null) {
+					const chefIds = result.chefs.map((value) => {
+						return value.chef_id;
+					});
+					Meteor.call("chefComments.getRating", chefIds, (innerError, innerResult) => {
+						if (innerResult !== undefined && innerResult !== null) {
+							const rating = new Map();
+							innerResult.forEach((value) => {
+								rating.set(value._id, value.totalRating / value.count);
+							});
+							this.setState({
+								currentCity: result.city,
+								nearBusiness: result.chefs,
+								rating: rating,
+							});
+						}
 					});
 				}
 			});
@@ -84,14 +139,14 @@ export default class Homepage extends Component {
 			return (
 				<Menu.Menu position="right">
 					<Menu.Item>
-						<Button onClick={() => {Meteor.logout(() => {this.forceUpdate();});}}>Logout</Button>
+						<Button className={"homepage-menu-button"} onClick={() => {Meteor.logout(() => {this.forceUpdate();});}}>Logout</Button>
 					</Menu.Item>
 					<Menu.Item>
-						<Link to={"/mypage"}><Button color={"blue"}>User Page</Button></Link>
+						<Link className={"homepage-menu-button-wrapper"} to={"/mypage"}><Button className={"homepage-menu-button"} color={"blue"}>User Page</Button></Link>
 					</Menu.Item>
 					{Meteor.user().profile.is_chef ?
 						<Menu.Item>
-							<Link to={"/chefinfo"}><Button color={"blue"}>Chef Page</Button></Link>
+							<Link className={"homepage-menu-button-wrapper"} to={"/chefinfo"}><Button className={"homepage-menu-button"} color={"blue"}>Chef Page</Button></Link>
 						</Menu.Item>
 						: ""}
 				</Menu.Menu>
@@ -153,33 +208,112 @@ export default class Homepage extends Component {
 		);
 	}
 
-	handleClickAddressOption(index) {
-		const address = this.state.addressOptions[index];
+	handleClickRecommendAddress(index) {
+		const address = this.state.recommendAddressOptions[index];
 		this.setState({
-			addressOptions: [],
+			recommendAddressOptions: [],
+			usualAddressOptions: [],
 			near: address,
 		});
 	}
 
+	handleClickUsualAddress(index) {
+		const address = this.state.usualAddressOptions[index];
+		// TODO: 是否需要更新city信息，以及是否更新推荐信息
+		this.setState( {
+			recommendAddressOptions: [],
+			usualAddressOptions: [],
+			near: address.address,
+		});
+	}
+
 	renderAddressOptions() {
-		if (this.state.addressOptions.length > 0 && this.state.near === "") {
+		if ((this.state.recommendAddressOptions.length > 0 || this.state.usualAddressOptions.length > 0)
+			&& this.state.near === "") {
 			return (
 				<div className={"address-options-wrapper"}>
 					<div className={"address-options-placeholder"}>{""}</div>
 					<div className={"address-options-list"}>
-						{this.state.addressOptions.map((value, index) => {
-							return (
-								<div className={"address-options-item"} key={index} onClick={() => this.handleClickAddressOption(index)}>
-									{value}
-								</div>
-							);
-						})}
+						{this.renderUsualAddressOptions()}
+						{this.renderRecommendAddressOptions()}
 					</div>
 				</div>
 			);
 		} else {
 			return "";
 		}
+	}
+
+	renderUsualAddressOptions() {
+		if (this.state.usualAddressOptions.length > 0) {
+			return (
+				<div>
+					<div className={"address-options-tip"}>
+						Your commonly used address
+					</div>
+					{this.state.usualAddressOptions.map((value, index) => {
+						return (
+							<div className={"address-options-item"} key={index} onClick={() => this.handleClickUsualAddress(index)}>
+								{value.address}
+							</div>
+						);
+					})}
+				</div>
+			);
+		} else {
+			return "";
+		}
+	}
+
+	renderRecommendAddressOptions() {
+		if (this.state.recommendAddressOptions.length > 0) {
+			return (
+				<div>
+					<div className={"address-options-tip"}>
+						Recommended address based on current location
+					</div>
+					{this.state.recommendAddressOptions.map((value, index) => {
+						return (
+							<div className={"address-options-item"} key={index} onClick={() => this.handleClickRecommendAddress(index)}>
+								{value}
+							</div>
+						);
+					})}
+				</div>
+			);
+		} else {
+			return "";
+		}
+	}
+
+	renderNearBusiness() {
+		return (
+			this.state.nearBusiness.map((value) => {
+				return (
+					<Card key={value._id}>
+						<Card.Content>
+							<Card.Header>
+								{value.name}
+							</Card.Header>
+							<Card.Meta>
+								<div>
+									Address: {value.address}
+								</div>
+								<div>
+									Contact: {value.phone}
+								</div>
+							</Card.Meta>
+							<Card.Description>
+								{value.description}
+							</Card.Description>
+						</Card.Content>
+						<Card.Content extra>
+							Rating: {this.state.rating.get(value._id) + "/5.0"}
+						</Card.Content>
+					</Card>
+				);
+			})
+		);
 	}
 
 	render() {
@@ -217,8 +351,15 @@ export default class Homepage extends Component {
 					<Container>
 						<Grid>
 							<Grid.Row>
+								<Grid.Column className={"recommendation-title"} textAlign={"center"} width={"16"}>
+									<h2>Popular & New Business{this.state.currentCity !== "" ? " In " + this.state.currentCity : " Around You"}</h2>
+								</Grid.Column>
+							</Grid.Row>
+							<Grid.Row>
 								<Grid.Column width={"16"}>
-									<h2>Popular & New Business Around You</h2>
+									<Card.Group itemsPerRow={3}>
+										{this.renderNearBusiness()}
+									</Card.Group>
 								</Grid.Column>
 							</Grid.Row>
 						</Grid>
@@ -228,3 +369,13 @@ export default class Homepage extends Component {
 		);
 	}
 }
+
+Homepage.propTypes = {
+	user: PropTypes.object,
+};
+
+export default withTracker(() => {
+	return {
+		user: Meteor.user(),
+	};
+})(Homepage);

@@ -48,5 +48,14 @@ Meteor.methods({
 				{$set: {comment: chefComment.comment, rating: chefComment.rating, comment_time: commentTime}});
 			return Orders.update({_id: chefComment.orderId}, {$set: {comment_status: HAS_COMMENT}});
 		}
-	}
+	},
+	"chefComments.getRating"(chefIds) {
+		check(chefIds, Array);
+		if (Meteor.isServer) {
+			const options = [{
+				$group: {_id: "$chef_id", totalRating: {$sum: "$rating"}, count: {$sum: 1}}
+			}];
+			return ChefComments.rawCollection().aggregate(options).toArray();
+		}
+	},
 });

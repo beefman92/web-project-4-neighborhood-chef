@@ -1,5 +1,4 @@
 import { Meteor } from "meteor/meteor";
-import { check } from "meteor/check";
 
 if (Meteor.isServer) {
 	// Accounts.validateNewUser(user => {
@@ -29,14 +28,13 @@ if (Meteor.isServer) {
 }
 
 Meteor.methods({
-	"users.updateProfile"(username, newProfile) {
-		check(username, String);
+	"users.updateProfile"(newProfile) {
 		if (!Meteor.userId()) {
 			throw new Meteor.Error("not-authorized");
 		}
 		if (Meteor.isServer) {
 			return Meteor.users.update({_id: Meteor.userId()},
-				{$set: {username: username, profile: newProfile}});
+				{$set: {profile: newProfile}});
 		}
 	}
 });

@@ -17,12 +17,17 @@ export default class Signup extends React.Component {
 
 	onSubmit(e) {
 		e.preventDefault();
-		let username = e.target.username.value.trim();
-		let email = e.target.email.value.trim();
-		let password = e.target.password.value.trim();
-		let address = e.target.address.value.trim();
-		let gender = e.target.gender.value.trim();
-		let phone = e.target.phone.value.trim();
+		const username = e.target.username.value.trim();
+		const email = e.target.email.value.trim();
+		const password = e.target.password.value.trim();
+		const addressObject = {
+			address: e.target.address.value.trim(),
+			city: e.target.city.value.trim(),
+			postcode: e.target.postcode.value.trim(),
+			province: e.target.province.value.trim(),
+			country: e.target.country.value.trim(),
+		};
+		const phone = e.target.phone.value.trim();
 
 		if (password.length < 8) {
 			return this.setState( {
@@ -31,12 +36,12 @@ export default class Signup extends React.Component {
 
 		}
 		let profile = {
-			address: address, gender: gender, phone: phone, is_chef: false,
+			addressBook: [addressObject], phone: phone, is_chef: false,
 		};
 		Accounts.createUser(
 			{username: username, email: email, password: password, profile: profile},
 			err => {
-				if(err) {
+				if (err) {
 					this.setState( {
 						error: err.reason
 					});
@@ -63,7 +68,7 @@ export default class Signup extends React.Component {
 						id = "grid"
 					>
 						<Grid.Row columns = {2}>
-							<Grid.Column>
+							<Grid.Column textAlign={"left"}>
 								<Header as = "h2" textAlign = "center" id = "signupHeader">
 								Sign Up
 								</Header>
@@ -82,7 +87,6 @@ export default class Signup extends React.Component {
 								<Form
 									size = "huge"
 									onSubmit = {this.onSubmit.bind(this)}
-									onValidate
 								>
 									<Segment stacked>
 										<label htmlFor="mail">Email</label>
@@ -129,17 +133,14 @@ export default class Signup extends React.Component {
 											placeholder = "address"
 											size = "huge"
 										/>
-										<label htmlFor="gender">Gender</label>
-										<Form.Input
-											id={"gender"}
-											fluid
-											icon = "genderless"
-											iconPosition = "left"
-											type = "gender"
-											name = "gender"
-											placeholder = "gender"
-											size = "huge"
-										/>
+										<Form.Group widths={"equal"}>
+											<Form.Input fluid label="City" name={"city"} placeholder="City" />
+											<Form.Input fluid label="Postcode" name={"postcode"} placeholder="Postcode" />
+										</Form.Group>
+										<Form.Group widths={"equal"}>
+											<Form.Input fluid label="Province/State" name={"province"} placeholder="Province/State" />
+											<Form.Input fluid label="Country" name={"country"} placeholder="Country" />
+										</Form.Group>
 										<label htmlFor="phone">Phone</label>
 										<Form.Input
 											id={"phone"}

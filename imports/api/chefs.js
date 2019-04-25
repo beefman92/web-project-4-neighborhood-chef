@@ -80,7 +80,6 @@ Meteor.methods({
 			const geoCodingClient = geoCoding({accessToken: Meteor.settings.MAPBOX_API_TOKEN});
 			return geoCodingClient.reverseGeocode({
 				query: [longitude, latitude],
-				limit: 5,
 				types: ["address"],
 			}).send().then(response => {
 				const match = response.body;
@@ -117,11 +116,50 @@ Meteor.methods({
 		Chefs.update ({_id: Meteor.userId()},
 			{$set: {address: address, phone: phone}});
 	},
-
 	"token.getMapToken"() {
 		if (Meteor.isServer) {
 			const token = Meteor.settings.MAPBOX_API_TOKEN;
 			return token;
 		}
+	},
+	"chef.getNearChefByGeo"(latitude, longitude) {
+		check(latitude, Number);
+		check(longitude, Number);
+		if (Meteor.isServer) {
+			const geoCodingClient = geoCoding({accessToken: Meteor.settings.MAPBOX_API_TOKEN});
+			return geoCodingClient.reverseGeocode({
+				query: [longitude, latitude],
+				types: ["place"],
+			}).send().then(response => {
+				const match = response.body;
+				if (match.features.length > 0) {
+					const city = match.features[0].text;
+					// TODO: what if two cities have same name?
+
+					const minLatitude = latitude - 0.3;
+					const maxLatitude = latitude + 0.3;
+					const minLongitude = longitude - 0.3;
+					const maxLongitude = longitude + 0.3;
+					const regexp = ".*" + city + ".*";
+					const chefs = Chefs.find(
+						{$and: [
+							{city: {$regex: regexp, $options: "i"}},
+							{latitude: {$lt: maxLatitude}},
+							{latitude: {$gt: minLatitude}},
+							{longitude: {$lt: maxLongitude}},
+							{longitude: {$gt: minLongitude}}]}).fetch();
+					return {
+						city: city,
+						chefs: chefs,
+					};
+				}
+				return null;
+			}).catch(error => {
+				return error;
+			});
+		}
+	},
+	"chef.getNearChefByAddress"(address) {
+
 	}
 });

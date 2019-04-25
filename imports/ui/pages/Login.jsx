@@ -1,7 +1,8 @@
 import React from "react";
 import {Meteor} from "meteor/meteor";
 import { Link } from "react-router-dom";
-import {Divider, Container, Button, Form, Grid, Header, Segment, Label} from "semantic-ui-react";
+import {Divider, Container, Button, Form, Grid, Header, Segment, Label, Modal} from "semantic-ui-react";
+
 import "../style/login.css";
 import NavigationBar from "../components/NavigationBar";
 import PropTypes from "prop-types";
@@ -10,9 +11,24 @@ export default class Login extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			error: ""
+			error: "",
+			open: false,
 		};
+		this.timeoutHandler = null;
 	}
+
+	componentDidMount() {
+		if (Meteor.userId()) {
+			this.setState({
+				open: true,
+			}, () => {
+				this.timeoutHandler = setTimeout(() => {
+					this.props.history.push("/");
+				}, 5000);
+			});
+		}
+	}
+
 	onSubmit(e) {
 		e.preventDefault();
 		let username = e.target.username.value.trim();
@@ -26,10 +42,16 @@ export default class Login extends React.Component {
 				this.setState({
 					error: ""
 				});
-				// this.props.history.push("/mypage");
-				this.props.history.push("/");
+				this.props.history.push("/mypage");
+				// this.props.history.push("/");
 			}
 		});
+	}
+
+	componentWillUnmount() {
+		if (this.timeoutHandler != null) {
+			clearTimeout(this.timeoutHandler);
+		}
 	}
 
 	render() {
@@ -41,7 +63,6 @@ export default class Login extends React.Component {
 						textAlign = "center"
 						style = {{height: "50vh"}}
 						divided ="vertically"
-						verticalAligh = "middle"
 						id = "grid"
 					>
 						<Segment placeholder>
@@ -108,6 +129,23 @@ export default class Login extends React.Component {
 						</Segment>
 					</Grid>
 				</Container>
+				<Modal open={this.state.open}>
+					<Modal.Header>
+						Oops
+					</Modal.Header>
+					<Modal.Content>
+						<Modal.Description>
+							<div>
+								It seems like you have logged in at this moment.
+								If you want to log in or sign up another account, please log out this current account first.
+							</div>
+							<div>
+								This page will jump to homepage in 5 seconds. If the auto jump does not work, click the link below.<br/>
+								<Link to={"/"}>Homepage</Link>
+							</div>
+						</Modal.Description>
+					</Modal.Content>
+				</Modal>
 			</div>
 		);
 
