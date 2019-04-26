@@ -1,0 +1,37 @@
+.chef-list-item {
+    background-color: white !important;
+    transition: background-color 0.2s;
+}
+
+.chef-list-item-hover {
+    background-color: orange !important;
+    transition: background-color 0.2s;
+}
+
+ul.recipe-list {
+    list-style-type: none;
+}
+
+.pin-picture {
+    position: absolute;
+    cursor: pointer;
+    top: -34px;
+    left: -17px;
+    width: 34px;
+    height: 34px;
+    transition: width 0.2s, height 0.2s, top 0.2s, left 0.2s;
+}
+
+.pin-picture-hover {
+    position: absolute;
+    top: -44px;
+    left: -22px;
+    width: 44px;
+    height: 44px;
+    transition: width 0.2s, height 0.2s, top 0.2s, left 0.2s;
+}
+
+.map-wrapper {
+    position: sticky;
+    top: 0;
+}

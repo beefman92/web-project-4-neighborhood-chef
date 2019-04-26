@@ -57,10 +57,12 @@ class Homepage extends Component {
 	handleSearch(event) {
 		event.preventDefault();
 		console.log(this.state);
-		this.props.history.push("/search", {
-			find: this.state.find,
-			near: this.state.near,
-		});
+		if (this.state.find !== "" && this.state.near !== "") {
+			this.props.history.push("/search", {
+				find: this.state.find,
+				near: this.state.near,
+			});
+		}
 	}
 
 	handleClickOption(option) {

@@ -1,0 +1,100 @@
+.search-bar-trademark-title {
+    padding-right: 10px;
+    position: relative;
+    bottom: 40px;
+    display: inline-block;
+    color: black;
+}
+
+.search-bar-trademark-icon {
+    width: 80px;
+    display: inline-block;
+}
+
+.search-input-option {
+    padding: 0.3em 0.8em;
+    border-width: 1px;
+    border-style: solid;
+    border-color: white;
+    background-color: white;
+    display: inline-block;
+    font-size: 17px;
+    cursor: pointer;
+}
+
+.search-input-option-active {
+    background-color: #FF3008;
+    border-color: #FF3008;
+    color: white;
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.search-input-wrapper {
+    height: 48px;
+    width: 100%
+}
+
+.search-input-label {
+    box-sizing: border-box;
+    padding: .67857143em 0 .67857143em 1em;
+    border-width: 1px;
+    border-color: rgba(34,36,38,.15);
+    border-style: solid;
+    font-size: 18px;
+    font-weight: 600;
+    background-color: white;
+    width: 47.5% ;
+    height: 48px;
+    display: inline-block;  /*inline的元素不能设置width和height，必须用inline-block或block*/
+}
+
+.search-input-label-left {
+    border-right-width: 1px;
+    border-top-width: 1px;
+}
+
+.search-input-label-right {
+    border-left-width: 1px;
+    border-top-width: 1px;
+}
+
+.search-input-label-content {
+    display: inline-block;
+    width: 10%
+}
+
+.search-input {
+    padding: 0 1em;
+    border: 0 solid transparent;
+    border-radius: .28571429rem;
+    background-color: transparent;
+    height: 23px;
+    font-size: 18px;
+    width: 90%
+}
+
+.search-input:focus {
+    outline: none;  /*这样设置可以取消input被选中时默认的蓝色边框*/
+}
+
+.search-input-button {
+    float: right;
+    border-width: 0;
+    display: inline-block;
+    padding: 0.9em 0;
+    height: 48px;
+    width: 5%;
+    text-align: center;
+    background-color: #FF3008;
+    cursor: pointer;
+}
+
+.search-input-button:focus {
+    outline: none;
+}
+
+.search-input-button-image {
+    height: 100%;
+    cursor: pointer;
+}

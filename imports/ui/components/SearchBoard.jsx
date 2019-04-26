@@ -4,7 +4,7 @@ import { Meteor } from "meteor/meteor";
 import ReactMapGL, { NavigationControl, Marker } from "react-map-gl";
 import { Link } from "react-router-dom";
 
-import "../style/homepage.css";
+import "../style/search-bar.css";
 
 const degreeToPixels = [ { zoom: 0, pixels: 1.7492 }, { zoom: 1, pixels: 3.4984 }, { zoom: 2, pixels: 6.9968 }, { zoom: 3, pixels: 13.9936 },
 	{ zoom: 4, pixels: 27.9872 }, { zoom: 5, pixels: 55.9744 }, { zoom: 6, pixels: 111.9488 }, { zoom: 7, pixels: 223.8976 },
@@ -33,8 +33,6 @@ export default class SearchBoard extends Component {
 			currentLon: 0.0,
 			token: "",
 		};
-		this.searchByFood = true;
-		this.searchByChef = false;
 		this.yRange = [];
 		this.xRange = [];
 	}
@@ -176,26 +174,6 @@ export default class SearchBoard extends Component {
 		});
 	}
 
-	handleOnChange(event) {
-		this.setState({
-			[event.target.name]: event.target.value,
-		});
-	}
-
-	handleOnKeyDown(event) {
-		if (event.key === "Enter") {
-			event.preventDefault();
-			this.handleOnSubmit();
-		}
-	}
-
-	handleSearchOptionOnClick() {
-		this.searchByChef = !this.searchByChef;
-		this.searchByFood = !this.searchByFood;
-		document.getElementById("searchByFood").checked = this.searchByFood;
-		document.getElementById("searchByChef").checked = this.searchByChef;
-	}
-
 	handleOnSubmit() {
 		if (this.searchByFood) {
 			Meteor.call("recipes.searchByName", this.state.searchField, (error, recipeResult) => {
@@ -291,39 +269,8 @@ export default class SearchBoard extends Component {
 	render() {
 		return (
 			<Container>
-				<Grid divided>
-					<Grid.Row>
-						<Grid.Column width={3}>
-							<form>
-								<div>
-									<input type="radio" id="searchByFood" name="search-by-food" value="food" checked
-										onClick={() => this.handleSearchOptionOnClick()} onChange={() => {}} />
-									<label htmlFor="searchByFood">Search by food</label>
-								</div>
-								<div>
-									<input type="radio" id="searchByChef" name="search-by-chef" value="chef"
-										onClick={() => this.handleSearchOptionOnClick()} onChange={() => {}} />
-									<label htmlFor="searchByChef">Search by chef</label>
-								</div>
-							</form>
-						</Grid.Column>
-						<Grid.Column width={10}>
-							<Form>
-								<Form.Field>
-									<label>Search</label>
-									<input
-										name={"searchField"}
-										value={this.state.searchField}
-										onChange={(e) => this.handleOnChange(e)}
-										onKeyDown={(e) => this.handleOnKeyDown(e)}/>
-								</Form.Field>
-							</Form>
-						</Grid.Column>
-						<Grid.Column width={3}>
-							<Button color={"green"} onClick={() => this.handleOnSubmit()}>Search</Button>
-						</Grid.Column>
-					</Grid.Row>
-					<Grid.Row>
+				<Grid>
+					<Grid.Row divided>
 						<Grid.Column width={"10"}>
 							{this.renderChefList()}
 						</Grid.Column>

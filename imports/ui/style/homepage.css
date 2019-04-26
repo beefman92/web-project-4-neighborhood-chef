@@ -1,32 +1,3 @@
-.pin-picture {
-    position: absolute;
-    cursor: pointer;
-    top: -34px;
-    left: -17px;
-    width: 34px;
-    height: 34px;
-    transition: width 0.2s, height 0.2s, top 0.2s, left 0.2s;
-}
-
-.pin-picture-hover {
-    position: absolute;
-    top: -44px;
-    left: -22px;
-    width: 44px;
-    height: 44px;
-    transition: width 0.2s, height 0.2s, top 0.2s, left 0.2s;
-}
-
-.chef-list-item {
-    background-color: white !important;
-    transition: background-color 0.2s;
-}
-
-.chef-list-item-hover {
-    background-color: orange !important;
-    transition: background-color 0.2s;
-}
-
 .nav-link {
     color: black;
 }
@@ -40,10 +11,6 @@
     /*border-color: yellow;*/
     background-color: #C1FFFF;
     background-color: green;
-}
-
-ul.recipe-list {
-    list-style-type: none;
 }
 
 .top-part-background-image {
@@ -154,6 +121,7 @@ ul.recipe-list {
 .search-input {
     padding: 0 1em;
     border: 0 solid transparent;
+    background-color: transparent;
     border-radius: .28571429rem;
     height: 23px;
     font-size: 18px;
