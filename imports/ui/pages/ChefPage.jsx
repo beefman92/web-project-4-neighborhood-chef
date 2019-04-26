@@ -9,7 +9,16 @@ import { Chefs } from "../../api/chefs";
 import { Recipes } from "../../api/recipes";
 import NavigationBar from "../components/NavigationBar";
 import ShoppingCart from "../components/ShoppingCart";
+import SearchBar from "../components/SearchBar";
+import WebsiteIndex from "../components/WebsiteIndex";
 import "../style/chef-page.css";
+import Footer from "../components/Footer";
+
+const sections = [
+	{key: "Home", content: "Home", link: true, href: "/"},
+	{key: "Search", content: "Search", link: true, href: "/search"},
+	{key: "Chef", content: "Chef", link: false, active: true},
+];
 
 class ChefPage extends Component {
 	constructor(props) {
@@ -119,6 +128,13 @@ class ChefPage extends Component {
 		}
 	}
 
+	handleSearch(event, data) {
+		event.preventDefault();
+		if (data.find && data.near) {
+			this.props.history.push("/search", {...data});
+		}
+	}
+
 	render() {
 		return (
 			<div>
@@ -126,11 +142,14 @@ class ChefPage extends Component {
 				<ShoppingCart chefId={this.props.match.params.chefId}/>
 				<Container>
 					<Grid divided>
+						<SearchBar onSubmit={(e, d) => this.handleSearch(e, d)}/>
+						<WebsiteIndex sections={sections}/>
 						{this.renderBreadcrumbs()}
 						{this.renderChefInfo()}
 						{this.renderRecipes()}
 					</Grid>
 				</Container>
+				<Footer/>
 			</div>
 		);
 	}
@@ -145,6 +164,7 @@ ChefPage.propTypes = {
 	chefInfo: PropTypes.object,
 	recipes: PropTypes.array,
 	ready: PropTypes.bool,
+	history: PropTypes.object,
 };
 
 export default withTracker((props) => {

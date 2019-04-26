@@ -10,6 +10,7 @@ import ChefOrderBoard from "../components/ChefOrderBoard";
 import { Chefs } from "../../api/chefs";
 import { Recipes } from "../../api/recipes";
 import ChefInfoBoard from "../components/ChefInfoBoard";
+import Footer from "../components/Footer";
 
 const INFO = "INFO";
 const RECIPES = "RECIPES";
@@ -243,7 +244,7 @@ class ChefInfo extends Component {
 		}
 		let pictureUrl = "";
 		if (!this.props.chefInfo.picture) {
-			pictureUrl = "https://st2.depositphotos.com/4908849/9632/v/950/depositphotos_96323190-stock-illustration-italian-chef-vector.jpg"
+			pictureUrl = "https://st2.depositphotos.com/4908849/9632/v/950/depositphotos_96323190-stock-illustration-italian-chef-vector.jpg";
 		} else {
 			pictureUrl = this.props.chefInfo.picture;
 		}
@@ -291,6 +292,7 @@ class ChefInfo extends Component {
 						</Grid.Row>
 					</Grid>
 				</Container>
+				<Footer/>
 			</div>
 		);
 	}

@@ -9,6 +9,7 @@ import { Card } from "semantic-ui-react";
 import CroppedImage from "../components/CroppedImage";
 import {OPTION_FOOD, OPTION_CHEF} from "../components/SearchBar";
 import "../style/homepage.css";
+import Footer from "../components/Footer";
 
 class Homepage extends Component {
 	constructor(props) {
@@ -388,6 +389,7 @@ class Homepage extends Component {
 						</Grid>
 					</Container>
 				</div>
+				<Footer/>
 			</div>
 		);
 	}

@@ -8,8 +8,10 @@ import ReactMapGL, {Marker, NavigationControl} from "react-map-gl";
 import PropTypes from "prop-types";
 
 import { OPTION_FOOD, OPTION_CHEF } from "../components/SearchBar";
+import WebsiteIndex from "../components/WebsiteIndex";
 import "../style/search-page.css";
 import CroppedImage from "../components/CroppedImage";
+import Footer from "../components/Footer";
 
 const degreeToPixels = [ { zoom: 0, pixels: 1.7492 }, { zoom: 1, pixels: 3.4984 }, { zoom: 2, pixels: 6.9968 }, { zoom: 3, pixels: 13.9936 },
 	{ zoom: 4, pixels: 27.9872 }, { zoom: 5, pixels: 55.9744 }, { zoom: 6, pixels: 111.9488 }, { zoom: 7, pixels: 223.8976 },
@@ -18,6 +20,11 @@ const degreeToPixels = [ { zoom: 0, pixels: 1.7492 }, { zoom: 1, pixels: 3.4984 
 	{ zoom: 16, pixels: 114635.5712 }, { zoom: 17, pixels: 229271.1424 }, { zoom: 18, pixels: 458542.2848 }, { zoom: 19, pixels: 917084.5696 },
 	{ zoom: 20, pixels: 1834169.1392 }, { zoom: 21, pixels: 3668338.2784 }, { zoom: 22, pixels: 7336676.5568 }, { zoom: 23, pixels: 14673353.1136 },
 	{ zoom: 24, pixels: 29346706.2272 }];
+
+const sections = [
+	{key: "Home", content: "Home", link: true, href: "/"},
+	{key: "Search", content: "Search", link: false, active: true},
+];
 
 export default class SearchPage extends Component {
 	constructor(props) {
@@ -347,6 +354,7 @@ export default class SearchPage extends Component {
 							find={searchBarInit.find}
 							near={searchBarInit.near}
 							onSubmit={(e, d) => this.handleSubmit(e, d)}/>
+						<WebsiteIndex sections={sections}/>
 						<Grid.Row divided>
 							<Grid.Column width={"10"}>
 								<div><h2>All Results</h2></div>
@@ -360,6 +368,7 @@ export default class SearchPage extends Component {
 						</Grid.Row>
 					</Grid>
 				</Container>
+				<Footer/>
 			</div>
 		);
 	}

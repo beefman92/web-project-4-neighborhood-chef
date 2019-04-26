@@ -10,11 +10,20 @@ export const OPTION_CHEF = 1;
 export default class SearchBar extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			searchOption: this.props.option,
-			find: this.props.find,
-			near: this.props.near,
-		};
+		if (this.props.option === OPTION_FOOD || this.props.option === OPTION_CHEF) {
+			this.state = {
+				searchOption: this.props.option,
+				find: this.props.find,
+				near: this.props.near,
+			};
+		} else {
+			this.state = {
+				searchOption: OPTION_FOOD,
+				find: "",
+				near: "",
+			};
+		}
+
 	}
 
 	handleSubmit(event) {
@@ -55,7 +64,7 @@ export default class SearchBar extends Component {
 		const foodClassName = "search-input-option" + (this.state.searchOption === OPTION_FOOD ? " search-input-option-active" : "");
 		const chefClassName = "search-input-option" + (this.state.searchOption === OPTION_CHEF ? " search-input-option-active" : "");
 		return (
-			<Grid.Row>
+			<Grid.Row divided={false}>
 				<Grid.Column width={"5"}>
 					<div style={{height: "100px"}}>
 						<div className={"search-bar-trademark-title"}>
@@ -101,8 +110,8 @@ export default class SearchBar extends Component {
 }
 
 SearchBar.propTypes = {
-	option: PropTypes.number.isRequired,
-	find: PropTypes.string.isRequired,
-	near: PropTypes.string.isRequired,
+	option: PropTypes.number,
+	find: PropTypes.string,
+	near: PropTypes.string,
 	onSubmit: PropTypes.func.isRequired,
 };

@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 
 import NavigationBar from "../components/NavigationBar";
 import "../style/login.css";
+import Footer from "../components/Footer";
 
 export default class Signup extends React.Component {
 	constructor(props) {
@@ -167,6 +168,7 @@ export default class Signup extends React.Component {
 						</Grid.Row>
 					</Grid>
 				</Container>
+				<Footer/>
 			</div>
 		);
 	}

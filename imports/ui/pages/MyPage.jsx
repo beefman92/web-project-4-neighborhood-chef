@@ -2,10 +2,12 @@ import React, { Component } from "react";
 import {Meteor} from "meteor/meteor";
 import { Redirect } from "react-router-dom";
 import {Segment, Button, Grid, Container, Menu, Modal, Header, Form, TextArea, Radio} from "semantic-ui-react";
+import PropTypes from "prop-types";
 
 import NavigationBar from "../components/NavigationBar";
 import CustomerOrderBoard from "../components/CustomerOrderBoard";
 import CustomerInfoBoard from "../components/CustomerInfoBoard";
+import Footer from "../components/Footer";
 
 const INFO = "INFO";
 const ORDERS = "ORDERS";
@@ -69,10 +71,9 @@ export default class MyPage extends Component {
 		event.preventDefault();
 		const newInfo = Object.assign({}, this.state.info);
 		newInfo.optionAddress = newInfo.optionAddress[this.state.index];
-		Meteor.call("chefs.insert", newInfo, (error, result) => {
+		Meteor.call("chefs.insert", newInfo, (error) => {
 			if (error === undefined || error === null) {
-				// TODO: 成功后页面跳转
-				console.log(newInfo);
+				this.props.history.push("/chefinfo");
 			}
 		});
 	}
@@ -274,6 +275,7 @@ export default class MyPage extends Component {
 						</Grid>
 					</Container>
 					{Meteor.user().profile.is_chef ? "" : this.renderChefInfoConfirm()}
+					<Footer/>
 				</div>
 			);
 		} else {
@@ -281,3 +283,7 @@ export default class MyPage extends Component {
 		}
 	}
 }
+
+MyPage.propTypes = {
+	history: PropTypes.object,
+};

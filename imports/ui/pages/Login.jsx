@@ -6,6 +6,7 @@ import {Divider, Container, Button, Form, Grid, Header, Segment, Label, Modal} f
 import "../style/login.css";
 import NavigationBar from "../components/NavigationBar";
 import PropTypes from "prop-types";
+import Footer from "../components/Footer";
 
 export default class Login extends React.Component {
 	constructor(props) {
@@ -146,6 +147,7 @@ export default class Login extends React.Component {
 						</Modal.Description>
 					</Modal.Content>
 				</Modal>
+				<Footer/>
 			</div>
 		);
 

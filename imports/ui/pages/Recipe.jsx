@@ -6,24 +6,18 @@ import { Container, Grid, Button, Segment } from "semantic-ui-react";
 import $ from "jquery";
 
 import NavigationBar from "../components/NavigationBar";
+import SearchBar from "../components/SearchBar";
 import ShoppingCart from "../components/ShoppingCart";
 import { Recipes } from "../../api/recipes";
 import { RecipeComments } from "../../api/comments";
+import WebsiteIndex from "../components/WebsiteIndex";
 import "../style/recipe-page.css";
+import Footer from "../components/Footer";
 
 class Recipe extends Component {
 	constructor(props) {
 		super(props);
 	}
-
-	// renderBreadcrumbs() {
-	// 	return (
-	// 		<Breadcrumb className={"my-3"}>
-	// 			<Breadcrumb.Item href="/">Home</Breadcrumb.Item>
-	// 			<Breadcrumb.Item active>Recipe</Breadcrumb.Item>
-	// 		</Breadcrumb>
-	// 	);
-	// }
 
 	handleOrderFood(event) {
 		event.preventDefault();
@@ -110,19 +104,31 @@ class Recipe extends Component {
 		);
 	}
 
+	handleSearch(event, data) {
+		event.preventDefault();
+		if (data.find && data.near) {
+			this.props.history.push("/search", {...data});
+		}
+	}
+
 	render() {
 		const chefId = this.props.recipe !== undefined && this.props.recipe !== null ? this.props.recipe.chef_id : "";
 		if (this.props.ready) {
+			const sections = [
+				{key: "Home", content: "Home", link: true, href: "/"},
+				{key: "Search", content: "Search", link: true, href: "/search"},
+				{key: "Chef", content: "Chef", link: true, href: "/chef/" + this.props.recipe.chef_id},
+				{key: "Recipe", content: "Recipe", link: false, active: true},
+			];
 			return (
 				<div>
 					<NavigationBar/>
 					<ShoppingCart chefId={chefId}/>
 					<Container>
 						<Grid>
-							{/*{this.renderBreadcrumbs()}*/}
-							{/*<hr/>*/}
+							<SearchBar onSubmit={(e, d) => this.handleSearch(e, d)}/>
+							<WebsiteIndex sections={sections}/>
 							{this.renderRecipe()}
-							{/*<hr/>*/}
 							<Grid.Row>
 								<Grid.Column width={"16"}>
 									<h2>Comments</h2>
@@ -131,6 +137,7 @@ class Recipe extends Component {
 							{this.renderComments()}
 						</Grid>
 					</Container>
+					<Footer/>
 				</div>
 			);
 		} else {
@@ -153,6 +160,7 @@ Recipe.propTypes = {
 	recipe: PropTypes.object,
 	recipeComments: PropTypes.array,
 	ready: PropTypes.bool,
+	history: PropTypes.object,
 };
 
 export default withTracker((props) => {

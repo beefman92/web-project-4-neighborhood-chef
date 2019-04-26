@@ -21,7 +21,6 @@ const App = () => (
 			<Route exact path="/signup" component = {Signup} />
 			<Route exact path="/mypage" component = {MyPage} />
 			<Route exact path="/chefinfo" component = {ChefInfo} />
-
 		</Router>
 	</div>
 );
