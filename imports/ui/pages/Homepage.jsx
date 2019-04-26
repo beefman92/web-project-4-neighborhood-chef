@@ -145,6 +145,9 @@ class Homepage extends Component {
 					<Menu.Item>
 						<Link className={"homepage-menu-button-wrapper"} to={"/login"}><Button className={"homepage-menu-button"}>Login</Button></Link>
 					</Menu.Item>
+					<Menu.Item>
+						<Link className={"homepage-menu-button-wrapper"} to={"/chef-signup"}><Button className={"homepage-menu-button"}>I want to be a Chef</Button></Link>
+					</Menu.Item>
 				</Menu.Menu>
 			);
 		} else {

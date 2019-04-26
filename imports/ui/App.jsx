@@ -9,6 +9,7 @@ import MyPage from "./pages/MyPage.jsx";
 import ChefPage from "./pages/ChefPage.jsx";
 import ChefInfo from "./pages/ChefInfo.jsx";
 import SearchPage from "./pages/SearchPage";
+import ChefSignUp from "./pages/ChefSignUp";
 
 const App = () => (
 	<div>
@@ -21,6 +22,7 @@ const App = () => (
 			<Route exact path="/signup" component = {Signup} />
 			<Route exact path="/mypage" component = {MyPage} />
 			<Route exact path="/chefinfo" component = {ChefInfo} />
+			<Route exact path="/chef-signup" component = {ChefSignUp} />
 		</Router>
 	</div>
 );

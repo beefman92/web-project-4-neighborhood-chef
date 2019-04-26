@@ -1,4 +1,5 @@
 import { Meteor } from "meteor/meteor";
+import {Accounts} from "meteor/accounts-base";
 
 if (Meteor.isServer) {
 	// Accounts.validateNewUser(user => {
@@ -36,5 +37,5 @@ Meteor.methods({
 			return Meteor.users.update({_id: Meteor.userId()},
 				{$set: {profile: newProfile}});
 		}
-	}
+	},
 });
