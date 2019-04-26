@@ -3,7 +3,7 @@ import { withTracker } from "meteor/react-meteor-data";
 import { Meteor } from "meteor/meteor";
 import { Orders } from "../../api/orders";
 import { Recipes } from "../../api/recipes";
-import { NEW, ACCEPTED, READY, PICKED_UP, FINISHED, CANCELED, CANCELING} from "../../api/order-status";
+import { NEW, ACCEPTED, READY, PICKED_UP, FINISHED, CANCELED, CANCELING} from "../../api/constants";
 import {Grid, Card, Segment, Button} from "semantic-ui-react";
 import PropTypes from "prop-types";
 

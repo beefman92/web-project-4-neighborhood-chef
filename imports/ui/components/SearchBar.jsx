@@ -11,9 +11,9 @@ export default class SearchBar extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			searchOption: OPTION_FOOD,
-			find: "",
-			near: "",
+			searchOption: this.props.option,
+			find: this.props.find,
+			near: this.props.near,
 		};
 	}
 
@@ -101,5 +101,8 @@ export default class SearchBar extends Component {
 }
 
 SearchBar.propTypes = {
+	option: PropTypes.number.isRequired,
+	find: PropTypes.string.isRequired,
+	near: PropTypes.string.isRequired,
 	onSubmit: PropTypes.func.isRequired,
 };

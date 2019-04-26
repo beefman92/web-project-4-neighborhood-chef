@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { Mongo } from "meteor/mongo";
 import { check } from "meteor/check";
-import { NEW, ACCEPTED, READY, PICKED_UP, FINISHED, CANCELED, CANCELING, NO_COMMENT } from "./order-status";
+import { NEW, ACCEPTED, READY, PICKED_UP, FINISHED, CANCELED, CANCELING, NO_COMMENT } from "./constants";
 import { RecipeComments, ChefComments } from "./comments";
 
 export const Orders = new Mongo.Collection("orders");

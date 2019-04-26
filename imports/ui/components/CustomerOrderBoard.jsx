@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { Orders } from "../../api/orders";
 import { Recipes } from "../../api/recipes";
 import { Grid, Card, Segment, Button, Icon} from "semantic-ui-react";
-import { ACCEPTED, CANCELING, CANCELED, FINISHED, NEW, PICKED_UP, READY, HAS_COMMENT, NO_COMMENT } from "../../api/order-status";
+import { ACCEPTED, CANCELING, CANCELED, FINISHED, NEW, PICKED_UP, READY, HAS_COMMENT, NO_COMMENT } from "../../api/constants";
 import "../style/my-page.css";
 import {Chefs} from "../../api/chefs";
 import CommentModal from "../components/CommentModal";

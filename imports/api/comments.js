@@ -3,7 +3,7 @@ import { Mongo } from "meteor/mongo";
 import { check } from "meteor/check";
 
 import { Orders } from "./orders";
-import { HAS_COMMENT } from "./order-status";
+import { HAS_COMMENT } from "./constants";
 
 export const RecipeComments = new Mongo.Collection("recipe_comments");
 export const ChefComments = new Mongo.Collection("chef_comments");

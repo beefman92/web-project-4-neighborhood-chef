@@ -52,27 +52,93 @@ export default class SearchPage extends Component {
 			this.yRange.push(this.state.viewport.height / obj.pixels);
 			this.xRange.push(this.state.viewport.width / obj.pixels);
 		}
-		navigator.geolocation.getCurrentPosition((position) => {
-			const latitude = position.coords.latitude;
-			const longitude = position.coords.longitude;
-			Meteor.call("chefs.getNearbyChefs", latitude, longitude, (error, result) => {
-				const newViewport = Object.assign({}, this.state.viewport);
-				newViewport.latitude = latitude;
-				newViewport.longitude = longitude;
-				if (result !== null && result.length > 0) {
+
+		if (this.props.history.location.state !== undefined
+			&& this.props.history.location.state !== null
+			&& this.props.history.location.state.near) {
+			const option = this.props.history.location.state.option;
+			const find = this.props.history.location.state.find;
+			const near = this.props.history.location.state.near;
+
+			this.search(option, find, near);
+		} else {
+			navigator.geolocation.getCurrentPosition((position) => {
+				const latitude = position.coords.latitude;
+				const longitude = position.coords.longitude;
+				Meteor.call("chefs.getNearbyChefs", latitude, longitude, (error, result) => {
+					const newViewport = Object.assign({}, this.state.viewport);
+					newViewport.latitude = latitude;
+					newViewport.longitude = longitude;
+					if (result !== null && result.length > 0) {
+						this.setState({
+							viewport: newViewport,
+							chefs: result.map(info => {
+								return {info: info, highLight: false, recipes: []};
+							}),
+							currentLat: latitude,
+							currentLon: longitude
+						});
+					} else {
+						this.setState({
+							viewport: newViewport,
+							currentLat: latitude,
+							currentLon: longitude
+						});
+					}
+				});
+			});
+		}
+	}
+
+	search(option, find, near) {
+		if (option === OPTION_FOOD) {
+			Meteor.call("recipes.search", find, near, (error, result) => {
+				// result: {latitude: xxx, longitude: xxx, searchResult{chefId1: {chefInfo: chef1, recipeList: [recipe1, recipe2]}, chefId2: {...}, ...}}
+				if (result !== undefined && result !== null) {
+					const latitude = result.latitude;
+					const longitude = result.longitude;
+					const searchResult = result.searchResult;
+					const keys = Object.keys(searchResult);
+					const stateChefs = [];
+					const chefs = keys.map((id) => {
+						const result = searchResult[id];
+						stateChefs.push({
+							info: result.chefInfo,
+							highLight: false,
+							recipes: searchResult[id].recipeList,
+						});
+						return result.chefInfo;
+					});
+					const newViewport = this.computeNewViewport(chefs, latitude, longitude);
 					this.setState({
-						viewport: newViewport,
-						chefs: result.map(info => {return {info: info, highLight: false, recipes: []};}),
-						currentLat: latitude,
-						currentLon: longitude});
-				} else {
-					this.setState({
+						chefs: stateChefs,
 						viewport: newViewport,
 						currentLat: latitude,
-						currentLon: longitude});
+						currentLon: longitude,
+					});
 				}
 			});
-		});
+		} else if (option === OPTION_CHEF) {
+			Meteor.call("chefs.search", find, near, (error, result) => {
+				// result: [latitude: xxx, longitude: xxx, searchResult: [chef1, chef2, ...]}
+				const latitude = result.latitude;
+				const longitude = result.longitude;
+				const newViewport = this.computeNewViewport(result.searchResult, latitude, longitude);
+				const stateChefs = result.searchResult.map((chef) => {
+					return {
+						info: chef,
+						highLight: false,
+						recipes: [],
+					};
+				});
+				this.setState({
+					chefs: stateChefs,
+					viewport: newViewport,
+					currentLat: latitude,
+					currentLon: longitude,
+				});
+			});
+		}
 	}
 
 	renderChefList() {
@@ -198,15 +264,11 @@ export default class SearchPage extends Component {
 		});
 	}
 
-	handleOnSubmit() {
-
-	}
-
-	computeNewViewport(chefs) {
-		let minLat = this.state.currentLat;
-		let maxLat = this.state.currentLat;
-		let minLon = this.state.currentLon;
-		let maxLon = this.state.currentLon;
+	computeNewViewport(chefs, currentLat, currentLon) {
+		let minLat = currentLat;
+		let maxLat = currentLat;
+		let minLon = currentLon;
+		let maxLon = currentLon;
 		for (let i = 0; i < chefs.length; i++) {
 			const chef = chefs[i];
 			if (chef.latitude < minLat) {
@@ -259,49 +321,32 @@ export default class SearchPage extends Component {
 	}
 
 	handleSubmit(event, data) {
-		console.log(data);
-		if (data.option === OPTION_FOOD) {
-			Meteor.call("recipes.searchByName", this.state.searchField, (error, recipeResult) => {
-				if (recipeResult !== null) {
-					const keys = Object.keys(recipeResult);
-					if (keys.length > 0) {
-						Meteor.call("chefs.getByIds", keys, (error, chefResult) => {
-							const newViewport = this.computeNewViewport(chefResult);
-							const chefInfo = chefResult.map(chefInfo => {
-								return {
-									info: chefInfo,
-									highLight: false,
-									recipes: recipeResult[chefInfo._id],
-								};
-							});
-							this.setState({
-								chefs: chefInfo,
-								viewport: newViewport,
-							});
-						});
-					}
-				}
-			});
-		} else {
-			Meteor.call("chefs.searchByName", this.state.searchField, (error, result) => {
-				if (result !== null && result.length > 0) {
-					const newViewport = this.computeNewViewport(result);
-					this.setState({
-						chefs: result.map(info => {return {info: info, highLight: false, recipes: []};}),
-						viewport: newViewport,
-					});
-				}
-			});
+		if (data.find && data.near) {
+			this.search(data.option, data.find, data.near);
 		}
 	}
 
 	render() {
+		let searchBarInit = {
+			option: OPTION_FOOD,
+			find: "",
+			near: "",
+		};
+		if (this.props.history.location.state !== undefined && this.props.history.location.state !== null) {
+			searchBarInit.option = this.props.history.location.state.option;
+			searchBarInit.find = this.props.history.location.state.find;
+			searchBarInit.near = this.props.history.location.state.near;
+		}
 		return (
 			<div>
 				<NavigationBar />
 				<Container>
 					<Grid>
-						<SearchBar onSubmit={(e, d) => this.handleSubmit(e, d)}/>
+						<SearchBar
+							option={searchBarInit.option}
+							find={searchBarInit.find}
+							near={searchBarInit.near}
+							onSubmit={(e, d) => this.handleSubmit(e, d)}/>
 						<Grid.Row divided>
 							<Grid.Column width={"10"}>
 								<div><h2>All Results</h2></div>

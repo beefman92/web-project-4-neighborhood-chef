@@ -7,10 +7,8 @@ import PropTypes from "prop-types";
 import { Card } from "semantic-ui-react";
 
 import CroppedImage from "../components/CroppedImage";
+import {OPTION_FOOD, OPTION_CHEF} from "../components/SearchBar";
 import "../style/homepage.css";
-
-const OPTION_FOOD = 0;
-const OPTION_CHEF = 1;
 
 class Homepage extends Component {
 	constructor(props) {
@@ -56,9 +54,9 @@ class Homepage extends Component {
 
 	handleSearch(event) {
 		event.preventDefault();
-		console.log(this.state);
 		if (this.state.find !== "" && this.state.near !== "") {
 			this.props.history.push("/search", {
+				option: this.state.searchOption,
 				find: this.state.find,
 				near: this.state.near,
 			});
@@ -99,7 +97,7 @@ class Homepage extends Component {
 					});
 				}
 			});
-			Meteor.call("chef.getNearChefByGeo", latitude, longitude, (error, result) => {
+			Meteor.call("chefs.getNearChefByGeo", latitude, longitude, (error, result) => {
 				if (result !== undefined && result !== null) {
 					const chefIds = result.chefs.map((value) => {
 						return value.chef_id;

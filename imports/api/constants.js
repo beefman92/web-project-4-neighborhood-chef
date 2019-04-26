@@ -9,3 +9,6 @@ export const CANCELED = 6;
 export const COMMENT_DISABLE = 100;
 export const HAS_COMMENT = 101;
 export const NO_COMMENT = 102;
+
+export const HOMEPAGE_SEARCH_RANGE = 0.3;
+export const DEFAULT_SEARCH_RANGE = 0.2;

@@ -4,7 +4,7 @@ import { check } from "meteor/check";
 
 import { Recipes } from "./recipes";
 import { Orders } from "./orders";
-import { NEW, COMMENT_DISABLE } from "./order-status";
+import { NEW, COMMENT_DISABLE } from "./constants";
 
 export const ShoppingCarts = new Mongo.Collection("shopping_carts");
 

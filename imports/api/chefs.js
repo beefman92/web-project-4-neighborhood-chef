@@ -2,6 +2,8 @@ import { Meteor } from "meteor/meteor";
 import { Mongo } from "meteor/mongo";
 import { check } from "meteor/check";
 
+import {DEFAULT_SEARCH_RANGE, HOMEPAGE_SEARCH_RANGE} from "./constants";
+
 export const Chefs = new Mongo.Collection("chefs");
 
 const geoCoding = require("@mapbox/mapbox-sdk/services/geocoding");
@@ -133,7 +135,7 @@ Meteor.methods({
 			return token;
 		}
 	},
-	"chef.getNearChefByGeo"(latitude, longitude) {
+	"chefs.getNearChefByGeo"(latitude, longitude) {
 		check(latitude, Number);
 		check(longitude, Number);
 		if (Meteor.isServer) {
@@ -147,10 +149,10 @@ Meteor.methods({
 					const city = match.features[0].text;
 					// TODO: what if two cities have same name?
 
-					const minLatitude = latitude - 0.3;
-					const maxLatitude = latitude + 0.3;
-					const minLongitude = longitude - 0.3;
-					const maxLongitude = longitude + 0.3;
+					const minLatitude = latitude - HOMEPAGE_SEARCH_RANGE;
+					const maxLatitude = latitude + HOMEPAGE_SEARCH_RANGE;
+					const minLongitude = longitude - HOMEPAGE_SEARCH_RANGE;
+					const maxLongitude = longitude + HOMEPAGE_SEARCH_RANGE;
 					const regexp = ".*" + city + ".*";
 					const chefs = Chefs.find(
 						{$and: [
@@ -170,7 +172,39 @@ Meteor.methods({
 			});
 		}
 	},
-	"chef.getNearChefByAddress"(address) {
+	"chef.getNearChefByAddress"() {
+		// TODO: 这里是要干啥来着我忘了
+	},
+	"chefs.search"(chefName, near) {
+		check(chefName, String);
+		check(near, String);
+		if (Meteor.isServer) {
+			const geoCodingClient = geoCoding({accessToken: Meteor.settings.MAPBOX_API_TOKEN});
+			return geoCodingClient.forwardGeocode({query: near, limit: 1}).send().then(response => {
+				const body = response.body;
 
+				const location = body.features[0].center;
+				const latitude = location[1];
+				const longitude = location[0];
+				const minLatitude = latitude - DEFAULT_SEARCH_RANGE;
+				const maxLatitude = latitude + DEFAULT_SEARCH_RANGE;
+				const minLongitude = longitude - DEFAULT_SEARCH_RANGE;
+				const maxLongitude = longitude + DEFAULT_SEARCH_RANGE;
+				const regexp = ".*" + chefName + ".*";
+				const result = {
+					latitude: latitude,
+					longitude: longitude,
+				};
+				const chefs = Chefs.find(
+					{$and: [
+						{name: {$regex: regexp, $options: "i"}},
+						{latitude: {$lt: maxLatitude}},
+						{latitude: {$gt: minLatitude}},
+						{longitude: {$lt: maxLongitude}},
+						{longitude: {$gt: minLongitude}}]}).fetch();
+				result.searchResult = chefs;
+				return result;
+			});
+		}
 	}
 });
