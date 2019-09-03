@@ -343,10 +343,15 @@ class Homepage extends Component {
 		);
 	}
 
+	randomBackground() {
+		const index = Math.floor(Math.random() * 7);
+		return "url(/images/homepage/" + index + ".jpg)";
+	}
+
 	render() {
 		return (
 			<div>
-				<div className={"top-part-background-image"}>
+				<div className={"top-part-background-image"} style={{backgroundImage: this.randomBackground()}}>
 					<div className={"top-part-shadow"}>
 						<div className={"top-part"}>
 							{this.renderHomepageNavBar()}
