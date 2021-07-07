@@ -4,6 +4,10 @@ import { check } from "meteor/check";
 import { NEW, ACCEPTED, READY, PICKED_UP, FINISHED, CANCELED, CANCELING, NO_COMMENT } from "./constants";
 import { RecipeComments, ChefComments } from "./comments";
 
+// Code revire from Xun Wang
+// First of all you guys did a great job puttin gup the whole site. I know how difficult it could be to design and implement
+// an order system. Great work and very solid logic and validation here!
+
 export const Orders = new Mongo.Collection("orders");
 
 if (Meteor.isServer) {
